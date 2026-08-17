@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #lr
 
-LRパーサーが、lookahead tokenを入力から読み取り、パーサースタックへ積む操作。Shiftでは入力tokenを消費し、対応する状態へ遷移する。[[production-rule|生成規則]]の右辺を左辺へまとめる処理はまだ行わない。
+LRパーサーが、[[lookahead-token|lookahead token]]を入力から読み取り、パーサースタックへ積む操作。Shiftでは入力tokenを消費し、対応する状態へ遷移する。[[production-rule|生成規則]]の右辺を左辺へまとめる処理はまだ行わない。
 
 現在の状態とlookahead tokenを[[parsing-table|構文解析表]]で調べると、Shiftと遷移先の状態が得られる。
 

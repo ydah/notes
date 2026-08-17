@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-入力を左（Left）から右（Right）へ読みながら、[[rightmost-derivation|右端導出]]を逆向きに実行する構文解析方式。状態スタックと[[parsing-table|構文解析表]]を持ち、[[lookahead|lookahead token]]と現在の状態から[[shift|Shift]]・[[reduce|Reduce]]などの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
+入力を左（Left）から右（Right）へ読みながら、[[rightmost-derivation|右端導出]]を逆向きに実行する構文解析方式。状態スタックと[[parsing-table|構文解析表]]を持ち、[[lookahead-token|lookahead token]]と現在の状態から[[shift|Shift]]・[[reduce|Reduce]]などの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
 
 ## 動作
 

@@ -11,9 +11,9 @@ Lookahead Correctionは、LRパーサーで構文エラーの検出が遅れる�
 
 ## 何を補正するのか
 
-LRパーサーは、現在の状態とlookahead tokenから[[shift|Shift]]や[[reduce|Reduce]]を決める。しかし、すぐにlookaheadを取得せず、状態に登録されたdefault reductionを先に実行することがある。
+LRパーサーは、現在の状態と[[lookahead-token|lookahead token]]から[[shift|Shift]]や[[reduce|Reduce]]を決める。しかし、すぐにlookaheadを取得せず、状態に登録された[[default-reduction|default reduction]]を先に実行することがある。
 
-LALRやIELRでは、異なる文脈のparser stateをマージする。さらに、%nonassocやdefault reductionがあると、入力tokenが実際には不正なのに、parserがそのtokenを確認する前にstack上のReduceを何回か実行することがある。
+LALRやIELRでは、異なる文脈のparser stateをマージする。さらに、[[nonassoc|%nonassoc]]や[[default-reduction|default reduction]]があると、入力tokenが実際には不正なのに、parserがそのtokenを確認する前にstack上のReduceを何回か実行することがある。
 
 この遅延によって、次の問題が起きる。
 
@@ -23,7 +23,7 @@ LALRやIELRでは、異なる文脈のparser stateをマージする。さらに
 
 LACは、lookahead tokenが現在のparser stackで本当に受理できるかを、通常のparser stackを変更せずに先に確認する。
 
-## exploratory parse
+## [[exploratory-parse|exploratory parse]]
 
 LACを有効にすると、parserがscannerから新しいtokenを取得して次の操作を決める必要が生じたとき、通常の解析を一時停止する。そして一時的なstackを使ってexploratory parseを行う。
 
@@ -59,7 +59,7 @@ exploratory parseでは、通常のparser actionの一部を二度実行する�
 
 LACを有効にしても、構文エラーの検出までに無限ループするparserを必ず停止できるわけではない。期待tokenの一覧が大きすぎる場合は、Bisonが一覧をメッセージから省略することもある。
 
-[[lookahead|lookahead]]は入力から得た次のtokenそのものを指す。LACはそのtokenを別のtokenへ変換する仕組みではなく、現在のparser contextで受理できるかを先行して検証する仕組み。
+[[lookahead-token|lookahead token]]は入力から得た次のtokenそのものを指す。LACはそのtokenを別のtokenへ変換する仕組みではなく、現在のparser contextで受理できるかを先行して検証する仕組み。
 
 ## 出典
 

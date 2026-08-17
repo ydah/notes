@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #lr
 
-LRパーサーが、スタック上で[[production-rule|生成規則]]の右辺を認識したときに、その右辺を左辺の非終端記号へまとめる操作。Reduceではlookahead tokenを消費しない。
+LRパーサーが、スタック上で[[production-rule|生成規則]]の右辺を認識したときに、その右辺を左辺の非終端記号へまとめる操作。Reduceでは[[lookahead-token|lookahead token]]を消費しない。
 
 [[production-rule|生成規則]]`A -> β`をReduceする場合、概念的には次の処理を行う。
 

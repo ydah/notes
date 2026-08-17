@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #lalr #lr
 
-Look-Ahead LR。Canonical LR(1)の状態から、LR(0)アイテム部分（core）が同じ状態をマージしてパーサーテーブルを小さくする方式。[[slr-parser|SLR]]より状態ごとのlookaheadを細かく扱え、[[canonical-lr-parser|Canonical LR]]より状態数を抑えられる。yacc系のパーサージェネレータで広く使われてきた。
+Look-Ahead LR。Canonical LR(1)の状態から、LR(0)アイテム部分（core）が同じ状態をマージして[[lalr-table|LALR table]]を小さくする方式。[[slr-parser|SLR]]より状態ごとのlookaheadを細かく扱え、[[canonical-lr-parser|Canonical LR]]より状態数を抑えられる。yacc系のパーサージェネレータで広く使われてきた。
 
 ## 状態のマージ
 

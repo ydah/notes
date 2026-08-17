@@ -10,7 +10,7 @@ GNUプロジェクトのパーサージェネレータ。注釈付きの[[contex
 
 ## 生成するパーサー
 
-通常のLRパーサーでは、文法から[[parsing-table|構文解析表]]を作り、入力tokenを[[shift|Shift]]・[[reduce|Reduce]]して解析する。Bisonは[[lalr-parser|LALR(1)]]・[[ielr|IELR]](1)・[[canonical-lr-parser|Canonical LR(1)]]のテーブル構築方式を切り替えられる。
+通常のLRパーサーでは、文法から[[parsing-table|構文解析表]]を作り、入力tokenを[[shift|Shift]]・[[reduce|Reduce]]して解析する。Bisonは[[lalr-parser|LALR(1)]]・[[ielr|IELR(1)]]・[[canonical-lr-parser|Canonical LR(1)]]のテーブル構築方式を切り替えられる。
 
 構文エラーの検出を改善するために[[lookahead-correction|Lookahead Correction（LAC）]]も使える。%define parse.lac fullを指定すると、lookaheadを使ったexploratory parseでエラーを先に検証する。
 

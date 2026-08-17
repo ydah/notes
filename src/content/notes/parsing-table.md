@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-LRパーサーが、現在の状態とlookahead tokenから次の操作を調べるための表。文法から状態機械を作り、その遷移とReduce条件を表にしたもの。
+LRパーサーが、現在の状態と[[lookahead-token|lookahead token]]から次の操作を調べるための表。文法から状態機械を作り、その遷移とReduce条件を表にしたもの。
 
 通常は、終端記号に対する`ACTION`と、非終端記号に対する[[goto-table|GOTO表]]に分けて考える。
 

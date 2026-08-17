@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr #bison
 
-IELRはInadequacy Elimination LRの略。[[lalr-parser|LALR]]に近い状態数を保ちながら、[[canonical-lr-parser|Canonical LR(1)]]と同じ言語認識能力を持つparser tableを構築する方式。
+IELRはInadequacy Elimination LRの略。[[lalr-parser|LALR]]に近い状態数を保ちながら、[[canonical-lr-parser|Canonical LR(1)]]と同じ言語認識能力を持つ[[ielr-table|IELR table]]を構築する方式。
 
 Bisonでは次の指定でIELRを選べる。
 

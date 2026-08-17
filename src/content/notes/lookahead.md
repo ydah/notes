@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr #ll
 
-パーサーが現在処理している位置の、まだ消費していない次のtoken。パーサーはスタックや現在の文法規則だけでなく、lookaheadを見てshift・reduceや、次に使う[[production-rule|生成規則]]を決める。[[follow-set|FOLLOW集合]]が文法から計算した候補の集合なのに対し、lookaheadは実際の入力から得られたtoken。
+パーサーが現在処理している位置の、まだ消費していない次の[[lookahead-token|lookahead token]]。パーサーはスタックや現在の文法規則だけでなく、lookaheadを見てshift・reduceや、次に使う[[production-rule|生成規則]]を決める。[[follow-set|FOLLOW集合]]が文法から計算した候補の集合なのに対し、lookaheadは実際の入力から得られたtoken。
 
 ## LRパーサーでのlookahead
 
