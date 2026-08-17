@@ -21,9 +21,11 @@ Bisonの`lr.type`のデフォルトは`lalr`で、`ielr`と`canonical-lr`にも�
 
 | 方式 | 状態の扱い | 特徴 |
 |---|---|---|
-| [[lalr-parser|LALR]] | 同じLR(0) coreの状態をマージ | 小さいが、人工的なconflictが起きることがある |
-| IELR | 必要な文脈を区別しながら状態をマージ | [[canonical-lr-parser|Canonical LR]]と同じ認識能力とLALRに近い状態数を持つ |
-| [[canonical-lr-parser|Canonical LR]] | 状態をマージしない | 正確だが、状態数とテーブルが大きくなりやすい |
+| LALR | 同じLR(0) coreの状態をマージ | 小さいが、人工的なconflictが起きることがある |
+| IELR | 必要な文脈を区別しながら状態をマージ | Canonical LRと同じ認識能力とLALRに近い状態数を持つ |
+| Canonical LR | 状態をマージしない | 正確だが、状態数とテーブルが大きくなりやすい |
+
+関連ページ: [[lalr-parser|LALRパーサー]]、[[ielr-table|IELR table]]、[[canonical-lr-parser|Canonical LRパーサー]]。
 
 IELRは決定的LRパーサーのtable構築方式。[[glr|GLR]]のように実行時に複数の解析候補を並行して追跡する方式ではない。
 
