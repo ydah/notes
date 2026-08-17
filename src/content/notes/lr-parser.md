@@ -33,9 +33,9 @@ shiftは入力トークンをスタックへ積む操作、reduceはスタック
 
 ## LR系の方式
 
-- **SLR**: [[follow-set|FOLLOW集合]]を使ってreduceする。単純だが、状態の文脈を粗く扱う。
-- **LALR**: 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすいが、状態のマージによってconflictが増えることがある。
-- **Canonical LR(1)**: [[lookahead|lookahead]]を状態ごとに持つ。精密だが、状態数が増えやすい。
+- [[slr-parser|SLR]] — [[follow-set|FOLLOW集合]]を使ってreduceする。単純だが、状態の文脈を粗く扱う。
+- [[lalr-parser|LALR]] — 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすいが、状態のマージによってconflictが増えることがある。
+- [[canonical-lr-parser|Canonical LR]] — [[lookahead|lookahead]]を状態ごとに持つ。精密だが、状態数が増えやすい。
 - **IELR**: LALRに近い状態数でCanonical LR(1)に近い言語認識能力を得ようとする。
 
 ## shift/reduce conflict
