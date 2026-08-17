@@ -1,0 +1,52 @@
+---
+import { byUpdated, getNotes, getTagMap } from '../lib/notes';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const notes = (await getNotes()).sort(byUpdated);
+const tagMap = await getTagMap();
+const tags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 20);
+---
+<button class="menu-toggle" type="button" aria-controls="site-sidebar" aria-expanded="false">☰</button>
+<aside id="site-sidebar" class="sidebar" data-pagefind-ignore="all">
+  <a class="site-title" href={`${base}/`}>ydah notes</a>
+  <nav aria-label="サイトメニュー">
+    <a href={`${base}/search/`}>🔍 検索</a>
+    <a href={`${base}/notes/`}>📄 ノート一覧 <small>{notes.length}</small></a>
+    <a href={`${base}/tags/`}>🏷️ タグ一覧</a>
+  </nav>
+
+  <section class="sidebar-section">
+    <h2>最近のノート</h2>
+    <ul class="sidebar-list">
+      {notes.slice(0, 30).map((note) => <li><a href={`${base}/notes/${note.slug}/`}>{note.title}</a></li>)}
+    </ul>
+  </section>
+
+  {tags.length > 0 && (
+    <section class="sidebar-section">
+      <h2>よく使うタグ</h2>
+      <ul class="sidebar-list">
+        {tags.map(([tag, taggedNotes]) => <li><a href={`${base}/tags/${encodeURIComponent(tag)}/`}>#{tag} <small>{taggedNotes.length}</small></a></li>)}
+      </ul>
+    </section>
+  )}
+
+  <button id="theme-toggle" class="theme-toggle" type="button">🌙 テーマ切替</button>
+</aside>
+
+<script>
+  const menu = document.querySelector('.menu-toggle');
+  const theme = document.querySelector('#theme-toggle');
+
+  menu?.addEventListener('click', () => {
+    const open = document.body.classList.toggle('sidebar-open');
+    menu.setAttribute('aria-expanded', String(open));
+  });
+
+  theme?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch {}
+    window.dispatchEvent(new CustomEvent('theme-change', { detail: next }));
+  });
+</script>

@@ -1,0 +1,59 @@
+---
+import 'katex/dist/katex.min.css';
+import Sidebar from '../components/Sidebar.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'ydah のエバーグリーンノート',
+} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="sitemap" href={`${base}/sitemap-index.xml`} />
+    <title>{title ? `${title} | ydah notes` : 'ydah notes'}</title>
+    <script is:inline>
+      (() => {
+        let saved = null;
+        try { saved = localStorage.getItem('theme'); } catch {}
+        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script>
+  </head>
+  <body>
+    <Sidebar />
+    <main class="content"><slot /></main>
+    <slot name="aside" />
+
+    <script is:inline type="module">
+      const blocks = [...document.querySelectorAll('pre > code.language-mermaid')];
+      if (blocks.length) {
+        const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+        const nodes = blocks.map((code) => {
+          const div = document.createElement('div');
+          div.className = 'mermaid';
+          div.textContent = code.textContent ?? '';
+          code.parentElement?.replaceWith(div);
+          return div;
+        });
+        mermaid.initialize({
+          startOnLoad: false,
+          securityLevel: 'strict',
+          theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default',
+        });
+        await mermaid.run({ nodes });
+      }
+    </script>
+  </body>
+</html>

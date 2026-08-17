@@ -1,0 +1,51 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { buildBacklinks, getNotes } from '../../lib/notes';
+import { tagUrl } from '../../lib/tags.mjs';
+
+export async function getStaticPaths() {
+  const notes = await getNotes();
+  const backlinks = buildBacklinks(notes);
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note, backlinks: backlinks.get(note.slug) ?? [] },
+  }));
+}
+
+const { note, backlinks } = Astro.props;
+const { Content, headings } = await render(note.entry);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const formatDate = (date: Date | undefined) => date?.toISOString().slice(0, 10);
+---
+<BaseLayout title={note.title}>
+  <article class="note" data-pagefind-body>
+    {!note.hasH1 && <h1 data-pagefind-meta="title">{note.title}</h1>}
+
+    {(note.created || note.updated) && (
+      <p class="dates">
+        {note.created && <span>作成 <time datetime={note.created.toISOString()}>{formatDate(note.created)}</time></span>}
+        {note.updated && <span>更新 <time datetime={note.updated.toISOString()}>{formatDate(note.updated)}</time></span>}
+      </p>
+    )}
+
+    {note.tags.length > 0 && (
+      <ul class="tags" aria-label="タグ">
+        {note.tags.map((tag) => <li><a href={tagUrl(tag, base)} data-pagefind-filter="tag">#{tag}</a></li>)}
+      </ul>
+    )}
+
+    <div class="note-body"><Content /></div>
+
+    {backlinks.length > 0 && (
+      <section class="backlinks" data-pagefind-ignore>
+        <h2>🔗 リンクされているノート</h2>
+        <ul>
+          {backlinks.map((backlink) => <li><a href={`${base}/notes/${backlink.slug}/`}>{backlink.title}</a></li>)}
+        </ul>
+      </section>
+    )}
+  </article>
+  <TableOfContents slot="aside" headings={headings} />
+</BaseLayout>

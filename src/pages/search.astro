@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<BaseLayout title="検索">
+  <h1>🔍 ノートを検索</h1>
+  <pagefind-config bundle-path={`${base}/pagefind/`} base-url={`${base}/`} lang="ja" preload></pagefind-config>
+  <div class="search-layout">
+    <aside class="search-filters" data-pagefind-ignore>
+      <pagefind-filter-pane open="tag"></pagefind-filter-pane>
+    </aside>
+    <section class="search-results">
+      <pagefind-input placeholder="ノートを検索"></pagefind-input>
+      <pagefind-summary></pagefind-summary>
+      <pagefind-results></pagefind-results>
+    </section>
+  </div>
+  <link rel="stylesheet" href={`${base}/pagefind/pagefind-component-ui.css`} />
+  <script is:inline type="module" src={`${base}/pagefind/pagefind-component-ui.js`}></script>
+</BaseLayout>

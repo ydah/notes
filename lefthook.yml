@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    update-note-dates:
+      glob: "src/content/notes/*.md"
+      run: node scripts/update-note-dates.mjs "{staged_files}"
+      stage_fixed: true

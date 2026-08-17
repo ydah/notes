@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { byUpdated, getNotes, getTagMap } from '../lib/notes';
+import { tagUrl } from '../lib/tags.mjs';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const notes = (await getNotes()).sort(byUpdated);
+const tagMap = await getTagMap();
+const popularTags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 12);
+---
+<BaseLayout title="エバーグリーンノート">
+  <section class="hero">
+    <p class="eyebrow">evergreen notes</p>
+    <h1>知識を育てる場所</h1>
+    <p>調べたことや考えたことを、原子ノートとリンクのネットワークとして残す。</p>
+    <p><a class="button" href={`${base}/notes/`}>ノートを読む</a> <a href={`${base}/search/`}>検索する</a></p>
+  </section>
+
+  <section>
+    <h2>最近更新したノート</h2>
+    <ul class="note-list">
+      {notes.slice(0, 10).map((note) => <li><a href={`${base}/notes/${note.slug}/`}>{note.title}</a></li>)}
+    </ul>
+  </section>
+
+  {popularTags.length > 0 && (
+    <section>
+      <h2>よく使うタグ</h2>
+      <div class="tag-cloud">
+        {popularTags.map(([tag, taggedNotes]) => <a href={tagUrl(tag, base)}>#{tag} <small>{taggedNotes.length}</small></a>)}
+      </div>
+    </section>
+  )}
+</BaseLayout>
