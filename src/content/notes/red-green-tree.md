@@ -13,7 +13,7 @@ updated: 2026-08-17
 - [[red-tree|Red Tree]] — Green Treeを包み、親、絶対offset、nodeのidentityを提供する
 - [[ast|AST]] — Red/Greenの構文木の上に、型付きで扱いやすいAPIを提供することがある
 
-Green Treeは親pointerやファイル全体での位置を持たない。そのため同じGreen nodeを別の親や別の位置から共有できる。ソースの一部を変更すると、変更されたnodeと祖先だけを作り直し、変更されていないsubtreeを再利用しやすい。
+Green Treeは親pointerやファイル全体での位置を持たない。そのため同じGreen nodeを別の親や別の位置から共有できる。ソースの一部を変更すると、変更されたnodeと祖先だけを作り直し、変更されていないsubtreeを再利用しやすい。これは[[incremental-reparse|incremental reparse]]の基礎になる。
 
 Red Treeは、Green Treeの内容を複製した別の完全な木ではない。Green Treeに文脈を加えたviewなので、同じ構造を複数の位置で扱える。親への移動やsource rangeの計算はRed側で行う。
 

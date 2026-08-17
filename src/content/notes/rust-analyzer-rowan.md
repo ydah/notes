@@ -25,7 +25,7 @@ rust-analyzerの`syntax` crateがrowanをRust固有のAPIで包み、`ast`層が
 
 この構造では、空白・コメントを含む入力を正確に表現できる。構文エラーを含む編集中の入力でも、できるだけ木を作り、IDEのsyntax highlightingや補完などを続ける。parserが返す構文エラーの情報と、木の中のエラー表現は分けて扱える。
 
-Green Treeがimmutableで位置に依存しないため、subtreeを共有しやすい。Red/SyntaxNodeが親とoffsetを提供するので、IDEのnavigation APIからは通常の木のように扱える。
+Green Treeがimmutableで位置に依存しないため、subtreeを共有しやすい。Red/SyntaxNodeが親とoffsetを提供するので、IDEのnavigation APIからは通常の木のように扱える。変更時に一部のsubtreeだけを作り直す[[incremental-reparse|incremental reparse]]にもつながる。
 
 rowanの設計を読むときは、[[red-green-tree|Red-Green Tree]]、[[green-tree|Green Tree]]、[[red-tree|Red Tree]]、[[cst|CST]]を一緒に見ると整理しやすい。
 

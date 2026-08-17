@@ -21,7 +21,7 @@ Roslynはコンパイル処理を複数の機能領域に分けている。
 
 ## Syntax tree
 
-Roslynの[[syntax-tree|syntax tree]]はソースコードをfull fidelityで保持する。文法上の構造だけでなく、すべてのtoken、空白、コメント、プリプロセッサディレクティブを含む。[[syntax-error|構文エラー]]がある場合も、欠落tokenやスキップされたtokenとして木に表現する。
+Roslynの[[syntax-tree|syntax tree]]はソースコードをfull fidelityで保持する。文法上の構造だけでなく、すべてのtoken、空白、コメント、プリプロセッサディレクティブを含む。[[syntax-error|構文エラー]]がある場合も、欠落tokenや[[skipped-token|skipped token]]として木に表現する。
 
 そのため[[syntax-tree|syntax tree]]から元のソーステキストへround-tripできる。formatter・refactoring・code fixのような、ソースの形を保ちながら編集するツールを作りやすい。
 
