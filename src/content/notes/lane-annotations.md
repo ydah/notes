@@ -39,7 +39,7 @@ lane annotationは、次のような関係を状態やisocoreに付ける。
 
 ## lane tracing
 
-IELRのannotation計算では、conflictを含む状態から、先行状態へ向かってlaneを逆向きにたどる。[[goto-follow-closures|goto-follow closures]]で計算したfollow依存関係と、itemのlookahead依存関係を使って、conflictに寄与し得る経路だけを調べる。
+IELRのannotation計算では、conflictを含む状態から、先行状態へ向かってlaneを逆向きにたどる。[[goto-follow-closures|goto-follow closures]]で計算したfollow依存関係と、itemのlookahead依存関係を使って、conflictに寄与し得る経路だけを調べる。ここでいうfollow依存関係には、[[predecessor-dependency|predecessor dependency]]のように先行laneからlookaheadを運ぶ関係も含まれる。
 
 laneは分岐・合流・ループを含むため、開始状態からの経路をすべて列挙すると組み合わせが増え続ける。そこで、同じ寄与関係を持つ複数のlaneをannotationにまとめ、状態ごとに伝播させる。
 

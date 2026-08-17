@@ -31,7 +31,7 @@ IELRは決定的LRパーサーのtable構築方式。[[glr|GLR]]のように実�
 
 [[pslr|PSLR]]では、現在のparser stateで受理できるtokenをpseudo-scannerが参照する。状態マージによってこの情報を失うとscannerの判断に影響するため、IELRはPSLRを実現するための基盤になる。
 
-IELRのlookahead計算では、[[goto-follow-closures|goto-follow closures]]でGOTOごとのfollow依存関係を求め、[[lane-annotations|lane annotations]]でconflictに寄与した経路を記録して、必要な状態だけを分割する。
+IELRのlookahead計算では、[[goto-follow-closures|goto-follow closures]]でGOTOごとのfollow依存関係を求める。この依存関係には[[internal-dependency|internal dependency]]と[[predecessor-dependency|predecessor dependency]]があり、[[lane-annotations|lane annotations]]でconflictに寄与した経路を記録して、必要な状態だけを分割する。
 
 ## 他のツールとの関係
 

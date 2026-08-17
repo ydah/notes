@@ -27,7 +27,7 @@ goto_follow(g) = { gの直後に現れ得るtoken }
 
 ## followの依存関係
 
-goto-follow setには、主に2種類の情報が入る。
+goto-follow setには、successor、internal、predecessorの3種類の依存関係が現れる。
 
 1つ目は、GOTOの遷移先から見える終端記号。
 
@@ -44,13 +44,15 @@ state_i --A--> state_j --B--> state_k --"+"--> ...
 
 この関係はsuccessor dependencyやread dependencyとして扱われる。直接終端記号へ進む場合だけでなく、nullableな非終端記号を経由する間接的な依存も含む。
 
-2つ目は、生成規則の残りがnullableな場合に、GOTOの前にあるitemのlookaheadからfollowが伝わる関係。これは前方のGOTOのlookaheadが、現在のGOTOのfollowに影響するpredecessor dependencyやinclude dependencyとして現れる。
+同じstateの中で、あるGOTOのitem coreを生成した別のGOTOのfollowに依存する関係は[[internal-dependency|internal dependency]]と呼ばれる。依存経路が別のstateを通ってeventual predecessorまでさかのぼる場合は[[predecessor-dependency|predecessor dependency]]になる。
+
+どちらも、生成規則の残りがnullableな場合に、上流のGOTOやitemのlookaheadからfollowが伝わる関係。DeRemerとPennelloのincludes dependencyを、依存経路が同じstate内で完結するかどうかで分けたもの。
 
 ## closureの計算
 
 GOTOを頂点、followの依存関係を辺とするグラフを考える。あるGOTOから出発して、依存するGOTOを繰り返したときに到達できる終端記号を集めたものがgoto-follow closure。
 
-論文では、successor dependencyをたどるclosureと、internal・predecessor dependencyをたどるclosureを組み合わせて完全なgoto_followsを計算する。単に依存グラフの全ての辺を順番にたどればよいわけではなく、nullable性と、どの状態の経路から来た依存かを保つ必要がある。
+論文では、internal・predecessor dependencyをたどるclosureと、successor dependencyをたどるclosureを組み合わせて完全なgoto_followsを計算する。単に依存グラフの全ての辺を順番にたどればよいわけではなく、nullable性と、どの状態の経路から来た依存かを保つ必要がある。successor dependencyの後にpredecessor dependencyをたどると、合流前の別laneのtokenを混ぜる可能性がある。
 
 ここでいうclosureは、LR itemに新しいitemを追加する通常のLR item closureとは違う。GOTO間のfollow依存関係を固定点まで広げるグラフ計算を指す。
 
