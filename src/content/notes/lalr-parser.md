@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # LALRパーサー
 
@@ -27,11 +27,11 @@ LR(0)部分だけを見ると、どちらも`A -> α .`。LALRでは同じcore�
 
 ## 状態マージによるconflict
 
-マージ前は別々の文脈にあった状態が1つになるため、統合後のlookaheadが広がり、元々なかったreduce/reduce conflictが発生することがある。LALRでだけ発生する、原因が分かりにくいconflictは「mysterious conflict」と呼ばれることがある。
+マージ前は別々の文脈にあった状態が1つになるため、統合後のlookaheadが広がり、元々なかったreduce/reduce conflictが発生することがある。LALRでだけ発生する、原因が分かりにくいconflictは[[mysterious-conflict|mysterious conflict]]と呼ばれることがある。
 
 ## 位置づけ
 
-LALRはSLRより強く、Canonical LRより小さいという実用上のバランスを取った方式。Bisonは歴史的な理由からLALR(1)をデフォルトにしているが、文法の正確な認識能力が必要な場合はIELRやCanonical LRを選べる。
+LALRはSLRより強く、Canonical LRより小さいという実用上のバランスを取った方式。Bisonは歴史的な理由からLALR(1)をデフォルトにしているが、文法の正確な認識能力が必要な場合は[[ielr|IELR]]やCanonical LRを選べる。
 
 ## 出典
 

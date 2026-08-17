@@ -12,9 +12,9 @@ updated: 2026-08-17
 
 - **文法の記述**: [[terminal-symbol|終端記号]]・[[nonterminal-symbol|非終端記号]]・生成規則を記述する。
 - **パーサーの生成**: 文法から状態機械やパーサーテーブルを作り、入力を`shift` / `reduce`しながら解析するコードを生成する。
-- **conflictの検出**: [[shift-reduce-parsing|shift/reduce構文解析]]で起きるshift/reduce conflictやreduce/reduce conflictを報告する。
+- **conflictの検出**: [[conflict|conflict]]や[[shift-reduce-parsing|shift/reduce構文解析]]で起きる[[conflict|shift/reduce conflict]]、[[conflict|reduce/reduce conflict]]を報告する。
 - **優先順位の指定**: 演算子の結合方向・優先順位を文法に指定してconflictを解決する。
-- **意味作用の実行**: 生成規則に対応する処理をreduce時に実行し、ASTや評価結果などを組み立てる。
+- **意味作用の実行**: [[semantic-action|semantic action]]をreduce時に実行し、ASTや評価結果などを組み立てる。
 
 ## パーサー方式
 

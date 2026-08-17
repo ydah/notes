@@ -22,7 +22,7 @@ UNIX版Yaccでは、Cのパーサー実装を`y.tab.c`として生成し、そ�
 
 ## 後継
 
-Yaccの文法形式とインターフェースは、GNU Bison・Berkeley Yacc・各種言語向けのyacc系ツールへ引き継がれている。[[gnu-bison|GNU Bison]]はYacc互換を保ちながら、IELR・Canonical LR・GLRなどを追加した実装。
+Yaccの文法形式とインターフェースは、GNU Bison・Berkeley Yacc・各種言語向けのyacc系ツールへ引き継がれている。[[gnu-bison|GNU Bison]]はYacc互換を保ちながら、[[ielr|IELR]]・[[canonical-lr-parser|Canonical LR]]・[[glr|GLR]]などを追加した実装。
 
 ## 出典
 

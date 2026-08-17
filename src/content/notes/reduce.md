@@ -12,7 +12,7 @@ LRパーサーが、スタック上で生成規則の右辺を認識したとき
 生成規則`A -> β`をReduceする場合、概念的には次の処理を行う。
 
 1. スタックから`β`に対応する記号と状態を取り除く
-2. 生成規則に対応するsemantic actionを実行する
+2. [[semantic-action|semantic action]]を実行する
 3. 左辺の`A`と意味値をスタックへ積む
 4. 現在の状態と`A`を[[goto-table|GOTO表]]で調べ、次の状態へ進む
 
@@ -33,7 +33,7 @@ $ E            $          GOTO
 
 `Reduce E -> n`では、入力の`+`はまだ消費しない。`n`を`E`にまとめた後、同じ`+`をlookaheadとして次の操作を決める。
 
-Reduceのタイミングでsemantic actionを実行し、ASTノードや評価結果など、左辺の非終端記号に対応する意味値を作ることもある。
+Reduceのタイミングで[[semantic-action|semantic action]]を実行し、ASTノードや評価結果など、左辺の非終端記号に対応する意味値を作ることもある。
 
 どのlookaheadでReduceできるかは、LRパーサーの構築方式によって異なる。[[slr-parser|SLR]]は[[follow-set|FOLLOW集合]]を使い、[[lalr-parser|LALR]]と[[canonical-lr-parser|Canonical LR]]は状態ごとのlookaheadを使う。
 

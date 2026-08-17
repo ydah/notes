@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # Canonical LRパーサー
 
@@ -30,11 +30,11 @@ A -> α .
 
 状態をマージしないため、LALRより状態数とパーサーテーブルが大きくなりやすい。生成されたテーブルのサイズや構築時間が問題になることがある。
 
-一方、LALRの状態マージによるmysterious conflictを避けやすく、文法がどのlookaheadでreduce可能なのかを調べる用途にも向いている。
+一方、LALRの状態マージによる[[mysterious-conflict|mysterious conflict]]を避けやすく、文法がどのlookaheadでreduce可能なのかを調べる用途にも向いている。
 
 ## 位置づけ
 
-Canonical LRはLR(1)の認識能力をそのまま使いたいときの基準になる。実用上は、Canonical LRに近い認識能力を保ちながら状態数を抑えるIELRが選択肢になる。
+Canonical LRはLR(1)の認識能力をそのまま使いたいときの基準になる。実用上は、Canonical LRと同じ認識能力を保ちながら状態数を抑える[[ielr|IELR]]が選択肢になる。
 
 ## 出典
 
