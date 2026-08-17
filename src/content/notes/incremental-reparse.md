@@ -40,7 +40,7 @@ rust-analyzerの設計資料では、Green Treeへ変更を適用し、変更を
 
 再解析範囲は常に小さくできるとは限らない。括弧の追加・削除、インデント、文法上の曖昧さ、エラー回復などによって、変更の影響が親やファイル全体へ広がることがある。したがって、incremental reparseは常に部分解析になる保証ではなく、可能な範囲で作業量を小さくする設計。
 
-構文木を部分的に再解析することと、[[semantic-analysis|意味解析]]を部分的に再計算することは別。[[semantic-less|semantic-less]]な構文木を更新したあと、名前解決や型推論などの後段でどの情報を無効化するかは、別のincremental computationの設計になる。
+構文木を部分的に再解析することと、[[semantic-analysis|意味解析]]を部分的に再計算することは別。[[semantic-less|semantic-less]]な構文木を更新したあと、名前解決や型推論などの後段でどの情報を無効化するかは、別の[[incremental-computation|incremental computation]]の設計になる。
 
 ## 出典
 
