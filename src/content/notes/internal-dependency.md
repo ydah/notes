@@ -7,7 +7,7 @@ updated: 2026-08-18
 
 #parser #compiler #lr #ielr
 
-internal dependencyは、IELR(1)のgoto-follow計算で使うGOTO間の依存関係の1つ。DeRemerとPennelloのincludes dependencyを、依存が同じ状態の中で完結する場合と、先行状態までさかのぼる場合に分けたときの前者。
+internal dependencyは、IELR(1)のgoto-follow計算で使うGOTO間の依存関係の1つ。[[deremer|DeRemer]]と[[pennello|Pennello]]のincludes dependencyを、依存が同じ状態の中で完結する場合と、先行状態までさかのぼる場合に分けたときの前者。
 
 ## GOTOのfollowへの依存
 

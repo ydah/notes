@@ -65,9 +65,9 @@ Phase 5  残ったconflictを通常の方法で解決する
 
 Phase 2以降でlookaheadの経路を追跡できるように、LALR tableから次の情報を作る。
 
-- predecessors — あるstateへ遷移するstateの一覧。conflict stateから開始stateへlaneを逆向きにたどるために使う。詳細は[[predecessor-dependency|predecessors表とpredecessor dependency]]。
-- follow_kernel_items — GOTOのfollow setが、同じstateのどのkernel itemのlookahead setに依存するかを記録する。[[internal-dependency|internal dependency]]だけをたどって計算できる部分。
-- always_follows — kernel itemのlookahead setや先行stateに依存せず、state分割後も変わらないgoto-follow tokenを記録する部分。
+- [[predecessors-table|predecessors表]] — あるstateへ遷移するstateの一覧。conflict stateから開始stateへlaneを逆向きにたどるために使う。[[predecessor-dependency|predecessor dependency]]とは別の表。
+- [[follow-kernel-items|follow_kernel_items]] — GOTOのfollow setが、同じstateのどのkernel itemのlookahead setに依存するかを記録する。[[internal-dependency|internal dependency]]だけをたどって計算できる部分。
+- [[always-follows|always_follows]] — kernel itemのlookahead setや先行stateに依存せず、state分割後も変わらないgoto-follow tokenを記録する部分。
 
 この分離があるため、Phase 3は全てのlookaheadを最初から計算し直すのではなく、state分割で変わり得る寄与だけを追跡できる。
 
@@ -84,15 +84,15 @@ LALR tableのconflictを、Canonical LR(1)なら同じ形で発生しないLR(1)
 
 一方のlaneからはac、もう一方のlaneからはbcが同じreduce itemのlookaheadへ伝わる。LALRではそれらが同じstateに集まるため、state 18でconflictになる。IELRはconflict stateだけでなく、laneが合流するstate 16、17も分割候補としてannotationする。
 
-ここで重要なのは、state番号そのものを機械的に分けることではない。同じLR(0) coreを持つisocoreのそれぞれについて、どのinadequacy contributionを保つ必要があるかを記録すること。
+ここで重要なのは、state番号そのものを機械的に分けることではない。同じLR(0) coreを持つ[[isocore|isocore]]のそれぞれについて、どの[[inadequacy-contribution|inadequacy contribution]]を保つ必要があるかを記録すること。
 
 ### Phase 3: annotationを使ったstate再構築
 
-Phase 3はLR(0) stateを作る処理に似ている。ただし、同じLR(0) coreを持つisocoreを常に一つへmergeするのではなく、annotationが示す全てのinadequacyに対して同じdominant contributionを持つ場合だけmergeする。
+Phase 3はLR(0) stateを作る処理に似ている。ただし、同じLR(0) coreを持つ[[isocore|isocore]]を常に一つへmergeするのではなく、annotationが示す全てのinadequacyに対して同じ[[dominant-contribution|dominant contribution]]を持つ場合だけmergeする。
 
 mergeできないisocoreは別々のstateとして残る。これがIELRでいうstate split。lookaheadがどのlaneから来たかを区別する必要がある箇所だけが分割されるので、Canonical LRのように全てのLR(1) contextを別stateにする必要はない。
 
-Phase 3では、follow_kernel_itemsとalways_followsから部分的なkernel item lookahead setを作り、annotationに含まれるlookaheadだけをsuccessor stateへ伝播させる。これによって、別laneのlookaheadが分割後のstateへ誤って混ざることを防ぐ。
+Phase 3では、[[follow-kernel-items|follow_kernel_items]]と[[always-follows|always_follows]]から部分的な[[kernel-item-lookahead-set|kernel item lookahead set]]を作り、annotationに含まれるlookaheadだけをsuccessor stateへ伝播させる。これによって、別laneのlookaheadが分割後のstateへ誤って混ざることを防ぐ。
 
 ### Phase 4・5: tableの完成
 

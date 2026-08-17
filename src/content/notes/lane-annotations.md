@@ -31,8 +31,8 @@ conflictが見つかったとき、単にconflict stateだけを分割しても�
 
 lane annotationは、次のような関係を状態やisocoreに付ける。
 
-- どのconflictまたはinadequacyに関係するか
-- どのtokenやreduce contributionが問題になっているか
+- どのconflictまたは[[inadequacy|inadequacy]]に関係するか
+- どのtokenやreduce [[inadequacy-contribution|contribution]]が問題になっているか
 - どの先行状態・GOTO遷移を通じて、その寄与が伝わったか
 
 このannotationは、ソースコードや文法規則への注釈ではない。IELR parser tableを生成する途中で使う、状態機械上の解析結果。
@@ -61,7 +61,7 @@ annotationを使って状態の互換性を判定
 
 IELRはCanonical LRの全状態をそのまま作るのではなく、LALRの状態を出発点にして、LR(1)の認識能力を失う原因になった状態だけを分割する。
 
-lane annotationsは、状態分割が必要な箇所を特定するための材料。annotationがあっても常に分割するとは限らず、状態を分割してもdominant contributionが変わらない場合は、分割が不要と判定できる。
+lane annotationsは、状態分割が必要な箇所を特定するための材料。annotationがあっても常に分割するとは限らず、状態を分割しても[[dominant-contribution|dominant contribution]]が変わらない場合は、分割が不要と判定できる。
 
 したがって、lane annotationsはparser runtimeが実行時に使う情報ではなく、IELRのparser table生成時にだけ使われる。
 

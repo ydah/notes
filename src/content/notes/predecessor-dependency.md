@@ -56,7 +56,7 @@ Dのfollowにはaとbの両方が必要になる。一方、合流前のa側のl
 
 そのため、goto-follow依存関係を単純な無向の到達可能性として扱わない。successor dependencyをたどった後にpredecessor dependencyをたどらない、という制約を守ってfollowを計算する。この制約とlaneの追跡が、[[lane-annotations|lane annotations]]で状態分割箇所を判定する材料になる。
 
-## predecessors表との違い
+## [[predecessors-table|predecessors表]]との違い
 
 IELRの実装には、あるstateへ遷移するstateを列挙するpredecessors表も登場する。
 

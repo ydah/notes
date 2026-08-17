@@ -46,7 +46,7 @@ state_i --A--> state_j --B--> state_k --"+"--> ...
 
 同じstateの中で、あるGOTOのitem coreを生成した別のGOTOのfollowに依存する関係は[[internal-dependency|internal dependency]]と呼ばれる。依存経路が別のstateを通ってeventual predecessorまでさかのぼる場合は[[predecessor-dependency|predecessor dependency]]になる。
 
-どちらも、生成規則の残りがnullableな場合に、上流のGOTOやitemのlookaheadからfollowが伝わる関係。DeRemerとPennelloのincludes dependencyを、依存経路が同じstate内で完結するかどうかで分けたもの。
+どちらも、生成規則の残りがnullableな場合に、上流のGOTOやitemのlookaheadからfollowが伝わる関係。[[deremer|DeRemer]]と[[pennello|Pennello]]のincludes dependencyを、依存経路が同じstate内で完結するかどうかで分けたもの。
 
 ## closureの計算
 
