@@ -4,96 +4,30 @@ updated: 2026-08-17 21:20
 ---
 # パーサージェネレータ
 
-文法ファイルからパーサーのコードを生成するツール。文法を読み、入力を読んで、文法に合っているか調べるプログラムを生成する。 #parser #compiler #lr
+#parser #compiler #lr
 
-## 字句解析と構文解析
+文法ファイルからパーサーを生成するツール。字句解析器が作ったトークン列を文法に従って解析し、ASTや意味値を返すプログラムを生成する。文法からパーサーテーブルやランタイムを組み立てる方式が多く、yacc系のLRパーサージェネレータのほか、LL、PEG、GLRなど異なる方式のものがある。
 
-構文解析の前に字句解析がある。例えば `2 + 3` は、まず `NUM(2)`、`'+'`、`NUM(3)` のようなトークン列になる。そのトークン列を文法に沿って組み立てるのが構文解析。
+## 主な機能
 
-```text
-ソースコード -> lexer -> token列 -> parser -> AST
-```
-
-字句解析と構文解析を別々にすることで、空白やコメントの扱いと、文法上の構造を扱う処理を分けられる。
+- **文法の記述**: 終端記号・非終端記号・生成規則を記述する。
+- **パーサーの生成**: 文法から状態機械やパーサーテーブルを作り、入力を`shift` / `reduce`しながら解析するコードを生成する。
+- **conflictの検出**: shift/reduce conflictやreduce/reduce conflictを報告する。
+- **優先順位の指定**: 演算子の結合方向・優先順位を文法に指定してconflictを解決する。
+- **意味作用の実行**: 生成規則に対応する処理をreduce時に実行し、ASTや評価結果などを組み立てる。
 
 ## LRパーサー
 
-LRパーサーは入力を左から右に読みながら、右端導出を逆向きに実行する。状態スタックとパーサーテーブルを持っていて、テーブルを見ながら `shift` / `reduce` / `goto` / `accept` を実行する。
+LRパーサーは入力を左から右に読みながら、右端導出を逆向きに実行する。状態スタックとパーサーテーブルを持ち、lookahead tokenと現在の状態からshift・reduceなどの次の操作を決める。
 
-```text
-expression : expression '+' term
-           | term
+SLRはFOLLOW集合を使ってreduceする。LALRは同じLR(0)コアを持つ状態をまとめる。Canonical LR(1)はlookaheadを状態ごとに持つため精密だが、状態数が増えやすい。IELRはLALRに近い状態数でCanonical LR(1)に近い言語認識能力を得ようとする方式。
 
-term       : NUM
-```
+## 構成要素との関係
 
-`NUM` や `'+'` が終端記号、`expression` や `term` が非終端記号。`expression : ...` が生成規則。
-
-`term : NUM` をreduceすると、スタック上の `NUM` が `term` になる。入力を少しずつ大きな構造へ畳み込んでいく。
-
-## shift/reduce conflict
-
-```text
-2 + 3 * 4
-```
-
-`+`のところで先にreduceするのか、`*`をshiftして後でreduceするのか、という選択が必要になる。演算子の優先順位を文法に書いて解決する。
-
-```text
-%left '+'
-%left '*'
-```
-
-パーサージェネレータごとに優先順位宣言の記法は違うが、考え方は同じ。文法を書いたのにconflictが出る、という話はだいたいこの周辺にある。
-
-## SLR / LALR / LR(1)
-
-LR系のパーサーテーブルを作るアルゴリズムがいくつかある。
-
-- SLR: FOLLOW集合を使ってreduceする。単純だが文脈を粗く扱う
-- LALR: 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすい
-- Canonical LR(1): lookaheadを状態ごとに持つ。精密だが状態数が増えやすい
-- IELR: LALRの状態数とLR(1)の精度を両立しようとするもの
-
-このへんは名前を知っているだけで、実際にLR(0)アイテムの `closure` と `goto` を計算したことはない。手で小さい文法の状態を作ってみたい。
-
-## パーサージェネレータの内部
-
-文法をいきなり実行コードへ変換せず、中間表現を挟む構成が多い。
-
-```text
-grammar
-  -> grammar IR
-  -> automaton
-  -> parser table
-  -> generated parser
-```
-
-Grammar IRとAutomaton IRを分けておくと、文法の正規化・オートマトンの検査・テーブルの可視化・複数アルゴリズムの比較がやりやすそう。
-
-## ASTとCST
-
-ASTは意味に必要な構造だけを残した木。
-
-```text
-2 + 3 -> Add(Number(2), Number(3))
-```
-
-CSTは空白・コメント・括弧など、入力の構文をもっとそのまま残す木。評価やコード生成だけならASTで足りることが多い。formatterやLSP、エディタを作る場合はCSTを残す意味が大きい。
-
-## 気になっていること
-
-- `closure` / `goto`からLRオートマトンをどう作るか
-- LALRで状態をマージすると、なぜconflictが増えるのか
-- parser tableの実体はどんなデータ構造か
-- EBNFの`*`や`+`を通常の生成規則へどう変換するか
-- ASTとCSTの両方を生成するとき、意味作用はどこで実行するか
-
-まずは `closure` と `goto` を手で計算するところからやる。
+字句解析器がソースコードをトークン列に変換し、パーサーがそれを文法に従って構造化する。構文木から意味に必要な部分だけを残したものがAST。空白・コメント・括弧なども保持するCSTは、formatterやLSPのように入力の形を保つ必要がある処理で使われる。
 
 ## 出典
 
 - [The Bison Parser Algorithm](https://www.gnu.org/software/bison/manual/html_node/Algorithm.html)
 - [Shift/Reduce Conflicts](https://www.gnu.org/software/bison/manual/html_node/Shift_002fReduce.html)
-- [How Precedence Works](https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html)
 - [racc documentation](https://ruby.github.io/racc/)
