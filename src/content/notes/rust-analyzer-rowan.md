@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #rust #rust-analyzer #rowan #parser #syntax-tree
 
-rowanは、lossless syntax treeのためのRustライブラリ。rust-analyzerが使う構文木の共通部分を汎用化したもので、rowan自体はRustのparserでもASTの型定義でもない。
+rowanは、[[lossless-syntax-tree|lossless syntax tree]]のためのRustライブラリ。rust-analyzerが使う構文木の共通部分を汎用化したもので、rowan自体はRustのparserでもASTの型定義でもない。
 
 rust-analyzerでは、おおまかに次の層に分かれる。
 

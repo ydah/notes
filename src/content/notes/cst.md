@@ -32,11 +32,11 @@ call
 
 ASTなら、`Call(Name("fn"), [1, 2])`のように構文の細部を落とす。CSTはformatter、codemod、refactoring、syntax highlighting、IDEのソース編集に向いている。
 
-CSTが文法ファイルの全ての生成規則を一つずつ可視ノードにするとは限らない。Tree-sitterのようにnamed nodeとanonymous nodeを分けたり、hidden ruleやaliasを使ったりする実装もある。
+CSTが文法ファイルの全ての生成規則を一つずつ可視ノードにするとは限らない。Tree-sitterのように[[named-node|named node]]と[[anonymous-node|anonymous node]]を分けたり、[[hidden-rule|hidden rule]]や[[alias|alias]]を使ったりする実装もある。
 
 CSTは構文エラーとの相性がよい。Tree-sitterの`ERROR`・`MISSING`ノードや、Roslynのmissing token・skipped tokenのように、壊れた部分を木に残せる。[[syntax-error|構文エラー]]を別の診断リストとして持ちながら、木自体は部分的に構築できる。
 
-[[ast|AST]]とCSTは必ず別の木になるわけではない。rust-analyzerではlosslessな[[syntax-tree|構文木]]の上に、抽象化されたAST APIを重ねる。
+[[ast|AST]]とCSTは必ず別の木になるわけではない。rust-analyzerでは[[lossless-syntax-tree|lossless]]な[[syntax-tree|構文木]]の上に、抽象化されたAST APIを重ねる。
 
 ## 出典
 

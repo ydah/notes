@@ -11,11 +11,11 @@ updated: 2026-08-17
 
 構文木の要素は、例えば次のように分かれる。
 
-- **ノード** — 式、文、宣言などの構文上のまとまり
+- **[[node|ノード]]** — 式、文、宣言などの構文上のまとまり
 - **token** — キーワード、識別子、リテラル、演算子、括弧など
 - **trivia** — 空白、コメント、プリプロセッサディレクティブなど
 
-Roslynのsyntax treeは、構文上のまとまりだけでなくtokenとtriviaも持つfull-fidelityな木。ソーステキストを木から再構成できるため、formatterやrefactoringの基盤にできる。
+Roslynのsyntax treeは、構文上のまとまりだけでなくtokenとtriviaも持つ[[lossless-syntax-tree|full-fidelity]]な木。ソーステキストを木から再構成できるため、formatterやrefactoringの基盤にできる。
 
 構文木という言葉だけでは、空白やコメントを保持するかは決まらない。具体的な表記を残す木を[[cst|CST]]、意味に必要な構造へ抽象化した木を[[ast|AST]]と呼ぶことが多い。
 

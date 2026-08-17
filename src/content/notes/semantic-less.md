@@ -36,7 +36,7 @@ semantic-lessな構文木 / [[ast|AST]]
 意味モデル
 ```
 
-semantic-lessは情報量が少ないという意味ではない。rust-analyzerの構文木はlosslessで、tokenだけでなくコメント・空白やソース位置も保持する。木の内容は入力文字列から決まり、プロジェクト全体の情報や型情報には依存しない。
+semantic-lessは情報量が少ないという意味ではない。rust-analyzerの構文木は[[lossless-syntax-tree|lossless]]で、tokenだけでなくコメント・空白やソース位置も保持する。木の内容は入力文字列から決まり、プロジェクト全体の情報や型情報には依存しない。
 
 この分離により、編集途中の不完全なコードをファイル単体で解析しやすくなる。構文木をimmutableな値として扱い、syntax highlightingやformatterなどを意味解析なしで動かせる点も大きい。[[red-green-tree|Red-Green Tree]]や[[rust-analyzer-rowan|rust-analyzer/rowan]]の設計は、この構文データと後段の意味処理を分離する例。
 

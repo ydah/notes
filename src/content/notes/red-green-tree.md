@@ -9,7 +9,7 @@ updated: 2026-08-17
 
 構文木を、内容を保持する不変な木と、親や位置を持つ操作用のビューに分ける設計。Roslyn由来の用語で、rust-analyzerの`rowan`という名前もこの用語から来ている。
 
-- [[green-tree|Green Tree]] — nodeの種類、子node、tokenの文字列など、構造そのものを保持する
+- [[green-tree|Green Tree]] — [[node|node]]の種類、子node、tokenの文字列など、構造そのものを保持する
 - [[red-tree|Red Tree]] — Green Treeを包み、親、絶対offset、nodeのidentityを提供する
 - [[ast|AST]] — Red/Greenの構文木の上に、型付きで扱いやすいAPIを提供することがある
 

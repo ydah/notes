@@ -37,7 +37,7 @@ stmt:
 
 エラー時にstackをpopして`error` tokenをShiftし、次の`;`まで入力を読み飛ばす、といった回復を行う。error recoveryは入力を正しいものに変換したことではなく、後続の入力から追加のエラーや構文木をできるだけ得るための戦略。
 
-IDE向けのparserでは、構文エラーがあっても[[syntax-tree|構文木]]を捨てず、missing tokenやerror nodeを残して解析を続ける設計がある。[[cst|CST]]や[[rust-analyzer-rowan|rust-analyzer/rowan]]が扱うlosslessな木と、parserが報告するerrorの一覧は別の情報として持てる。
+IDE向けのparserでは、構文エラーがあっても[[syntax-tree|構文木]]を捨てず、missing tokenやerror nodeを残して解析を続ける設計がある。[[cst|CST]]や[[rust-analyzer-rowan|rust-analyzer/rowan]]が扱う[[lossless-syntax-tree|lossless]]な木と、parserが報告するerrorの一覧は別の情報として持てる。
 
 ## 出典
 
