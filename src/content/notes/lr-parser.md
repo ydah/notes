@@ -1,12 +1,12 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # LRパーサー
 
 #parser #compiler #lr
 
-入力を左（Left）から右（Right）へ読みながら、右端導出を逆向きに実行する構文解析方式。状態スタックとパーサーテーブルを持ち、[[lookahead|lookahead token]]と現在の状態からshift・reduceなどの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
+入力を左（Left）から右（Right）へ読みながら、[[rightmost-derivation|右端導出]]を逆向きに実行する構文解析方式。状態スタックと[[parsing-table|構文解析表]]を持ち、[[lookahead|lookahead token]]と現在の状態から[[shift|Shift]]・[[reduce|Reduce]]などの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
 
 ## 動作
 
@@ -29,7 +29,7 @@ reduce NUMBER -> term
 reduce expr "+" term -> expr
 ```
 
-shiftは入力トークンをスタックへ積む操作、reduceはスタック上の記号列を生成規則の左辺へ置き換える操作。最後に開始記号までreduceできればacceptになる。
+[[shift|Shift]]は入力トークンをスタックへ積む操作、[[reduce|Reduce]]はスタック上の記号列を生成規則の左辺へ置き換える操作。最後に開始記号までreduceできればacceptになる。
 
 ## LR系の方式
 
@@ -40,7 +40,7 @@ shiftは入力トークンをスタックへ積む操作、reduceはスタック
 
 ## shift/reduce conflict
 
-ある状態でshiftとreduceの両方が可能になるとshift/reduce conflictになる。`2 + 3 * 4`のような式では、`+`を先にreduceするか、`*`をshiftして後でreduceするかを決める必要がある。演算子の優先順位・結合方向を文法に指定して解決することが多い。
+ある状態でshiftとreduceの両方が可能になるとshift/reduce conflictになる。`2 + 3 * 4`のような式では、`+`を先にreduceするか、`*`をshiftして後でreduceするかを決める必要がある。[[precedence-parsing|順位構文解析]]で扱うような演算子の優先順位・結合方向を文法に指定して解決することが多い。
 
 LRパーサーは左再帰を自然に扱えるため、左結合する演算子の文法をそのまま書きやすい。パーサーテーブルの状態とconflictを確認しながら文法を調整することになる。
 

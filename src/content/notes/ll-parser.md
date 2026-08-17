@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #ll
 
-入力を左（Left）から右（Right）へ読みながら、左端導出を行う構文解析方式。開始記号から出発し、lookahead tokenを見て次に使う生成規則を選び、入力を上から下へ展開していく。[[lr-parser|LRパーサー]]がshift・reduceで入力を畳み込むのに対し、LLパーサーはこれから読む構造を予測しながら進む。
+入力を左（Left）から右（Right）へ読みながら、左端導出を行う構文解析方式。開始記号から出発し、lookahead tokenを見て次に使う生成規則を選び、入力を上から下へ展開していく。[[lr-parser|LRパーサー]]が[[shift|Shift]]・[[reduce|Reduce]]で入力を畳み込むのに対し、LLパーサーはこれから読む構造を予測しながら進む。
 
 ## 再帰下降パーサー
 

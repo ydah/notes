@@ -1,18 +1,18 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # Yacc
 
 #unix #parser #compiler #lr
 
-「Yet Another Compiler-Compiler」。Bell LaboratoriesのStephen C. Johnsonが1970年代に開発したパーサージェネレータ。入力構造を文法規則として記述し、規則を認識したときに実行するactionを添えて、parserのサブルーチンを生成する。[[lr-parser|LRパーサー]]とlexの組み合わせが、UNIX上のコンパイラ実装で広く使われるようになった。
+「Yet Another Compiler-Compiler」。Bell LaboratoriesのStephen C. Johnsonが1970年代に開発したパーサージェネレータ。入力構造を文法規則として記述し、規則を認識したときに実行するactionを添えて、[[parser|構文解析器]]のサブルーチンを生成する。[[lr-parser|LRパーサー]]と[[lexical-analyzer|字句解析機]]の組み合わせが、UNIX上のコンパイラ実装で広く使われるようになった。
 
 ## 仕組み
 
-Yaccの文法ファイルには、tokenを返す字句解析器、文法規則、規則に対応するactionを用意する。Yaccは文法からパーサーを生成し、字句解析器からtokenを受け取り、規則を認識するとactionを実行する。
+Yaccの文法ファイルには、tokenを返す[[lexical-analyzer|字句解析機]]、文法規則、規則に対応するactionを用意する。Yaccは文法からパーサーを生成し、字句解析機からtokenを受け取り、規則を認識するとactionを実行する。
 
-初期のYaccはLALR(1)文法と、曖昧さを解消するための規則を扱った。演算子の優先順位や結合方向を宣言でき、shift/reduce conflictやreduce/reduce conflictを報告する。
+初期のYaccはLALR(1)文法と、曖昧さを解消するための規則を扱った。演算子の優先順位や結合方向を宣言でき、[[shift-reduce-parsing|shift/reduce構文解析]]で起きるshift/reduce conflictやreduce/reduce conflictを報告する。
 
 ## 生成物
 

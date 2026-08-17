@@ -1,22 +1,22 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # GNU Bison
 
 #gnu #parser #compiler #lr
 
-GNUプロジェクトのパーサージェネレータ。注釈付きの文脈自由文法から、決定的なLRパーサーまたはGLRパーサーを生成する。yacc互換の文法とインターフェースを持つため、既存のyacc用文法を移行しやすい。[[yacc|Yacc]]の後継として使われることが多い。
+GNUプロジェクトのパーサージェネレータ。注釈付きの[[context-free-grammar|文脈自由文法]]から、決定的なLRパーサーまたはGLRパーサーを生成する。yacc互換の文法とインターフェースを持つため、既存のyacc用文法を移行しやすい。[[yacc|Yacc]]の後継として使われることが多い。
 
 ## 生成するパーサー
 
-通常のLRパーサーでは、文法からパーサーテーブルを作り、入力tokenをshift・reduceして解析する。BisonはLALR(1)・IELR(1)・Canonical LR(1)のテーブル構築方式を切り替えられる。
+通常のLRパーサーでは、文法から[[parsing-table|構文解析表]]を作り、入力tokenを[[shift|Shift]]・[[reduce|Reduce]]して解析する。BisonはLALR(1)・IELR(1)・Canonical LR(1)のテーブル構築方式を切り替えられる。
 
 文法が決定的LRで扱いにくい場合は、GLRを使って未解決のshift/reduce conflictやreduce/reduce conflictに対する複数の解析候補を並行して追跡できる。
 
 ## 文法と出力
 
-文法ファイルにはtoken、生成規則、semantic actionを書く。字句解析器は別に用意し、生成されたparserがtokenを取得するための関数を呼び出す構成が基本。
+文法ファイルにはtoken、生成規則、semantic actionを書く。[[lexical-analyzer|字句解析機]]は別に用意し、生成された[[parser|構文解析器]]がtokenを取得するための関数を呼び出す構成が基本。
 
 演算子の優先順位・結合方向を宣言でき、conflictの検出結果はverbose reportで状態ごとに確認できる。パーサーの状態・lookahead・reduce条件を調べながら文法を調整できる。
 
