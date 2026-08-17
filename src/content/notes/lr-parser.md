@@ -6,7 +6,7 @@ updated: 2026-08-17 21:20
 
 #parser #compiler #lr
 
-入力を左（Left）から右（Right）へ読みながら、右端導出を逆向きに実行する構文解析方式。状態スタックとパーサーテーブルを持ち、lookahead tokenと現在の状態からshift・reduceなどの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
+入力を左（Left）から右（Right）へ読みながら、右端導出を逆向きに実行する構文解析方式。状態スタックとパーサーテーブルを持ち、[[lookahead|lookahead token]]と現在の状態からshift・reduceなどの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
 
 ## 動作
 
@@ -33,9 +33,9 @@ shiftは入力トークンをスタックへ積む操作、reduceはスタック
 
 ## LR系の方式
 
-- **SLR**: FOLLOW集合を使ってreduceする。単純だが、状態の文脈を粗く扱う。
+- **SLR**: [[follow-set|FOLLOW集合]]を使ってreduceする。単純だが、状態の文脈を粗く扱う。
 - **LALR**: 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすいが、状態のマージによってconflictが増えることがある。
-- **Canonical LR(1)**: lookaheadを状態ごとに持つ。精密だが、状態数が増えやすい。
+- **Canonical LR(1)**: [[lookahead|lookahead]]を状態ごとに持つ。精密だが、状態数が増えやすい。
 - **IELR**: LALRに近い状態数でCanonical LR(1)に近い言語認識能力を得ようとする。
 
 ## shift/reduce conflict
