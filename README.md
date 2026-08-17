@@ -14,6 +14,8 @@ npm install
 npm run dev
 ```
 
+ブラウザでは `http://localhost:4321/notes/` を開く。
+
 型チェックと本番ビルドは次のコマンドで実行する。
 
 ```sh
@@ -44,17 +46,17 @@ npm run dev
 
 未解決の wikilink はビルド時に警告される。リンクされたノートにはバックリンクが自動表示されるため、バックリンクを手動管理しない。
 
-## 公開先を変える場合
+## 公開先とbase
 
-デフォルトは `https://ydah.github.io/`（ユーザーサイト）で、通常の `npm run build` はこの設定で生成する。
+公開先は `https://ydah.github.io/notes/`（GitHub Pagesのプロジェクトサイト）で、通常の `npm run build` はこの設定で生成する。
 
-プロジェクトサイト `https://ydah.github.io/notes/` としてローカルでビルドする場合は、次のように指定する。
+明示的に同じ設定でビルドする場合は、次のように指定できる。
 
 ```sh
 PUBLIC_BASE=/notes SITE_URL=https://ydah.github.io npm run build
 ```
 
-現在の `.github/workflows/deploy.yml` は `PUBLIC_BASE` を指定せずにビルドするため、デフォルトのユーザーサイト向け設定になっている。プロジェクトサイトへ変更する場合は、workflowにも `PUBLIC_BASE=/notes` を設定すること。
+`.github/workflows/deploy.yml` でも `PUBLIC_BASE=/notes` を設定している。`PUBLIC_BASE=` を指定すると、ローカルでユーザーサイトや独自ドメイン向けのbaseなしビルドに切り替えられる。
 
 ## GitHub Pages
 

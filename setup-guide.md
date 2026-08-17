@@ -13,7 +13,7 @@
 
 | 必要なもの | 確認コマンド | 備考 |
 |-----------|-------------|------|
-| Node.js 20 以上（22 推奨） | `node -v` | mise / nvm で管理してよい |
+| Node.js 22.12.0 以上 | `node -v` | mise / nvm で管理してよい |
 | npm | `npm -v` | pnpm でも可。以降 npm 前提で書く |
 | git | `git --version` | |
 | GitHub アカウント | | Pages を有効化できる権限 |
@@ -24,7 +24,9 @@
 - **B: プロジェクトサイト** — リポジトリ名 `notes` など → 公開 URL は `https://ydah.github.io/notes/`、**`base: '/notes'` が必須**。
 - **C: 独自ドメイン** — `public/CNAME` にドメインを書く。`base` 不要。
 
-以降、B を選んだ場合に必要な追加作業には 🅑 マークを付ける。迷ったら **A が一番ハマりどころが少ない**。
+このリポジトリは **B: プロジェクトサイト**（`https://ydah.github.io/notes/`）として構築する。以下のサンプルを実際に使う場合は、`base: '/notes'` を設定する。
+
+以降、B を選んだ場合に必要な追加作業には 🅑 マークを付ける。本プロジェクトではBの手順を使う。
 
 ---
 
@@ -103,7 +105,7 @@ import { buildNoteIndex } from './src/lib/note-index.mjs';
 // ビルド開始時に「slug → title」の索引を同期的に作る（wikilink のタイトル解決用）
 const noteIndex = buildNoteIndex('./src/content/notes');
 
-const BASE = '';          // 🅑 プロジェクトサイトなら '/notes'
+const BASE = '/notes';    // このリポジトリはプロジェクトサイトとして公開
 
 export default defineConfig({
   site: 'https://ydah.github.io',   // 🅑 プロジェクトサイトでも site はドメインまで
@@ -802,7 +804,7 @@ sitemap はステップ 3 で `integrations: [sitemap()]` を入れているの�
 ### 12-1. リポジトリを作って push
 
 ```sh
-git remote add origin git@github.com:ydah/ydah.github.io.git   # 🅑 プロジェクトサイトなら .../notes.git
+git remote add origin git@github.com:ydah/notes.git
 git branch -M main
 git push -u origin main
 ```
@@ -830,14 +832,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build        # astro build && pagefind --site dist
-      - uses: actions/upload-pages-artifact@v3
+      - name: Build
+        env:
+          PUBLIC_BASE: /notes
+          SITE_URL: https://ydah.github.io
+        run: npm run build        # astro build && pagefind --site dist
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 

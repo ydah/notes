@@ -81,7 +81,7 @@ npm run build
 
 - `npm run check` でAstro/TypeScriptの診断を確認する。
 - `npm run build` はAstroの静的生成後に `pagefind --site dist` を実行する。
-- プロジェクトサイトとして `/notes/` に公開する場合は `PUBLIC_BASE=/notes SITE_URL=https://ydah.github.io npm run build` を使う。
+- このリポジトリは `https://ydah.github.io/notes/` に公開するプロジェクトサイトであり、`npm run build` は `/notes` baseで生成する。明示する場合は `PUBLIC_BASE=/notes SITE_URL=https://ydah.github.io npm run build` を使う。
 - 自前でリンクを組み立てるときは `import.meta.env.BASE_URL` を使い、`/notes/` のようなルート固定リンクを増やさない。
 - 変更後は `git diff --check` と、変更に応じた `npm run check` / `npm run build` を実行する。
 
