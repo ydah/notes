@@ -32,6 +32,8 @@ push GOTO[p, A]
 
 GOTOという名前は、LR項集合上の[[transition-function|遷移関数]]と、そこから作られた表の両方を指すことがある。このページでは、生成された表の意味を扱う。
 
+IELRの表構築では、単に次の状態番号を調べるだけでなく、GOTOごとにどのtokenが後続し得るかを計算する。この情報が[[goto-follow-closures|goto-follow closures]]の入力になる。
+
 ## 出典
 
 - [Compilers Lecture 7](https://cs.nyu.edu/~gottlieb/courses/2000s/2008-09-fall/compilers/lectures/lecture-07.html)

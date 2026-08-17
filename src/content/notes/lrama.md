@@ -28,6 +28,8 @@ Lramaは[[yacc|Yacc]]や[[gnu-bison|GNU Bison]]と同じ文脈で扱えるparser
 
 parser generatorとしては、文法から[[lalr-parser|LALR]]の状態機械と[[parsing-table|構文解析表]]を作り、生成されたparserの[[semantic-action|semantic action]]を実行する構成になる。文法にconflictがある場合は、LALRの状態やlookaheadを調べる必要がある。
 
+Lramaの将来のparser生成方式として[[pslr|PSLR]]がある。PSLRではparser stateを字句解析器のtoken認識にも使うため、LALRより細かい状態の区別が必要になる。IELRはそのための基盤になる。
+
 ## 出典
 
 - [Lrama README](https://github.com/ruby/lrama)

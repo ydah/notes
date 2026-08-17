@@ -30,6 +30,8 @@ tokenは通常、token kind、意味値、ソース位置などを持つ。`NUMB
 
 字句解析機が担当するのは文字パターンの認識であり、tokenの並びが文法に合うかどうかは構文解析器が担当する。どの段階でエラーにするかは実装によって異なるが、不正な文字や閉じられていない文字列は字句解析のエラーになる。
 
+言語によっては、tokenの種類を決めるためにparserの状態が必要になる。[[pslr|PSLR]]は、現在のparser stateで受理できるtokenの集合を字句解析器の認識に使う方式。lexerとparserの境界を残しつつ、parserの文脈をtokenizeに反映できる。
+
 ## 出典
 
 - [The Lexical Analyzer Function `yylex`](https://www.gnu.org/software/bison/manual/html_node/Lexical.html)

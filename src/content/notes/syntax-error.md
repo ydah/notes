@@ -26,6 +26,7 @@ expr -> "(" expr ")"
 
 構文エラーと[[conflict|conflict]]は別物。conflictはparser tableを構築する時点で複数の操作候補があること、構文エラーはparserを実行した時点で入力に対する操作がないことを指す。conflictのないLRパーサーでも、文法に属さない入力を受け取れば構文エラーになる。
 
+LALRやIELRでdefault reductionを先に実行すると、不正なlookaheadを確認する前にReduceが進み、構文エラーの検出が遅れることがある。[[lookahead-correction|Lookahead Correction（LAC）]]は一時的なstackで先にparser actionを試し、余分なReduceやsemantic actionを通常の解析に反映させずにエラーを検出する。
 構文エラーを検出した後も解析を続ける処理がerror recovery。Bisonでは、文法に特別な`error` tokenを含む規則を書ける。
 
 ```text

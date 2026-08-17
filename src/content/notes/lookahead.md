@@ -28,6 +28,8 @@ Canonical LR(1)では、LRアイテムごとにreduceを許可するlookaheadを
 
 これは、現在の状態でlookaheadが`")"`のときにだけ`A -> α`をreduceする、という意味。SLRはこの情報の代わりに[[follow-set|FOLLOW集合]]を使うため、文脈を粗く扱う。
 
+[[lookahead-correction|Lookahead Correction（LAC）]]は、lookahead tokenを別のtokenへ変換する仕組みではない。現在のparser stackでそのtokenが受理できるかをexploratory parseで先に確認し、構文エラーの検出遅延やexpected token listの誤りを抑える。
+
 ## LLパーサーでのlookahead
 
 LL(1)の`1`は、1つのlookahead tokenを見て[[production-rule|生成規則]]を選ぶという意味。LL(k)なら最大でk個のtokenを先読みする。

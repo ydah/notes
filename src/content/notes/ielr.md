@@ -29,6 +29,10 @@ IELRは決定的LRパーサーのtable構築方式。[[glr|GLR]]のように実�
 
 [[mysterious-conflict|mysterious conflict]]のように、LALRの状態マージが原因で発生する[[conflict|conflict]]を避けるために使える。Bisonの公式マニュアルでは、IELRは必要な場合だけCanonical LRに相当する状態の区別を残し、それ以外ではLALRに近い表を作る方式として説明されている。
 
+[[pslr|PSLR]]では、現在のparser stateで受理できるtokenをpseudo-scannerが参照する。状態マージによってこの情報を失うとscannerの判断に影響するため、IELRはPSLRを実現するための基盤になる。
+
+IELRのlookahead計算では、[[goto-follow-closures|goto-follow closures]]でGOTOごとのfollow依存関係を求め、[[lane-annotations|lane annotations]]でconflictに寄与した経路を記録して、必要な状態だけを分割する。
+
 ## 他のツールとの関係
 
 IELRはBisonが提供する方式で、Menhirや[[ocamlyacc|ocamlyacc]]に`%define lr.type ielr`を書くものではない。ocamlyaccはLALR(1)を生成し、[[menhir|Menhir]]はLR(1)を扱う。
