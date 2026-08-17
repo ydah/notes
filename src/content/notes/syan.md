@@ -90,7 +90,7 @@ mod ast {
 }
 ~~~
 
-通常のderiveだけで相互再帰する型のParse実装を生成すると、型のtrait boundが循環する。syanの#[recurse]は、型参照グラフからcycleを見つけ、Parse・Unparse・Spannedの実装をdecycleへ渡して、この循環したobligationを処理する。
+通常のderiveだけで相互再帰する型のParse実装を生成すると、型のtrait boundが循環する。syanの#[recurse]は、型参照グラフからcycleを見つけ、Parse・Unparse・Spannedの実装を[[decycle|decycle]]へ渡して、この循環したobligationを処理する。
 
 デフォルトのranked engineは、compile-timeのtrait obligationをrankで切り、runtimeでは自然な再帰型としてparseする。#[recurse(structural)]はcompile-time unrollを使い、runtime registryを使わない代わりに対応範囲が狭い。
 
