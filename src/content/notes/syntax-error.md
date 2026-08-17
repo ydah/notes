@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #diagnostic
 
-入力token列を、[[context-free-grammar|文脈自由文法]]に従う構造として続けられないときに発生するエラー。字句解析の失敗である[[lexical-analyzer|字句解析機]]のエラーや、型が合わないといった意味解析のエラーとは別。
+入力token列を、[[context-free-grammar|文脈自由文法]]に従う構造として続けられないときに発生するエラー。字句解析の失敗である[[lexical-analyzer|字句解析機]]のエラーや、型が合わないといった[[semantic-analysis|意味解析]]のエラーとは別。
 
 LRパーサーでは、現在の状態と[[lookahead|lookahead token]]から[[parsing-table|構文解析表]]を調べる。
 

@@ -17,7 +17,7 @@ Roslynはコンパイル処理を複数の機能領域に分けている。
 - **bind**: 識別子をsymbolへ対応付ける
 - **emit**: コンパイル結果をILとして出力する
 
-各段階に対応するオブジェクトモデルへアクセスできる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]が構文解析だけを担当するのに対して、Roslynは意味解析やコード生成まで含むコンパイラ全体を扱う。
+各段階に対応するオブジェクトモデルへアクセスできる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]が構文解析だけを担当するのに対して、Roslynは[[semantic-analysis|意味解析]]やコード生成まで含むコンパイラ全体を扱う。
 
 ## Syntax tree
 
