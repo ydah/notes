@@ -32,7 +32,7 @@ FIRST(A "b") = { "a", "b" }
 - 非終端記号では、右辺の先頭から順にFIRST集合を加える。ある記号が`ε`を含むときだけ、次の記号も調べる。
 - 右辺のすべての記号が`ε`へ導出できるとき、右辺全体のFIRST集合に`ε`を加える。
 
-LL(1)パーサーは、入力のlookaheadと生成規則の右辺のFIRST集合を使って規則を選ぶ。右辺が空文字列になりうるときは[[follow-set|FOLLOW集合]]も必要になり、その結果が[[director-set|Director集合]]になる。
+LL(1)パーサーは、入力のlookaheadと[[production-rule|生成規則]]の右辺のFIRST集合を使って規則を選ぶ。右辺が空文字列になりうるときは[[follow-set|FOLLOW集合]]も必要になり、その結果が[[director-set|Director集合]]になる。
 
 ## 出典
 

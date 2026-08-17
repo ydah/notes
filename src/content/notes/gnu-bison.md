@@ -16,7 +16,7 @@ GNUプロジェクトのパーサージェネレータ。注釈付きの[[contex
 
 ## 文法と出力
 
-文法ファイルにはtoken、生成規則、[[semantic-action|semantic action]]を書く。[[lexical-analyzer|字句解析機]]は別に用意し、生成された[[parser|構文解析器]]がtokenを取得するための関数を呼び出す構成が基本。
+文法ファイルにはtoken、[[production-rule|生成規則]]、[[semantic-action|semantic action]]を書く。[[lexical-analyzer|字句解析機]]は別に用意し、生成された[[parser|構文解析器]]がtokenを取得するための関数を呼び出す構成が基本。
 
 演算子の優先順位・結合方向を宣言でき、[[conflict|conflict]]の検出結果はverbose reportで状態ごとに確認できる。パーサーの状態・lookahead・reduce条件を調べながら文法を調整できる。
 

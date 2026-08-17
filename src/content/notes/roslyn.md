@@ -1,18 +1,18 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # Roslyn
 
 #dotnet #compiler #csharp #visual-basic
 
-Microsoftが開発するC#とVisual Basicのオープンソースコンパイラ実装、およびコード分析API。単にソースコードをアセンブリへ変換するコンパイラではなく、構文木・シンボル・意味モデル・診断など、コンパイラが持つ情報をAPIとして公開する「コンパイラプラットフォーム」。
+Microsoftが開発するC#とVisual Basicのオープンソースコンパイラ実装、およびコード分析API。単にソースコードをアセンブリへ変換するコンパイラではなく、[[syntax-tree|構文木]]・シンボル・意味モデル・診断など、コンパイラが持つ情報をAPIとして公開する「コンパイラプラットフォーム」。
 
 ## コンパイラのパイプライン
 
 Roslynはコンパイル処理を複数の機能領域に分けている。
 
-- **parse**: ソースをトークン化し、文法に従ったsyntax treeを作る
+- **parse**: ソースをトークン化し、文法に従った[[syntax-tree|syntax tree]]を作る
 - **declaration**: ソースや参照メタデータから名前付きsymbolを作る
 - **bind**: 識別子をsymbolへ対応付ける
 - **emit**: コンパイル結果をILとして出力する
@@ -21,9 +21,9 @@ Roslynはコンパイル処理を複数の機能領域に分けている。
 
 ## Syntax tree
 
-Roslynのsyntax treeはソースコードをfull fidelityで保持する。文法上の構造だけでなく、すべてのtoken、空白、コメント、プリプロセッサディレクティブを含む。構文エラーがある場合も、欠落tokenやスキップされたtokenとして木に表現する。
+Roslynの[[syntax-tree|syntax tree]]はソースコードをfull fidelityで保持する。文法上の構造だけでなく、すべてのtoken、空白、コメント、プリプロセッサディレクティブを含む。[[syntax-error|構文エラー]]がある場合も、欠落tokenやスキップされたtokenとして木に表現する。
 
-そのためsyntax treeから元のソーステキストへround-tripできる。formatter・refactoring・code fixのような、ソースの形を保ちながら編集するツールを作りやすい。
+そのため[[syntax-tree|syntax tree]]から元のソーステキストへround-tripできる。formatter・refactoring・code fixのような、ソースの形を保ちながら編集するツールを作りやすい。
 
 ## APIの層
 

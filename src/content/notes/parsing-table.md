@@ -19,7 +19,7 @@ GOTO[state, nonterminal]   -> next state
 `ACTION`表の主な値は次のとおり。
 
 - `shift j` — tokenを読み、状態`j`へ進む
-- `reduce A -> α` — 生成規則でReduceする
+- `reduce A -> α` — [[production-rule|生成規則]]でReduceする
 - `accept` — 入力全体を受理した
 - `error` — その状態では入力を処理できない
 

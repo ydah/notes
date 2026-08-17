@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17 21:20
+updated: 2026-08-17
 ---
 # SLRパーサー
 
@@ -10,7 +10,7 @@ Simple LR。LR(0)の状態機械を作り、reduceしてよいlookaheadを[[foll
 
 ## reduceの条件
 
-生成規則を最後まで読み終えたLR(0)アイテムが、
+[[production-rule|生成規則]]を最後まで読み終えたLR(0)アイテムが、
 
 ```text
 A -> α .

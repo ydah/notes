@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #grammar
 
-文法の生成規則に対応づけた実行コード。パーサーが生成規則の右辺を認識したときに実行され、右辺のsemantic valueから左辺の非終端記号のsemantic valueを作る。
+文法の[[production-rule|生成規則]]に対応づけた実行コード。パーサーが生成規則の右辺を認識したときに実行され、右辺のsemantic valueから左辺の非終端記号のsemantic valueを作る。
 
 LRパーサーでは、通常は[[reduce|Reduce]]のタイミングで実行する。ASTノードの構築、式の評価、型付きの中間表現の生成などに使う。
 

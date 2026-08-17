@@ -11,8 +11,8 @@ updated: 2026-08-17
 
 主な種類は2つ。
 
-- **shift/reduce conflict** — tokenを[[shift|Shift]]するか、既存の生成規則を[[reduce|Reduce]]するか決められない。
-- **reduce/reduce conflict** — 2つ以上の生成規則のどれをReduceするか決められない。
+- **shift/reduce conflict** — tokenを[[shift|Shift]]するか、既存の[[production-rule|生成規則]]を[[reduce|Reduce]]するか決められない。
+- **reduce/reduce conflict** — 2つ以上の[[production-rule|生成規則]]のどれをReduceするか決められない。
 
 典型的なshift/reduce conflictは、dangling elseの文法で起きる。
 

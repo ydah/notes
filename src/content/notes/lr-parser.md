@@ -29,7 +29,7 @@ reduce NUMBER -> term
 reduce expr "+" term -> expr
 ```
 
-[[shift|Shift]]は入力トークンをスタックへ積む操作、[[reduce|Reduce]]はスタック上の記号列を生成規則の左辺へ置き換える操作。最後に開始記号までreduceできればacceptになる。
+[[shift|Shift]]は入力トークンをスタックへ積む操作、[[reduce|Reduce]]はスタック上の記号列を[[production-rule|生成規則]]の左辺へ置き換える操作。最後に開始記号までreduceできればacceptになる。
 
 ## LR系の方式
 

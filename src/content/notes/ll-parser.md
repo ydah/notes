@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #ll
 
-入力を左（Left）から右（Right）へ読みながら、左端導出を行う構文解析方式。開始記号から出発し、lookahead tokenを見て次に使う生成規則を選び、入力を上から下へ展開していく。[[lr-parser|LRパーサー]]が[[shift|Shift]]・[[reduce|Reduce]]で入力を畳み込むのに対し、LLパーサーはこれから読む構造を予測しながら進む。
+入力を左（Left）から右（Right）へ読みながら、左端導出を行う構文解析方式。開始記号から出発し、lookahead tokenを見て次に使う[[production-rule|生成規則]]を選び、入力を上から下へ展開していく。[[lr-parser|LRパーサー]]が[[shift|Shift]]・[[reduce|Reduce]]で入力を畳み込むのに対し、LLパーサーはこれから読む構造を予測しながら進む。
 
 ## 再帰下降パーサー
 
@@ -35,9 +35,9 @@ expr  -> term expr'
 expr' -> "+" term expr' | ε
 ```
 
-複数の生成規則が同じ接頭辞を持つ場合は、左因子分解して先読みだけで選べる形にする。
+複数の[[production-rule|生成規則]]が同じ接頭辞を持つ場合は、左因子分解して先読みだけで選べる形にする。
 
-LL(1)の生成規則選択では、[[first-set|FIRST集合]]と[[follow-set|FOLLOW集合]]を使う。空文字列を生成できる規則では、両者を組み合わせた[[director-set|Director集合]]でlookaheadとの対応を見る。
+LL(1)の[[production-rule|生成規則]]選択では、[[first-set|FIRST集合]]と[[follow-set|FOLLOW集合]]を使う。空文字列を生成できる規則では、両者を組み合わせた[[director-set|Director集合]]でlookaheadとの対応を見る。
 
 ## LL(k)とLL(*)
 

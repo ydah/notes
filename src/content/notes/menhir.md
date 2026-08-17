@@ -12,7 +12,7 @@ OCaml向けのLR(1)パーサージェネレータ。高水準の文法定義とO
 
 文法ファイルは通常`.mly`に置く。デフォルトのcodeバックエンドでは、OCamlのコードとしてパーサーを生成し、`parser.ml`と`parser.mli`を出力する。
 
-複数の`.mly`ファイルを渡して、部分文法を結合して1つの文法にすることもできる。文法には生成規則だけでなく、reduce時に実行するOCamlのsemantic actionも書く。
+複数の`.mly`ファイルを渡して、部分文法を結合して1つの文法にすることもできる。文法には[[production-rule|生成規則]]だけでなく、reduce時に実行するOCamlの[[semantic-action|semantic action]]も書く。
 
 ## バックエンド
 

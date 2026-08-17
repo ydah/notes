@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #grammar
 
-[[lexical-analyzer|字句解析機]]から受け取ったtoken列が、文法に従っているかを認識するプログラムまたは関数。実装によって、parse tree・AST・意味値なども生成する。
+[[lexical-analyzer|字句解析機]]から受け取ったtoken列が、文法に従っているかを認識するプログラムまたは関数。実装によって、[[syntax-tree|構文木]]・[[ast|AST]]・意味値なども生成する。
 
 ```text
 expr -> expr "+" term | term
@@ -20,7 +20,7 @@ term -> NUMBER
 NUMBER "+" NUMBER
 ```
 
-なら、生成規則に従っているため受理できる。`NUMBER "+" "+"`のように規則に合わないtoken列を受け取ると、構文エラーになる。
+なら、[[production-rule|生成規則]]に従っているため受理できる。`NUMBER "+" "+"`のように規則に合わないtoken列を受け取ると、[[syntax-error|構文エラー]]になる。
 
 構文解析器は通常、文字列を直接処理せず、[[terminal-symbol|終端記号]]に対応するtoken列を処理する。token列を作るのは字句解析機の役割で、構文解析器はtokenの並びを[[context-free-grammar|文脈自由文法]]と照合する。
 

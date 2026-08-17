@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-入力を左から右へ読みながら、入力の一部をスタックに積み、認識済みの記号列を生成規則の左辺へ畳み込んでいくbottom-up方式の構文解析。次のtokenをスタックへ積む操作が[[shift|Shift]]、スタック上の右辺を左辺へ置き換える操作が[[reduce|Reduce]]。
+入力を左から右へ読みながら、入力の一部をスタックに積み、認識済みの記号列を[[production-rule|生成規則]]の左辺へ畳み込んでいくbottom-up方式の構文解析。次のtokenをスタックへ積む操作が[[shift|Shift]]、スタック上の右辺を左辺へ置き換える操作が[[reduce|Reduce]]。
 
 [[lr-parser|LRパーサー]]は、[[parsing-table|構文解析表]]を使い、ShiftとReduceを状態とlookaheadから決める代表的なshift-reduce構文解析器。LRという名前のとおり、入力をLeftからRightへ読み、[[rightmost-derivation|右端導出]]を逆向きに実行する。
 

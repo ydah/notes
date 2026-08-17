@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #formal-language #grammar #parser #compiler
 
-生成規則を適用する非終端記号の周囲に、どの記号があるかを考慮しない形式文法。英語ではContext-Free Grammar（CFG）。
+[[production-rule|生成規則]]を適用する非終端記号の周囲に、どの記号があるかを考慮しない形式文法。英語ではContext-Free Grammar（CFG）。
 
 文脈自由文法は、次の4つ組で表せる。
 
@@ -17,10 +17,10 @@ G = (N, Σ, P, S)
 
 - `N` — [[nonterminal-symbol|非終端記号]]の集合
 - `Σ` — [[terminal-symbol|終端記号]]の集合
-- `P` — 生成規則の集合
+- `P` — [[production-rule|生成規則]]の集合
 - `S` — 開始記号。`S ∈ N`
 
-生成規則は、1つの非終端記号を左辺に持つ。
+[[production-rule|生成規則]]は、1つの非終端記号を左辺に持つ。
 
 ```text
 A -> α

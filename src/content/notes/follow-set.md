@@ -12,7 +12,7 @@ updated: 2026-08-17
 
 開始記号のFOLLOW集合には入力末尾を表す`$`を入れる。
 
-生成規則が、
+[[production-rule|生成規則]]が、
 
 ```text
 X -> α A β
@@ -40,7 +40,7 @@ FOLLOW(B) = { "$" }
 
 ## SLRとの関係
 
-SLRでは、生成規則を読み終えた状態、
+SLRでは、[[production-rule|生成規則]]を読み終えた状態、
 
 ```text
 A -> α .

@@ -10,7 +10,7 @@ Canonical LR(1)は、LRアイテムごとに正確な1 tokenのlookaheadを持�
 
 ## LR(1)アイテム
 
-Canonical LRでは、生成規則と入力位置にlookaheadを付ける。
+Canonical LRでは、[[production-rule|生成規則]]と入力位置にlookaheadを付ける。
 
 ```text
 [A -> α ., ")" ]
