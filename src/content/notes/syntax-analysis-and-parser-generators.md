@@ -4,13 +4,17 @@ updated: 2026-08-17 21:20
 ---
 # パーサージェネレータ
 
-文法ファイルからパーサーのコードを生成するプログラム。文法を読んで、入力を読んで、文法に合っているか調べるプログラムを生成する。
+文法ファイルからパーサーのコードを生成するツール。文法を読み、入力を読んで、文法に合っているか調べるプログラムを生成する。 #parser #compiler #lr
 
-構文解析の前に字句解析がある。例えば `2 + 3` は、まず `NUM(2)`, `'+'`, `NUM(3)` のようなトークン列になる。そのトークン列を文法に沿って組み立てるのが構文解析。
+## 字句解析と構文解析
+
+構文解析の前に字句解析がある。例えば `2 + 3` は、まず `NUM(2)`、`'+'`、`NUM(3)` のようなトークン列になる。そのトークン列を文法に沿って組み立てるのが構文解析。
 
 ```text
-ソースコード -> lexer -> token列 -> parser -> AST / 意味値
+ソースコード -> lexer -> token列 -> parser -> AST
 ```
+
+字句解析と構文解析を別々にすることで、空白やコメントの扱いと、文法上の構造を扱う処理を分けられる。
 
 ## LRパーサー
 
@@ -25,7 +29,7 @@ term       : NUM
 
 `NUM` や `'+'` が終端記号、`expression` や `term` が非終端記号。`expression : ...` が生成規則。
 
-`term : NUM` をreduceすると、スタック上の `NUM` が `term` になる。さらに `expression : term` をreduceする、といった具合に入力を大きな構造へ畳み込んでいく。
+`term : NUM` をreduceすると、スタック上の `NUM` が `term` になる。入力を少しずつ大きな構造へ畳み込んでいく。
 
 ## shift/reduce conflict
 
@@ -40,13 +44,11 @@ term       : NUM
 %left '*'
 ```
 
-パーサージェネレータごとに優先順位宣言の記法は違うが、考え方は同じ。
-
-このあたりがパーサージェネレータを使うときに一番見える部分で、文法を書いたのにconflictが出る、という話はだいたいこの周辺にある。
+パーサージェネレータごとに優先順位宣言の記法は違うが、考え方は同じ。文法を書いたのにconflictが出る、という話はだいたいこの周辺にある。
 
 ## SLR / LALR / LR(1)
 
-LR系のアルゴリズムがいくつかある。
+LR系のパーサーテーブルを作るアルゴリズムがいくつかある。
 
 - SLR: FOLLOW集合を使ってreduceする。単純だが文脈を粗く扱う
 - LALR: 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすい
@@ -55,23 +57,19 @@ LR系のアルゴリズムがいくつかある。
 
 このへんは名前を知っているだけで、実際にLR(0)アイテムの `closure` と `goto` を計算したことはない。手で小さい文法の状態を作ってみたい。
 
-## パーサージェネレータの構成
+## パーサージェネレータの内部
 
-コードの流れはだいたいこうなっている。
+文法をいきなり実行コードへ変換せず、中間表現を挟む構成が多い。
 
 ```text
-grammar.y
-  -> frontend parser
-  -> Grammar IR
-  -> SLR / LALR / LR(1) / IELR
-  -> Automaton IR
+grammar
+  -> grammar IR
+  -> automaton
   -> parser table
-  -> Ruby code + runtime
+  -> generated parser
 ```
 
-文法をいきなり実行コードへ変換せず、Grammar IRとAutomaton IRを挟む構成が多い。こうしておくと、文法の正規化・オートマトンの検査・テーブルの可視化・複数アルゴリズムの比較がやりやすそう。
-
-パーサージェネレータ自身の文法を、同じパーサージェネレータで読む構成もある。parser generatorが自分の文法を自分で読む、という自己ホストの構成。bootstrap用のparserを別に持つ場合もある。
+Grammar IRとAutomaton IRを分けておくと、文法の正規化・オートマトンの検査・テーブルの可視化・複数アルゴリズムの比較がやりやすそう。
 
 ## ASTとCST
 
@@ -81,18 +79,15 @@ ASTは意味に必要な構造だけを残した木。
 2 + 3 -> Add(Number(2), Number(3))
 ```
 
-CSTは空白・コメント・括弧・エラー部分など、入力の構文をもっとそのまま残す木。ASTは評価やコード生成向きで、CSTはformatterやLSP、エディタでの編集に向いている。
+CSTは空白・コメント・括弧など、入力の構文をもっとそのまま残す木。評価やコード生成だけならASTで足りることが多い。formatterやLSP、エディタを作る場合はCSTを残す意味が大きい。
 
-formatterやLSP、エディタを作る場合はCSTを残す意味が大きい。評価やコード生成だけならASTで足りることが多い。
-
-## 気になるところ
+## 気になっていること
 
 - `closure` / `goto`からLRオートマトンをどう作るか
 - LALRで状態をマージすると、なぜconflictが増えるのか
 - parser tableの実体はどんなデータ構造か
 - EBNFの`*`や`+`を通常の生成規則へどう変換するか
 - ASTとCSTの両方を生成するとき、意味作用はどこで実行するか
-- syntax-onlyがどこまで「コードを実行しない」のか
 
 まずは `closure` と `goto` を手で計算するところからやる。
 
@@ -102,5 +97,3 @@ formatterやLSP、エディタを作る場合はCSTを残す意味が大きい�
 - [Shift/Reduce Conflicts](https://www.gnu.org/software/bison/manual/html_node/Shift_002fReduce.html)
 - [How Precedence Works](https://www.gnu.org/software/bison/manual/html_node/How-Precedence.html)
 - [racc documentation](https://ruby.github.io/racc/)
-
-#parser #compiler #lr #ruby #日本語
