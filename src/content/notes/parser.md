@@ -24,6 +24,8 @@ NUMBER "+" NUMBER
 
 構文解析器は通常、文字列を直接処理せず、[[terminal-symbol|終端記号]]に対応するtoken列を処理する。token列を作るのは字句解析機の役割で、構文解析器はtokenの並びを[[context-free-grammar|文脈自由文法]]と照合する。
 
+Rubyの構文解析器には[[prism|Prism]]がある。Prismはparser generatorではなく、Rubyのソースコードを解析してASTとdiagnosticを返すparserの実装。
+
 [[ll-parser|LLパーサー]]や[[lr-parser|LRパーサー]]のように、文法をどの方向から処理するかによって構文解析の方式が分かれる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]を使う場合は、文法から構文解析器の実装や[[parsing-table|構文解析表]]を生成する。
 
 ## 出典

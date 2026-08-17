@@ -33,7 +33,7 @@ incremental computation engineは、queryの結果と依存関係をmemoizeす�
 - 依存先が変わっていればqueryを再実行する
 - 再実行後の結果が以前と同じなら、上位のqueryへの変更伝播を止める
 
-最後の動作はearly cutoffと呼ばれる。入力のsource textが変わっても、ASTの構造やitem treeの内容が変わらなければ、その結果に依存するqueryまで再計算しなくてよい。
+最後の動作は[[early-cutoff|early cutoff]]と呼ばれる。入力のsource textが変わっても、ASTの構造やitem treeの内容が変わらなければ、その結果に依存するqueryまで再計算しなくてよい。
 
 rust-analyzerでは、Salsaをincremental and on-demand computationのために使う。queryの結果は必要になった時点で計算されるので、入力変更のたびにすべての意味解析を先回りして実行するわけではない。Salsaは入力queryと、入力から値を導出するpureなquery functionを持ち、結果をmemoizeして再利用する。
 

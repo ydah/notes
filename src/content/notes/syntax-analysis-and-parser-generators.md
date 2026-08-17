@@ -26,6 +26,7 @@ updated: 2026-08-17
 - [[yacc|Yacc]] / [[gnu-bison|GNU Bison]] — yacc系のLRパーサージェネレータ
 - [[menhir|Menhir]] — OCaml向けのLR(1)パーサージェネレータ
 - [[roslyn|Roslyn]] — パーサーを含むコンパイラをAPIとして公開する.NET Compiler Platform
+- [[lrama|Lrama]] — Rubyで書かれたLALR(1) parser generator
 
 ## 構成要素との関係
 
