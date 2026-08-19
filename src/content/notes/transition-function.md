@@ -43,7 +43,7 @@ Xが終端記号なら、入力を読んで状態を進める[[shift|Shift]]の�
 
 遷移関数はLR項集合から状態グラフを作るための数学的な操作で、GOTO表はその状態に番号を付けて表にしたもの。実行時には、[[parsing-table|構文解析表]]のうち非終端記号を列に持つ部分をGOTO表として使う。
 
-一方、終端記号に対するparserの動作は、単に次の状態を返すだけではない。ACTION表はlookaheadに応じてShift、Reduce、Accept、Errorなどの操作を返す。したがって、LRオートマトンの遷移関数と、実行時のACTION/GOTO表は関連するが同じものではない。
+一方、終端記号に対するparserの動作は、単に次の状態を返すだけではない。ACTION表はlookaheadに応じてShift、Reduce、[[accept|Accept]]、Errorなどの操作を返す。したがって、LRオートマトンの遷移関数と、実行時のACTION/GOTO表は関連するが同じものではない。
 
 既存の[[goto-table|GOTO表]]では、生成された表の意味を扱っている。こちらでは、表を作る元になる状態グラフの遷移に焦点を置く。
 

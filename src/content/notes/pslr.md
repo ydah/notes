@@ -7,7 +7,7 @@ updated: 2026-08-18
 
 #parser #compiler #lr #lexer #ruby
 
-PSLR(1)はPseudo-Scannerless Minimal LR(1)の略。字句解析器がparserの状態を考慮してtokenを認識する、LR(1) parser generation system。単独の構文解析アルゴリズムというより、LR parserとpseudo-scannerを組み合わせた方式。
+PSLR(1)はPseudo-Scannerless Minimal LR(1)の略。字句解析器がparserの状態を考慮してtokenを認識する、LR(1) parser generation system。単独の構文解析アルゴリズムというより、LR parserと[[pseudo-scanner|pseudo-scanner]]を組み合わせた方式。
 
 ## 字句解析器と構文解析器の境界
 
@@ -25,7 +25,7 @@ LRパーサー
 
 Rubyの「<」「<<」「<<-」や、範囲構文の後に続く「||」のような構文では、これまでに読んだ文字だけでなく、parserが現在どの状態にいるかがtokenizeの判断に影響する。CRubyではこの情報をlex_stateなどでlexerへ伝えてきた。
 
-## pseudo-scanner
+## [[pseudo-scanner|pseudo-scanner]]
 
 PSLRでは、字句解析器を完全に独立させず、現在のparser stateで受理候補になるtoken集合を字句解析器の判断に使う。
 
@@ -49,20 +49,20 @@ parserが受理できるtokenだけをpseudo-scannerが認識するため、lexe
 
 ## scanner conflict
 
-複数の言語や文法を組み合わせたcomposite languageでは、文字列をtokenへ分割する方法が複数あり、lexerだけではどの分割が正しいか決められないことがある。これがscanner conflictになる。
+複数の言語や文法を組み合わせた[[composite-language|composite language]]では、文字列をtokenへ分割する方法が複数あり、lexerだけではどの分割が正しいか決められないことがある。これが[[scanner-conflict|scanner conflict]]になる。
 
 PSLRでは、現在のLR stateで受理できるtokenをparser tableから求め、その情報でscannerの候補を絞る。parserの文脈を利用できるため、言語を構成する各部分のscanner規則を手作業で調整する必要を減らせる。
 
 ## LALR・IELRとの関係
 
-PSLRのMinimal LR(1)は、Canonical LR(1)の認識能力を保ちながら、parser tableを小さくすることを目指す。
+PSLRの[[minimal-lr-parser|Minimal LR(1)]]は、Canonical LR(1)の認識能力を保ちながら、parser tableを小さくすることを目指す。
 
 - Canonical LR(1) — 状態を細かく区別できるが、状態数と表が大きい
 - LALR(1) — 同じLR(0) coreを持つ状態をマージして表を小さくするが、parser stateの文脈を失うことがある
 - IELR(1) — 必要な状態だけを分割し、LALRに近いサイズでCanonical LR(1)の認識能力を保つ
 - PSLR(1) — IELR系のLR parser tableとpseudo-scannerを組み合わせる
 
-PSLRでは、LR parser tableの状態をマージした結果、pseudo-scannerが誤ったtokenを受理したり、新しいscanner conflictが発生したりする問題がある。PSLRの原論文では、この問題を解くためにIELR(1)を拡張してMinimal LR(1) tableを生成する。
+PSLRでは、LR parser tableの状態をマージした結果、pseudo-scannerが誤ったtokenを受理したり、新しい[[scanner-conflict|scanner conflict]]が発生したりする問題がある。PSLRの原論文では、この問題を解くために[[ielr|IELR]](1)を拡張して[[minimal-lr-parser|Minimal LR(1)]] tableを生成する。
 
 ## LramaとRuby parser
 

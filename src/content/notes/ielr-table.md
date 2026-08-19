@@ -25,7 +25,7 @@ IELR table
 
 ## tableの役割
 
-生成されたIELR tableのruntime上の構造は、他のLR tableと同じくACTIONとGOTO。現在のstateと[[lookahead-token|lookahead token]]を使ってShift・Reduce・Accept・Errorを決める。
+生成されたIELR tableのruntime上の構造は、他のLR tableと同じくACTIONとGOTO。現在のstateと[[lookahead-token|lookahead token]]を使ってShift・Reduce・[[accept|Accept]]・Errorを決める。
 
 IELR tableを使っても、曖昧な文法やLR(1)でない文法のconflictがすべて消えるわけではない。IELRが取り除くのは、主にLALRのstate mergeによって人工的に生じた不足。
 
