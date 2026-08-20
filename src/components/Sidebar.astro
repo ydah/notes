@@ -9,14 +9,15 @@ const tags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).sli
 <button class="menu-toggle" type="button" aria-controls="site-sidebar" aria-expanded="false">☰</button>
 <aside id="site-sidebar" class="sidebar" data-pagefind-ignore="all">
   <a class="site-title" href={`${base}/`}>ydah notes</a>
-  <nav aria-label="サイトメニュー">
-    <a href={`${base}/search/`}>🔍 検索</a>
-    <a href={`${base}/notes/`}>📄 ノート一覧 <small>{notes.length}</small></a>
-    <a href={`${base}/tags/`}>🏷️ タグ一覧</a>
+  <nav aria-label="Site navigation">
+    <a href={`${base}/search/`}>🔍 Search</a>
+    <a href={`${base}/notes/`}>📄 Notes <small>{notes.length}</small></a>
+    <a href={`${base}/tags/`}>🏷️ Tags</a>
+    <a href="https://github.com/ydah/notes">Repository</a>
   </nav>
 
   <section class="sidebar-section">
-    <h2>最近のノート</h2>
+    <h2>Recent Notes</h2>
     <ul class="sidebar-list">
       {notes.slice(0, 30).map((note) => <li><a href={`${base}/notes/${note.slug}/`}>{note.title}</a></li>)}
     </ul>
@@ -24,14 +25,14 @@ const tags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).sli
 
   {tags.length > 0 && (
     <section class="sidebar-section">
-      <h2>よく使うタグ</h2>
+      <h2>Popular Tags</h2>
       <ul class="sidebar-list">
         {tags.map(([tag, taggedNotes]) => <li><a href={`${base}/tags/${encodeURIComponent(tag)}/`}>#{tag} <small>{taggedNotes.length}</small></a></li>)}
       </ul>
     </section>
   )}
 
-  <button id="theme-toggle" class="theme-toggle" type="button">🌙 テーマ切替</button>
+  <button id="theme-toggle" class="theme-toggle" type="button">🌙 Toggle Theme</button>
 </aside>
 
 <script>

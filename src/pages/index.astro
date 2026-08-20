@@ -8,12 +8,9 @@ const notes = (await getNotes()).sort(byUpdated);
 const tagMap = await getTagMap();
 const popularTags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 12);
 ---
-<BaseLayout title="エバーグリーンノート">
+<BaseLayout title="Evergreen notes">
   <section class="hero">
-    <p class="eyebrow">evergreen notes</p>
-    <h1>知識を育てる場所</h1>
-    <p>調べたことや考えたことを、原子ノートとリンクのネットワークとして残す。</p>
-    <p><a class="button" href={`${base}/notes/`}>ノートを読む</a> <a href={`${base}/search/`}>検索する</a></p>
+    <h1>Evergreen notes</h1>
   </section>
 
   <section>
