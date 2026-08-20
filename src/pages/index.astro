@@ -8,9 +8,9 @@ const notes = (await getNotes()).sort(byUpdated);
 const tagMap = await getTagMap();
 const popularTags = [...tagMap.entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 12);
 ---
-<BaseLayout title="Evergreen notes">
+<BaseLayout title="ydah's evergreen notes">
   <section class="hero">
-    <h1>Evergreen notes</h1>
+    <h1>ydah's evergreen notes</h1>
   </section>
 
   <section>
