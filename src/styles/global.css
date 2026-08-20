@@ -7,7 +7,9 @@
   --link-hover: #5a3e83;
   --broken: #b42318;
   --border: #ded8cc;
-  --code-bg: #f0ece4;
+  --code-bg: #111827;
+  --code-fg: #e6edf3;
+  --code-border: #334155;
   --accent: #e7ddf4;
 }
 
@@ -20,7 +22,9 @@
   --link-hover: #e0cfff;
   --broken: #ff9187;
   --border: #403c36;
-  --code-bg: #252321;
+  --code-bg: #0d1117;
+  --code-fg: #e6edf3;
+  --code-border: #30363d;
   --accent: #36294a;
 }
 
@@ -85,8 +89,38 @@ h2 { margin-top: 2.5rem; }
 .table-of-contents li { margin: .25rem 0; }
 .table-of-contents .depth-3 { padding-left: .7rem; }
 .table-of-contents a { text-decoration: none; }
-pre { max-width: 100%; overflow-x: auto; padding: 1rem; border: 1px solid var(--border); border-radius: .5rem; background: var(--code-bg); }
-code:not(pre code) { padding: .1em .3em; border-radius: .25rem; background: var(--code-bg); }
+pre {
+  max-width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--code-border);
+  border-radius: .7rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  box-shadow: 0 .65rem 1.5rem rgb(15 23 42 / .12);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+  font-size: .9rem;
+  line-height: 1.65;
+  tab-size: 2;
+}
+pre.astro-code {
+  background: var(--code-bg) !important;
+  color: var(--code-fg) !important;
+}
+pre.astro-code span {
+  color: var(--shiki-dark, var(--code-fg)) !important;
+}
+pre.astro-code code { display: block; }
+code:not(pre code) {
+  padding: .1em .3em;
+  border: 1px solid var(--code-border);
+  border-radius: .25rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+  font-size: .9em;
+}
 a.wikilink { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--link) 45%, transparent); }
 a.wikilink.broken { color: var(--broken); border-bottom: 1px dashed var(--broken); }
 .search-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 2rem; }
