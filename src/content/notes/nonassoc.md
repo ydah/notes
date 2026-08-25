@@ -24,11 +24,11 @@ a < b       # 許可
 a < b < c   # syntax error
 ~~~
 
-%leftなら左側にまとめ、%rightなら右側にまとめる場面で、%nonassocはどちらにもまとめずparser actionをerrorにする。
+[[left-right|%left]]なら左側にまとめ、[[left-right|%right]]なら右側にまとめる場面で、%nonassocはどちらにもまとめずparser actionをerrorにする。
 
 ## precedence宣言との違い
 
-%left、%right、%nonassocは、tokenのprecedenceとassociativityを同時に宣言する。異なる宣言行に書いたtokenは、後の行ほど高いprecedenceになる。
+[[left-right|%left]]、[[left-right|%right]]、%nonassocは、tokenのprecedenceとassociativityを同時に宣言する。異なる宣言行に書いたtokenは、後の行ほど高いprecedenceになる。
 
 %precedenceはprecedenceだけを宣言し、associativityは指定しない。そのため、associativityに関係するconflictをビルド時に残せる。%nonassocは、同じprecedenceの組み合わせをruntimeのsyntax errorにする。
 
