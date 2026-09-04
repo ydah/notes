@@ -9,6 +9,8 @@ updated: 2026-08-18
 
 Lookahead Correctionは、LRパーサーで構文エラーの検出が遅れる問題を抑える仕組み。LACと略す。新しいparser方式というより、既存のCanonical LR・IELR・LALRのparser runtimeに追加するエラー処理の機構。
 
+LACは[[pslr|PSLR]]の博士論文で提案されたが、PSLRのコア機構ではない。両者の責務と実装上の分離は[[lac-and-pslr|LACとPSLRの関係]]で整理した。
+
 ## 何を補正するのか
 
 LRパーサーは、現在の状態と[[lookahead-token|lookahead token]]から[[shift|Shift]]や[[reduce|Reduce]]を決める。しかし、すぐにlookaheadを取得せず、状態に登録された[[default-reduction|default reduction]]を先に実行することがある。
