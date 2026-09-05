@@ -11,7 +11,7 @@ IELR tableは、IELR(1)のstate分割とlookahead計算から作るparser table�
 
 ## LALR tableからの分割
 
-IELRはCanonical LR(1)の全stateをそのまま残すのではなく、まずLALRに近いマージを基礎にする。そのマージによってLR(1)の文脈を区別できなくなり、conflictや認識能力の不足につながるstateだけを必要に応じて分割する。
+IELRはLALRに近いマージを基礎にする。マージによってLR(1)の文脈を区別できず、conflictや認識能力の不足につながるstateだけを分割する。
 
 ~~~text
 LALR table
@@ -21,13 +21,13 @@ LALR table
 IELR table
 ~~~
 
-そのため、IELR tableはLALR tableより大きくなることはあるが、Canonical LR tableの全stateを持つ必要はない。LALRで起きる人工的なconflictを減らしつつ、tableの大きさを抑えるための構築方式。
+IELR tableはLALR tableより大きくなる場合があるが、Canonical LR tableの全stateを持つ必要はない。LALRで起きる人工的なconflictを減らしつつ、tableの大きさを抑える。
 
 ## tableの役割
 
 生成されたIELR tableのruntime上の構造は、他のLR tableと同じくACTIONとGOTO。現在のstateと[[lookahead-token|lookahead token]]を使ってShift・Reduce・[[accept|Accept]]・Errorを決める。
 
-IELR tableを使っても、曖昧な文法やLR(1)でない文法のconflictがすべて消えるわけではない。IELRが取り除くのは、主にLALRのstate mergeによって人工的に生じた不足。
+IELR tableが取り除くのは、主にLALRのstate mergeによって人工的に生じた不足である。曖昧な文法やLR(1)でない文法のconflictは残る。
 
 ## Bisonでの選択
 
@@ -39,7 +39,7 @@ Bisonでは次の指定でIELR tableを生成する。
 
 default reductionや[[nonassoc|%nonassoc]]を含むparser runtimeの挙動は、tableの種類だけでなく、構築されたactionとruntime設定にも依存する。lookaheadの確認前に起きるReduceやerror recoveryの文脈を調べるときは、[[default-reduction|default reduction]]と[[lookahead-correction|Lookahead Correction（LAC）]]も一緒に見る。
 
-IELRの内部では、[[goto-follow-closures|goto-follow closures]]や[[lane-annotations|lane annotations]]を使って、どのlookaheadの寄与を区別すべきかを調べる。
+IELRの内部では、[[goto-follow-closures|goto-follow closures]]や[[lane-annotations|lane annotations]]を使う。これらから、区別すべきlookaheadの寄与を調べる。
 
 ## 出典
 

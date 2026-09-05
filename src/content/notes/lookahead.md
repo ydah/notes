@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr #ll
 
-パーサーが現在処理している位置の、まだ消費していない次の[[lookahead-token|lookahead token]]。パーサーはスタックや現在の文法規則だけでなく、lookaheadを見てshift・reduceや、次に使う[[production-rule|生成規則]]を決める。[[follow-set|FOLLOW集合]]が文法から計算した候補の集合なのに対し、lookaheadは実際の入力から得られたtoken。
+lookaheadは、パーサーがまだ消費していない次の[[lookahead-token|lookahead token]]。パーサーはスタックや現在の文法規則とlookaheadから、shift・reduceや次の[[production-rule|生成規則]]を決める。[[follow-set|FOLLOW集合]]は文法から計算した候補の集合だが、lookaheadは実際の入力から得たtokenである。
 
 ## LRパーサーでのlookahead
 
@@ -26,7 +26,7 @@ Canonical LR(1)では、LRアイテムごとにreduceを許可するlookaheadを
 [A -> α ., ")" ]
 ```
 
-これは、現在の状態でlookaheadが`")"`のときにだけ`A -> α`をreduceする、という意味。SLRはこの情報の代わりに[[follow-set|FOLLOW集合]]を使うため、文脈を粗く扱う。
+これは、現在の状態でlookaheadが`")"`のときだけ`A -> α`をreduceするという意味である。SLRはこの情報の代わりに[[follow-set|FOLLOW集合]]を使うため、文脈を粗く扱う。
 
 [[lookahead-correction|Lookahead Correction（LAC）]]は、lookahead tokenを別のtokenへ変換する仕組みではない。現在のparser stackでそのtokenが受理できるかをexploratory parseで先に確認し、構文エラーの検出遅延やexpected token listの誤りを抑える。
 
@@ -38,14 +38,14 @@ LL(1)の`1`は、1つのlookahead tokenを見て[[production-rule|生成規則]]
 statement -> assignment | function-call
 ```
 
-2つの規則の先頭が同じ場合、1つ先のtokenだけでは選べないことがある。先読みを増やす、左因子分解する、LL(*)のようにさらに先を調べる、といった方法で分岐を決める。
+2つの規則の先頭が同じ場合、1つ先のtokenだけでは選べないことがある。先読みを増やす、左因子分解する、LL(*)のようにさらに先を調べる方法で分岐を決める。
 
 ## FOLLOW集合との違い
 
 - FOLLOW集合 — ある非終端記号の後ろに文法上現れうるtokenの集合
 - lookahead — パース中に実際に次に来ているtoken
 
-例えば`FOLLOW(A) = { "+", ")", "$" }`でも、現在の入力のlookaheadが必ずその全てになるわけではない。その時点では`+`かもしれないし、`)`かもしれない。SLRはこの集合をreduce条件に使い、Canonical LRは状態ごとにより限定されたlookaheadを持つ。
+例えば`FOLLOW(A) = { "+", ")", "$" }`でも、現在の入力のlookaheadが必ずその全てになるわけではない。その時点では`+`かもしれないし、`)`かもしれない。SLRはこの集合をreduce条件に使い、Canonical LRは状態ごとに限定されたlookaheadを持つ。
 
 ## 出典
 

@@ -17,9 +17,9 @@ GOTOを次のように表す。
 g = GOTO(state_i, A) -> state_j
 ~~~
 
-GOTO gのfollow setを計算するとき、gの先にあるitemのcoreを生成した別のGOTO g'のfollow setが必要になることがある。生成規則のgの非終端記号の後ろにある記号列がnullableなら、その記号列の後ろに来るtokenはg'の後ろにも来られるから。
+GOTO gのfollow setを計算するとき、gの先にあるitemのcoreを生成した別のGOTO g'のfollow setが必要になる場合がある。生成規則でgの非終端記号に続く記号列がnullableなら、その後ろに来るtokenはg'の後ろにも来られる。
 
-この依存が、別の状態へ遷移する記号列を挟まずに同じstateの中で成立する場合がinternal dependency。
+この依存が、別の状態へ遷移する記号列を挟まず、同じstateの中で成立する場合をinternal dependencyと呼ぶ。
 
 ~~~text
 同じ state
@@ -29,7 +29,7 @@ GOTO gのfollow setを計算するとき、gの先にあるitemのcoreを生成�
 g の follow ⊇ g' の follow
 ~~~
 
-論文の定義では、goto-followのincludes関係に現れる経路の記号列をαとすると、αがεの場合をinternal dependencyとする。したがってg'のsource stateとgのsource stateは同じになる。
+論文の定義では、goto-followのincludes関係に現れる経路の記号列をαとすると、αがεの場合をinternal dependencyとする。このとき、g'とgのsource stateは同じになる。
 
 ## 具体例
 
@@ -41,13 +41,13 @@ G12からG17までの依存経路が同じstateの中で完結しているため
 
 依存経路が別のstateを通って、gのsource stateのeventual predecessorまでさかのぼる場合は[[predecessor-dependency|predecessor dependency]]になる。
 
-つまり、違いは「followが伝わるか」ではなく、includes dependencyをたどる経路が同じstate内で完結するか、先行stateを含むかにある。
+両者の違いは、includes dependencyをたどる経路が同じstate内で完結するか、先行stateを含むかにある。どちらもfollowを伝える依存関係である。
 
-internal dependencyとpredecessor dependencyは、successor dependencyをたどる前の依存関係としてまとめて扱う。[[goto-follow-closures|goto-follow closures]]では、まずこの2種類をたどってからsuccessor側のfollowを集める。successorの後にpredecessorをたどると、別のlaneのtokenを誤って混ぜる可能性がある。
+internal dependencyとpredecessor dependencyは、successor dependencyをたどる前の依存関係としてまとめて扱う。[[goto-follow-closures|goto-follow closures]]では、まずこの2種類をたどり、次にsuccessor側のfollowを集める。successorの後にpredecessorをたどると、別のlaneのtokenを誤って混ぜる可能性がある。
 
 ## IELRでの位置づけ
 
-internal dependencyは、あるstate内のGOTOとitem coreの関係を表す。IELRはこれを[[predecessor-dependency|predecessor dependency]]やsuccessor dependencyと区別して記録し、LALRのconflictに寄与したlookaheadの経路を正確に追跡する。
+internal dependencyは、あるstate内のGOTOとitem coreの関係を表す。IELRはこれを[[predecessor-dependency|predecessor dependency]]やsuccessor dependencyと区別して記録する。この記録から、LALRのconflictに寄与したlookaheadの経路を追跡する。
 
 この追跡結果は[[lane-annotations|lane annotations]]に使われる。runtimeのparserが参照する依存関係ではなく、parser tableを生成するときの解析情報。
 

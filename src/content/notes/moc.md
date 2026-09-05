@@ -9,7 +9,7 @@ aliases: [map-of-content]
 
 複数の原子ノートを束ねる見取り図。[[evergreen-notes]] のようなノートを分野ごとに接続する。
 
-数式はビルド時に KaTeX へ変換される: $E = mc^2$
+数式はビルド時にKaTeXへ変換される。$E = mc^2$
 
 ```mermaid
 flowchart LR

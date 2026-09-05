@@ -7,11 +7,11 @@ updated: 2026-08-18
 
 #parser #compiler #lr #ielr
 
-inadequacyは、parser tableが文法の必要な文脈を区別できず、正しいLR actionを選べない状態。IELRの論文では、特にLALRとLR(1)の認識能力の差を説明するために使われる。
+inadequacyは、parser tableが文法に必要な文脈を区別できず、正しいLR actionを選べない状態。IELRの論文では、特にLALRとLR(1)の認識能力の差を表す。
 
 ## LR(1)-relative inadequacy
 
-Canonical LR(1) tableなら、あるtokenに対してconflictを起こさず、文法の指定したparse treeを認識できるとする。それなのにLALR tableではstate mergeのためにconflictや認識能力の低下が起きる場合、その差がLR(1)-relative inadequacy。
+Canonical LR(1) tableでは、あるtokenに対してconflictを起こさず、文法の指定したparse treeを認識できるとする。LALR tableのstate mergeによってconflictや認識能力の低下が起きる場合、その差がLR(1)-relative inadequacyである。
 
 異なるlaneから来たlookaheadが、同じLR(0) coreを持つstateにmergeされると、もともと別だった文脈が同じitemのlookaheadに集まる。LALRにだけ現れる[[mysterious-conflict|mysterious conflict]]は、この典型例。
 
@@ -21,7 +21,7 @@ IELRは、このLR(1)-relative inadequacyに寄与したlaneを調べ、必要�
 
 文法自体が曖昧だったり、LR(1)では解けないconflictを持っていたりする場合、Canonical LRにも同じ問題が残る。これはstate mergeが原因ではないので、IELRのstate splittingで消える問題ではない。
 
-つまり、IELRが除去するのは「LALRの近似によって追加された不足」であって、文法が持つ全てのconflictではない。
+IELRが除去するのはLALRの近似によって追加された不足であり、文法が持つ全てのconflictではない。
 
 ## contributionとの関係
 

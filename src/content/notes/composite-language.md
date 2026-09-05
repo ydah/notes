@@ -7,13 +7,13 @@ updated: 2026-08-19
 
 #parser #compiler #lexer #grammar
 
-composite languageは、複数のsub-languageや文法を組み合わせて一つの入力を構成する言語。ホスト言語にDSLを埋め込む場合や、Yaccのように文法記述・semantic action・字句規則を一つの入力で扱う場合が例になる。C/C++のように、同じ文字列が文脈によって別のtokenとして解釈される言語も、scannerの観点では同じ問題を持つ。
+composite languageは、複数のsub-languageや文法を組み合わせて一つの入力を構成する言語。ホスト言語へのDSLの埋め込みや、文法記述・semantic action・字句規則を一つの入力で扱うYaccが例になる。C/C++のように、同じ文字列を文脈によって別のtokenとして解釈する言語も、scannerの観点では同じ問題を持つ。
 
-難しさは、各sub-languageを個別に解析できるかではなく、境界付近でtokenizationの選択が文法の文脈に依存することにある。たとえば `>` と `>>` の両方がtoken候補になるとき、テンプレートの閉じ括弧としては `>>` を二つの `>` として扱いたい場合があり、別の文脈ではシフト演算子として `>>` にしたい。
+難しいのは各sub-languageの個別の解析ではなく、境界付近のtokenizationが文法の文脈に依存すること。たとえば `>` と `>>` がどちらもtoken候補になる場合、テンプレートの閉じ括弧として `>>` を二つの `>` に分ける文脈がある。別の文脈では、シフト演算子 `>>` として扱う。
 
-通常のscannerは最長一致や規則の記述順で候補を一つに決める。その規則だけでは文脈依存の選択を表しにくく、scannerのstart conditionを手作業で切り替える設計になりやすい。[[pseudo-scanner|pseudo-scanner]]は、現在のparser stateで受理候補になるtokenだけをscannerの候補に残すことで、parserとscannerの境界を保ったままこの問題を扱う。
+通常のscannerは、最長一致や規則の記述順で候補を一つに決める。この規則だけでは文脈依存の選択を表しにくく、scannerのstart conditionを手作業で切り替える設計になりやすい。[[pseudo-scanner|pseudo-scanner]]は、現在のparser stateで受理候補になるtokenだけを残す。これにより、parserとscannerの境界を保ったまま文脈依存の選択を扱う。
 
-複数の候補が残る状態は[[scanner-conflict|scanner conflict]]になる。PSLRはcomposite languageのために、通常のLR table生成に加えて、状態マージ後もpseudo-scannerのtoken候補が壊れないようにする[[minimal-lr-parser|Minimal LR(1)]]の仕組みを使う。
+複数の候補が残る状態は[[scanner-conflict|scanner conflict]]になる。PSLRは通常のLR table生成に加え、状態マージ後もpseudo-scannerのtoken候補を保つ[[minimal-lr-parser|Minimal LR(1)]]の仕組みを使う。
 
 ## 出典
 

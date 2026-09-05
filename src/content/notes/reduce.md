@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #lr
 
-LRパーサーが、スタック上で[[production-rule|生成規則]]の右辺を認識したときに、その右辺を左辺の非終端記号へまとめる操作。Reduceでは[[lookahead-token|lookahead token]]を消費しない。
+LRパーサーがスタック上で[[production-rule|生成規則]]の右辺を認識したとき、その右辺を左辺の非終端記号へまとめる操作。Reduceでは[[lookahead-token|lookahead token]]を消費しない。
 
 [[production-rule|生成規則]]`A -> β`をReduceする場合、概念的には次の処理を行う。
 
@@ -33,7 +33,7 @@ $ E            $          GOTO
 
 `Reduce E -> n`では、入力の`+`はまだ消費しない。`n`を`E`にまとめた後、同じ`+`をlookaheadとして次の操作を決める。
 
-Reduceのタイミングで[[semantic-action|semantic action]]を実行し、ASTノードや評価結果など、左辺の非終端記号に対応する意味値を作ることもある。
+Reduce時に[[semantic-action|semantic action]]を実行し、左辺の非終端記号に対応する意味値を作ることもある。意味値にはASTノードや評価結果などがある。
 
 どのlookaheadでReduceできるかは、LRパーサーの構築方式によって異なる。[[slr-parser|SLR]]は[[follow-set|FOLLOW集合]]を使い、[[lalr-parser|LALR]]と[[canonical-lr-parser|Canonical LR]]は状態ごとのlookaheadを使う。
 

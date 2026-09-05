@@ -7,7 +7,7 @@ updated: 2026-08-19
 
 #parser #compiler #lr
 
-LR parserのAcceptは、開始規則を最後まで認識し、入力の終端も確認したときのACTION。これが実行されると入力全体が文法に従っていたことになり、parserは成功して終了する。
+LR parserのAcceptは、開始規則と入力の終端を認識したときのACTION。入力全体が文法に従っていたことを示し、parserは成功して終了する。
 
 LR tableでは、開始規則を特別な規則として用意する。
 
@@ -16,11 +16,11 @@ $accept: start $end •
                          → Accept
 ~~~
 
-startの後に[[eof|EOF]]や $end が来た状態でこのitemが完成すると、Reduceで通常の規則へ戻るのではなくAcceptになる。途中の規則を完成させるReduceは構文木やsemantic actionを進めるが、Acceptは最終的な成功を表す動作。
+startの後に[[eof|EOF]]や $end が来てこのitemが完成すると、ReduceではなくAcceptになる。Reduceは途中の規則を完成させて構文木やsemantic actionを進める。Acceptは最終的な成功を表す。
 
-AcceptはErrorや、入力途中でのReduceとも別。parserがEOF以外のtokenを見ている段階で開始規則が完成していても、残りのtokenがあるためAcceptにはならない。
+AcceptはErrorや入力途中のReduceとは異なる。開始規則が完成していても、parserがEOF以外のtokenを見ている段階ではAcceptにならない。
 
-PSLRの論文に出てくる acc(sp) や accepted token setは、このACTIONのAcceptとは別の概念。acc(sp)は、現在のparser state spでpseudo-scannerが候補として考慮してよいtokenの集合を表す。これはscannerへ渡す制約であって、parse全体が成功したという意味ではない。
+PSLRの論文に出てくる acc(sp) や accepted token setは、このACTIONとは別の概念。acc(sp)は、現在のparser state spでpseudo-scannerが候補にできるtokenの集合を表す。scannerへの制約であり、parse全体の成功を意味しない。
 
 ## 出典
 

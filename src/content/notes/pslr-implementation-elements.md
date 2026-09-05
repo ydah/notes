@@ -2,13 +2,13 @@
 
 #parser #compiler #lr #pslr #lexer #lrama
 
-[[pslr|PSLR(1)]]の実装は、単に[[pseudo-scanner]]を追加するだけでは完結しない。論文準拠のシステムには、字句規則を記述する仕様言語、scanner tableを作る生成系、parser stateを受け取るruntime、state mergingを制約する[[ielr|IELR]]拡張、エラー処理、検証が必要になる。
+[[pslr|PSLR(1)]]の実装には、[[pseudo-scanner]]に加えて複数の要素が必要になる。字句規則を記述する仕様言語、scanner tableを作る生成系、parser stateを受け取るruntimeがある。さらにstate mergingを制約する[[ielr|IELR]]拡張、エラー処理、検証が必要になる。
 
-実装上もっとも重要なのは、次の依存関係である。
+実装の中心となる依存関係は次のとおり。
 
-> tiesとlayoutを反映した $acc(s_p)$ をdefault reductionより前に作り、その情報をscanner conflictの解決とIELR state compatibilityの両方へ渡す。
+> tiesとlayoutを反映した$acc(s_p)$をdefault reductionより前に作る。その情報をscanner conflictの解決とIELR state compatibilityの両方へ渡す。
 
-この順序を崩すと、後段の `scanner_accepts` とstate splittingが不正確になる。
+順序を崩すと、後段の`scanner_accepts`とstate splittingが不正確になる。
 
 ## 全要素
 
@@ -25,7 +25,7 @@
 | 9 | `length_precedences` | 生成 | コア | longest、shortest、token優先をruntimeの真偽表へ落とす |
 | 10 | scanner conflict resolverとレポート | 生成 | コア | conflictを有限に分類し、未解決・無効な宣言を黙って握りつぶさない |
 | 11 | IELR(1)本体 | 生成 | コア | Canonical LRの認識能力を実用的なstate数で得る |
-| 12 | IELR state compatibilityのPSLR拡張 | 生成 | **最重要の追加部分** | parser actionが同じでもscanner結果を変えるstate mergeを禁止する |
+| 12 | IELR state compatibilityのPSLR拡張 | 生成 | 最重要の追加部分 | parser actionが同じでもscanner結果を変えるstate mergeを禁止する |
 | 13 | fallback行とcharacter token | 生成・実行 | エラー処理 | 現在のstateでmatchがなくても決定的にtokenを返す |
 | 14 | `pseudo_scan` runtime | 実行 | コア | parser stateとscanner FSAを使って最終tokenを選ぶ |
 | 15 | [[lookahead-correction|LAC]] | 実行 | 独立した推奨機能 | 不正入力時の検出・診断・回復を補正する |
@@ -61,31 +61,31 @@ flowchart TD
 
 ### tokenの正規表現
 
-論文の `%token-re NAME (regex)` は、parser grammarとscanner specificationを一つのファイルへ統合する入口である。literal tokenと名前付き正規表現参照もここに含まれる。これがない場合、pseudo-scannerを自動生成するための字句仕様が存在しない。
+論文の`%token-re NAME (regex)`は、parser grammarとscanner specificationを一つのファイルへ統合する入口である。literal tokenと名前付き正規表現参照もここに含まれる。これがなければ、pseudo-scannerを自動生成する字句仕様が存在しない。
 
 ### lexical precedence
 
-`%lex-prec`は[[scanner-conflict|scanner conflict]]を宣言的に解決する。論文はidentity precedence、longest・shortest match、長さに関係しないtoken precedenceを組み合わせた7種類の演算子を定義する。同じtoken内のautolength conflictは、未指定ならlongest matchになる。
+`%lex-prec`は[[scanner-conflict|scanner conflict]]を宣言的に解決する。論文は7種類の演算子を定義している。identity precedence、longest・shortest match、長さに関係しないtoken precedenceの組み合わせである。同じtoken内のautolength conflictは、未指定ならlongest matchになる。
 
-これはkeywordとidentifier、`0`とoctal literal、`>`と`>>`、複数行commentの終端などを、Lexの「規則順とlongest match」だけに依存せず表現するために必要になる。
+これはLexの「規則順とlongest match」だけに依存せず、字句規則を表現するために必要になる。対象にはkeywordとidentifier、`0`とoctal literal、`>`と`>>`、複数行commentの終端などがある。
 
 ### lexical tie
 
-pseudo-scannerは通常、現在のstateで受理可能なtokenだけを候補にする。しかしreserved keywordが不可能でidentifierが可能な文脈では、`int`をidentifierとして返してしまう。`%lex-tie`は、このようなtoken群を同時に認識させ、正しいtokenを選んだうえでparserにsyntax errorを報告させる。
+pseudo-scannerは通常、現在のstateで受理可能なtokenだけを候補にする。しかしreserved keywordが不可能でidentifierが可能な文脈では、`int`をidentifierとして返してしまう。`%lex-tie`はこのようなtoken群を同時に認識させる。正しいtokenを選び、parserにsyntax errorを報告させるためである。
 
-tieは $acc(s_p)$ を変え、新しいconflictも作り得る。そのためresolverより前に適用する。どの組をtieすべきかは言語設計に依存するので、generatorは片方だけが受理される競合対を候補として報告する必要がある。keywordと`tIDENTIFIER`が多数存在するRubyでは、初期段階から必要になる。
+tieは$acc(s_p)$を変え、新しいconflictも作り得る。そのためresolverより前に適用する。どの組をtieすべきかは言語設計に依存する。generatorは、片方だけが受理される競合対を候補として報告する必要がある。keywordと`tIDENTIFIER`が多数存在するRubyでは、初期段階から必要になる。
 
 ### layoutとtoken action
 
-`YYLAYOUT`で始まるtokenは全stateの $acc(s_p)$ に加え、match後はparserへ返さず再scanする。空白とcommentをgrammarの全箇所へ挿入せずに扱える。layoutを加えると新しいconflictが生じるため、string literal内などではlexical precedenceによる抑制も必要になる。
+`YYLAYOUT`で始まるtokenは全stateの$acc(s_p)$に加える。match後はparserへ返さず、再scanする。これにより、空白とcommentをgrammarの全箇所へ挿入せずに扱える。layoutを加えると新しいconflictが生じるため、string literal内などではlexical precedenceによる抑制も必要になる。
 
-`%token-action`は非layout tokenのsemantic valueを構築する。連続したlayout lexemeを蓄積し、次のtoken actionから参照できるようにすれば、commentやmagic commentを保存する処理系にも対応できる。
+`%token-action`は非layout tokenのsemantic valueを構築する。連続したlayout lexemeを蓄積し、次のtoken actionから参照できるようにする。これにより、commentやmagic commentを保存する処理系にも対応できる。
 
 ## B. 生成系
 
-### scanner FSAと二つの表
+### scanner FSAと生成表
 
-scanner FSA $\Sigma_s$ は全token regexを合併したDFAであり、parser state別の判断は焼き込まない。FSAの受理状態に到達した後、次の表でtokenを決める。
+scanner FSA $\Sigma_s$は全token regexを合併したDFAであり、parser state別の判断は焼き込まない。FSAの受理状態に到達した後、次の表でtokenを決める。
 
 - `scanner_accepts[parser_state][scanner_accepting_state]` — その組み合わせで返すtoken
 - `state_to_accepting_state[scanner_state]` — FSA stateを圧縮した受理state indexへ変換
@@ -95,23 +95,23 @@ identity conflictと受理可能性は `scanner_accepts`、match長の比較は 
 
 ### $acc(s_p)$
 
-$acc(s_p)$ の基礎は、そのparser stateでShiftできるtokenとReduce actionのlookahead集合である。そこへlexical tieとlayout tokenを反映する。
+$acc(s_p)$の基礎は、そのparser stateでShiftできるtokenとReduce actionのlookahead集合である。そこへlexical tieとlayout tokenを反映する。
 
-default reductionはlookahead集合をparser tableから削除する最適化なので、$acc(s_p)$ はその適用前に計算する。適用後のtableだけを見ると、どのtokenでReduceすべきだったかを復元できず、pseudo-scannerの文脈制約が失われる。
+default reductionはlookahead集合をparser tableから削除する最適化である。そのため、$acc(s_p)$は適用前に計算する。適用後のtableだけでは、どのtokenでReduceすべきだったかを復元できない。結果としてpseudo-scannerの文脈制約が失われる。
 
 ### resolver
 
 同じ入力位置から生じるmatchは無限にあり得るため、resolverはscanner conflict profileとして有限のカテゴリへまとめる。scanner FSAをたどって各profileを見つけ、lexical precedenceで解決し、結果を表へ書き込む。
 
-未解決conflict、tie候補、どのstateにも作用しないuseless declarationは生成時に報告する。暗黙の規則順で握りつぶすと、grammarの変更やlanguage compositionによってtokenizationが静かに変わるためである。
+未解決conflict、tie候補、どのstateにも作用しないuseless declarationは生成時に報告する。暗黙の規則順で処理すると、grammarの変更やlanguage compositionによってtokenizationが警告なく変わるためである。
 
 ### IELRのPSLR拡張
 
 通常のIELR compatibilityは、stateをmergeしてもparser actionがCanonical LR相当になるかを調べる。PSLRではさらに、merge後もpseudo-scannerが同じmatchを選ぶかを調べなければならない。
 
-概念的にはstate $s_p$と$s'_p$について、任意の入力prefixで片方にmatchがないか、lexical precedence適用後の選択結果が同じ場合だけmergeできる。実装では無限の文字列を比較せず、scanner FSAから要約したpairwise conflictを用いる。
+概念的にはstate $s_p$と$s'_p$について、任意の入力prefixで片方にmatchがないかを調べる。両方にmatchがあれば、lexical precedence適用後の選択結果が同じ場合だけmergeできる。実装では無限の文字列を比較せず、scanner FSAから要約したpairwise conflictを用いる。
 
-ここがPSLRで最も本質的な新規部分になる。通常のIELRだけではparser actionを守れても、$acc(s_p)$ のunionによってpseudo-scannerのtoken選択が変わる可能性が残る。
+PSLRで中心となる新規部分である。通常のIELRだけではparser actionを守れても、$acc(s_p)$のunionによってpseudo-scannerのtoken選択が変わる可能性が残る。
 
 論文はさらに次の最適化を示す。
 
@@ -136,15 +136,15 @@ character token
 
 ## C. runtime
 
-`pseudo_scan`はparserから現在stateを受け取り、入力を一文字ずつscanner FSAへ流す。受理stateへ着くたびに `scanner_accepts` を引き、`length_precedences`に従ってbest matchを更新する。遷移不能または入力末尾で停止し、best matchの終端まで入力を消費してtokenを返す。
+`pseudo_scan`はparserから現在stateを受け取り、入力を一文字ずつscanner FSAへ流す。受理stateへ着くたびに`scanner_accepts`を引き、`length_precedences`に従ってbest matchを更新する。遷移不能または入力末尾で停止する。その後、best matchの終端まで入力を消費してtokenを返す。
 
-matchを確定するまで入力位置を確定できないため、先読みした文字のbufferingまたは巻き戻しが必要になる。layout tokenならlexemeを蓄積してscanを再開し、通常tokenなら必要なtoken actionを実行する。エラー時はcurrent row、fallback row、character tokenの順に選ぶ。
+matchを確定するまで入力位置を確定できないため、先読みした文字のbufferingまたは巻き戻しが必要になる。layout tokenならlexemeを蓄積してscanを再開する。通常tokenなら必要なtoken actionを実行する。エラー時はcurrent row、fallback row、character tokenの順に選ぶ。
 
-LACはこのコアとは独立している。state merging、default reduction、`%nonassoc`が起こす不正入力時の余分なReduce、semantic action、expected token listの誤りを補正するが、正しい入力に対するPSLRの成立条件ではない。詳細は[[lac-and-pslr|LACとPSLRの関係]]で扱う。
+LACはこのコアとは独立している。state merging、default reduction、`%nonassoc`が起こす不正入力時の余分なReduceとsemantic actionを補正する。expected token listの誤りも補正するが、正しい入力に対するPSLRの成立条件ではない。詳細は[[lac-and-pslr|LACとPSLRの関係]]で扱う。
 
 ## D. 検証
 
-最も有効なのは、従来scanner版とPSLR版へ同じ入力を与えるdifferential testである。次を分けて比較する。
+従来scanner版とPSLR版へ同じ入力を与えるdifferential testが有効である。次を分けて比較する。
 
 - 正しい入力で選ばれるtoken列とparser action
 - 最初のsyntax error位置
@@ -152,7 +152,7 @@ LACはこのコアとは独立している。state merging、default reduction�
 - expected token list
 - LALR、IELR、Canonical LR間の差
 
-PSLRの不具合は、state mergeの問題がscannerの別tokenとして現れるため原因が遠い。Lramaでは既存の`parse.y`とRuby test suiteを比較対象として再利用できる。
+PSLRでは、state mergeの問題がscannerの別tokenとして現れるため、不具合と原因が離れている。Lramaでは既存の`parse.y`とRuby test suiteを比較対象として再利用できる。
 
 ## E. 論文でも将来構想のもの
 

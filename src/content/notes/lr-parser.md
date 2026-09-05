@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-入力を左（Left）から右（Right）へ読みながら、[[rightmost-derivation|右端導出]]を逆向きに実行する構文解析方式。状態スタックと[[parsing-table|構文解析表]]を持ち、[[lookahead-token|lookahead token]]と現在の状態から[[shift|Shift]]・[[reduce|Reduce]]などの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込んでいく。
+入力を左（Left）から右（Right）へ読みながら、[[rightmost-derivation|右端導出]]を逆向きに実行する構文解析方式。状態スタックと[[parsing-table|構文解析表]]を持つ。[[lookahead-token|lookahead token]]と現在の状態から、[[shift|Shift]]・[[reduce|Reduce]]などの次の操作を決める。[[ll-parser|LLパーサー]]が開始記号から入力へ向かって展開するのに対し、LRパーサーは入力を読みながら部分的な構造を開始記号へ畳み込む。
 
 ## 動作
 
@@ -29,20 +29,20 @@ reduce NUMBER -> term
 reduce expr "+" term -> expr
 ```
 
-[[shift|Shift]]は入力トークンをスタックへ積む操作、[[reduce|Reduce]]はスタック上の記号列を[[production-rule|生成規則]]の左辺へ置き換える操作。最後に開始記号までreduceできればacceptになる。
+[[shift|Shift]]は入力トークンをスタックへ積む操作である。[[reduce|Reduce]]はスタック上の記号列を[[production-rule|生成規則]]の左辺へ置き換える操作である。最後に開始記号までreduceできればacceptになる。
 
 ## LR系の方式
 
 - [[slr-parser|SLR]] — [[follow-set|FOLLOW集合]]を使ってreduceする。単純だが、状態の文脈を粗く扱う。
 - [[lalr-parser|LALR]] — 同じLR(0)コアを持つ状態をまとめる。状態数を抑えやすいが、状態のマージによってconflictが増えることがある。
 - [[canonical-lr-parser|Canonical LR]] — [[lookahead|lookahead]]を状態ごとに持つ。精密だが、状態数が増えやすい。
-- [[ielr|IELR]]: LALRに近い状態数でCanonical LR(1)と同じ言語認識能力を得る。
+- [[ielr|IELR]] — LALRに近い状態数でCanonical LR(1)と同じ言語認識能力を得る。
 
 ## shift/reduce conflict
 
 ある状態でshiftとreduceの両方が可能になると[[conflict|shift/reduce conflict]]になる。`2 + 3 * 4`のような式では、`+`を先にreduceするか、`*`をshiftして後でreduceするかを決める必要がある。[[precedence-parsing|順位構文解析]]で扱うような演算子の優先順位・結合方向を文法に指定して解決することが多い。
 
-LRパーサーは左再帰を自然に扱えるため、左結合する演算子の文法をそのまま書きやすい。パーサーテーブルの状態とconflictを確認しながら文法を調整することになる。
+LRパーサーは左再帰を自然に扱えるため、左結合する演算子の文法をそのまま書きやすい。文法は、パーサーテーブルの状態とconflictを確認しながら調整する。
 
 ## 出典
 

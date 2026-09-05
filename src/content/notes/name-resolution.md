@@ -19,9 +19,9 @@ let value = 1;
 
 この例の内側のvalueは、外側のvalueではなく内側の定義を参照する。名前解決では、スコープ、import、shadowing、名前の種類ごとのnamespaceなどを考慮する。
 
-名前解決と[[type-inference|型推論]]は別の処理。valueがどの定義を参照するかを決めるのが名前解決で、その定義や式がどの型を持つかを調べるのが型推論・型検査。両方とも[[semantic-analysis|意味解析]]の一部として実装されることが多い。
+名前解決と[[type-inference|型推論]]は別の処理である。名前解決は、valueがどの定義を参照するかを決める。型推論・型検査は、その定義や式がどの型を持つかを調べる。どちらも[[semantic-analysis|意味解析]]の一部として実装されることが多い。
 
-Rustでは、macro expansionのためにimportとmacro名を先に解決し、AST全体ができたあとにcrate内の名前を解決する。解決処理の結果として、ソース中の名前から対応する定義へのリンクを作る。Rustにはmacro、value、type、lifetimeなど複数のnamespaceがある。
+Rustでは、macro expansionのためにimportとmacro名を先に解決する。AST全体ができたあと、crate内の名前を解決する。解決結果として、ソース中の名前から対応する定義へのリンクを作る。Rustにはmacro、value、type、lifetimeなど複数のnamespaceがある。
 
 名前解決に失敗すると、未定義の名前や見つからないimportなどのエラーになる。これはtoken列や括弧の対応が壊れている[[syntax-error|構文エラー]]とは異なる。
 

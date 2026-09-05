@@ -7,7 +7,7 @@ updated: 2026-08-18
 
 #parser #compiler #lr #ielr
 
-goto-follow closureは、IELR(1)のlookahead計算で使う、GOTOごとのfollow集合とその依存関係の推移閉包。通常の非終端記号の[[follow-set|FOLLOW集合]]よりも、LRオートマトンの状態を細かく区別する。
+goto-follow closureは、IELR(1)のlookahead計算で使う、GOTOごとのfollow集合と依存関係の推移閉包。通常の非終端記号の[[follow-set|FOLLOW集合]]よりも、LRオートマトンの状態を細かく区別する。
 
 ## goto-follow set
 
@@ -23,7 +23,7 @@ g = GOTO(state_i, A) -> state_j
 goto_follow(g) = { gの直後に現れ得るtoken }
 ~~~
 
-文法全体で計算するFOLLOW(A)ではなく、どの状態からどの非終端記号へ遷移したかに依存する。したがって、同じ非終端記号AへのGOTOでも、状態が違えばgoto-follow setが違うことがある。
+goto-follow setは、文法全体で計算するFOLLOW(A)ではなく、どの状態からどの非終端記号へ遷移したかに依存する。同じ非終端記号AへのGOTOでも、状態が違えば集合も違うことがある。
 
 ## followの依存関係
 
@@ -35,30 +35,30 @@ goto-follow setには、successor、internal、predecessorの3種類の依存関
 state_i --A--> state_j --"+"--> state_k
 ~~~
 
-この場合、+はGOTO(state_i, A)のgoto-follow setに入る。遷移先でnullableな非終端記号を通過できる場合は、その先のGOTOのfollowも引き継ぐ。
+この場合、+はGOTO(state_i, A)のgoto-follow setに入る。遷移先でnullableな非終端記号を通過できるなら、その先のGOTOのfollowも引き継ぐ。
 
 ~~~text
 state_i --A--> state_j --B--> state_k --"+"--> ...
                          B => ε
 ~~~
 
-この関係はsuccessor dependencyやread dependencyとして扱われる。直接終端記号へ進む場合だけでなく、nullableな非終端記号を経由する間接的な依存も含む。
+この関係をsuccessor dependencyまたはread dependencyとして扱う。終端記号へ直接進む場合だけでなく、nullableな非終端記号を経由する間接的な依存も含む。
 
-同じstateの中で、あるGOTOのitem coreを生成した別のGOTOのfollowに依存する関係は[[internal-dependency|internal dependency]]と呼ばれる。依存経路が別のstateを通ってeventual predecessorまでさかのぼる場合は[[predecessor-dependency|predecessor dependency]]になる。
+同じstate内で、あるGOTOのitem coreを生成した別のGOTOのfollowに依存する関係を[[internal-dependency|internal dependency]]と呼ぶ。依存経路が別のstateを通ってeventual predecessorまでさかのぼる場合は[[predecessor-dependency|predecessor dependency]]になる。
 
-どちらも、生成規則の残りがnullableな場合に、上流のGOTOやitemのlookaheadからfollowが伝わる関係。[[deremer|DeRemer]]と[[pennello|Pennello]]のincludes dependencyを、依存経路が同じstate内で完結するかどうかで分けたもの。
+どちらも、生成規則の残りがnullableな場合に、上流のGOTOやitemのlookaheadからfollowが伝わる関係。[[deremer|DeRemer]]と[[pennello|Pennello]]のincludes dependencyを、依存経路が同じstate内で完結するかで分けている。
 
 ## closureの計算
 
-GOTOを頂点、followの依存関係を辺とするグラフを考える。あるGOTOから出発して、依存するGOTOを繰り返したときに到達できる終端記号を集めたものがgoto-follow closure。
+GOTOを頂点、followの依存関係を辺とするグラフを考える。あるGOTOから依存先を繰り返したどり、到達できる終端記号を集めたものがgoto-follow closure。
 
-論文では、internal・predecessor dependencyをたどるclosureと、successor dependencyをたどるclosureを組み合わせて完全なgoto_followsを計算する。単に依存グラフの全ての辺を順番にたどればよいわけではなく、nullable性と、どの状態の経路から来た依存かを保つ必要がある。successor dependencyの後にpredecessor dependencyをたどると、合流前の別laneのtokenを混ぜる可能性がある。
+論文は二種類のclosureを組み合わせて完全なgoto_followsを計算する。一方はinternal・predecessor dependencyを、もう一方はsuccessor dependencyをたどる。依存グラフの全ての辺を順番にたどるだけではない。nullable性と、どの状態の経路から来た依存かを保つ必要がある。successor dependencyの後にpredecessor dependencyをたどると、合流前の別laneのtokenを混ぜる可能性がある。
 
-ここでいうclosureは、LR itemに新しいitemを追加する通常のLR item closureとは違う。GOTO間のfollow依存関係を固定点まで広げるグラフ計算を指す。
+ここでいうclosureは、LR itemに新しいitemを追加する通常のLR item closureとは異なる。GOTO間のfollow依存関係を固定点まで広げるグラフ計算を指す。
 
 ## IELRでの用途
 
-LALRのlookaheadは、状態マージの影響で異なる文脈の情報が混ざることがある。IELRはCanonical LR(1)に近いlookaheadの正確さを保つため、どのGOTOとlookaheadの依存関係がconflictへ寄与したかを調べる。
+LALRのlookaheadは、状態マージによって異なる文脈の情報が混ざることがある。IELRはCanonical LR(1)に近い正確さを保つため、どのGOTOとlookaheadの依存関係がconflictへ寄与したかを調べる。
 
 goto-follow closureは、その調査で使うlookaheadの供給元を計算する。そこから[[lane-annotations|lane annotations]]を作り、どの状態を分割すべきかを判断する。
 

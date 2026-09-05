@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #cst #tree-sitter
 
-Tree-sitterで、文法中の文字列リテラルに対応するnode。"+"、"("、")"、"if"のように、文法へ直接書いた文字列から作られるtokenがanonymous nodeになる。
+Tree-sitterのanonymous nodeは、文法中の文字列リテラルに対応するnode。"+"、"("、")"、"if"のように、文法へ直接書いた文字列から作られるtokenが該当する。
 
 ~~~javascript
 if_statement: $ => seq(
@@ -19,7 +19,7 @@ if_statement: $ => seq(
 )
 ~~~
 
-この場合、conditionとbodyは[[named-node|named node]]で、if・括弧はanonymous node。anonymous nodeは構文木から省略されるわけではなく、入力テキストに現れたtokenとして木に残る。
+この場合、conditionとbodyは[[named-node|named node]]、ifと括弧はanonymous nodeになる。anonymous nodeは省略されず、入力テキストに現れたtokenとして構文木に残る。
 
 Tree-sitterのqueryでは、anonymous nodeの種類を文字列で書く。
 
@@ -28,9 +28,9 @@ Tree-sitterのqueryでは、anonymous nodeの種類を文字列で書く。
   operator: "+")
 ~~~
 
-named childだけを辿るAPIを使うとanonymous nodeを飛ばせる。全ての子を辿るAPIを使えば、演算子や括弧も含めてlosslessな木を走査できる。したがって、anonymous nodeはAST的な構造からは邪魔になりやすいが、[[lossless-syntax-tree|lossless syntax tree]]の具体的な表記を保持するために必要になる。
+named childだけを辿るAPIはanonymous nodeを飛ばす。全ての子を辿るAPIなら、演算子や括弧を含むlosslessな木を走査できる。anonymous nodeはAST的な走査では邪魔になりやすいが、[[lossless-syntax-tree|lossless syntax tree]]が具体的な表記を保持するために必要になる。
 
-anonymous nodeかどうかは、tokenに意味があるかどうかではなく、grammarで名前付きruleとして定義されているか、文字列リテラルとして直接書かれているかで決まる。[[alias|alias]]の名前に文字列リテラルを渡した場合も、結果はanonymous nodeになる。
+anonymous nodeかどうかは、tokenの意味ではなくgrammar上の書き方で決まる。名前付きruleではなく文字列リテラルとして直接書かれたtokenが該当する。[[alias|alias]]の名前に文字列リテラルを渡した場合もanonymous nodeになる。
 
 ## 出典
 

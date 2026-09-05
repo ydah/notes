@@ -7,7 +7,7 @@ updated: 2026-08-20
 
 #parser #compiler #lr #bison
 
-%leftと%rightは、GNU Bisonでtokenのprecedenceとassociativityを同時に宣言するためのprecedence declaration。どちらもtokenを宣言する点では%tokenに似ているが、演算子を繰り返したときの結合方向と、parser tableのshift/reduce conflictの解決方法も指定する。
+%leftと%rightは、GNU Bisonでtokenのprecedenceとassociativityを同時に指定するprecedence declaration。tokenを宣言する点は%tokenと同じだが、演算子を繰り返したときの結合方向と、parser tableのshift/reduce conflictの解決方法も指定する。
 
 ~~~text
 %left  '+' '-'
@@ -15,7 +15,7 @@ updated: 2026-08-20
 %right '^'
 ~~~
 
-同じ宣言行に並べたtokenは同じprecedenceを持ち、同じassociativityで結合する。宣言行は上から下へ読む。後に書いた行ほどprecedenceが高いので、上の例では+と-より*と/の方が強く、^が最も高い。
+同じ宣言行に並べたtokenは、同じprecedenceとassociativityを持つ。宣言行は上から下へ読み、後に書いた行ほどprecedenceが高い。上の例では+と-より*と/の方が強く、^が最も高い。
 
 ## %left
 
@@ -43,7 +43,7 @@ x = (y = z)
 
 規則のprecedenceは、デフォルトでは右辺に現れる最後のterminal symbolから決まる。規則に別のprecedenceを与えたい場合は%precを使う。
 
-precedenceが付いていないtokenまたは規則がconflictに関係する場合、BisonのデフォルトはShift。したがって、%leftと%rightは文法の曖昧性を一般に消す仕組みではなく、特定のconflictに対するactionの選択を宣言する仕組み。
+precedenceが付いていないtokenまたは規則がconflictに関係する場合、BisonのデフォルトはShiftである。%leftと%rightは文法の曖昧性を一般に消すのではなく、特定のconflictに対するactionの選択を宣言する。
 
 ## %nonassocとの違い
 

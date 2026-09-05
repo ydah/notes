@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #canonical-lr #lr
 
-Canonical LR(1)は、LRアイテムごとに正確な1 tokenのlookaheadを持つLRパーサーの構築方式。[[slr-parser|SLR]]のFOLLOW集合のような文法全体の近似を使わず、[[lalr-parser|LALR]]のように状態をcoreだけでマージもしないため、3方式の中で最も精密に文脈を区別できる。
+Canonical LR(1)は、LRアイテムごとに正確な1 tokenのlookaheadを持つLRパーサーの構築方式。[[slr-parser|SLR]]のFOLLOW集合のような文法全体の近似を使わず、[[lalr-parser|LALR]]のように状態をcoreだけでマージしない。このため、3方式の中で最も精密に文脈を区別できる。
 
 ## LR(1)アイテム
 
@@ -16,7 +16,7 @@ Canonical LRでは、[[production-rule|生成規則]]と入力位置にlookahead
 [A -> α ., ")" ]
 ```
 
-これは、`A -> α`をreduceできる状態だが、lookaheadが`)`のときだけreduceするという意味。`+`や`*`がlookaheadなら、別の操作になるかエラーになる。
+これは、lookaheadが`)`のときだけ`A -> α`をreduceするという意味。`+`や`*`がlookaheadなら、別の操作になるかエラーになる。
 
 SLRの、
 
@@ -28,13 +28,13 @@ A -> α .
 
 ## コスト
 
-状態をマージしないため、LALRより状態数とパーサーテーブルが大きくなりやすい。生成されたテーブルのサイズや構築時間が問題になることがある。
+状態をマージしないため、LALRより状態数とパーサーテーブルが大きくなりやすい。テーブルのサイズや構築時間が問題になることもある。
 
-一方、LALRの状態マージによる[[mysterious-conflict|mysterious conflict]]を避けやすく、文法がどのlookaheadでreduce可能なのかを調べる用途にも向いている。
+その一方で、LALRの状態マージによる[[mysterious-conflict|mysterious conflict]]を避けやすい。文法がどのlookaheadでreduce可能かを調べる用途にも向く。
 
 ## 位置づけ
 
-Canonical LRはLR(1)の認識能力をそのまま使いたいときの基準になる。実用上は、Canonical LRと同じ認識能力を保ちながら状態数を抑える[[ielr|IELR]]が選択肢になる。
+Canonical LRは、LR(1)の認識能力をそのまま使うときの基準になる。実用上は、同じ認識能力を保ちながら状態数を抑える[[ielr|IELR]]も選択肢になる。
 
 ## 出典
 

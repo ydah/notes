@@ -7,7 +7,7 @@ updated: 2026-08-18
 
 #parser #compiler #lr #ielr
 
-kernel item lookahead setは、あるparser stateのkernel itemに付いているlookahead tokenの集合。どのtokenをそのitemの文脈として保持するかを表す。
+kernel item lookahead setは、あるparser stateのkernel itemに付くlookahead tokenの集合。そのitemの文脈として保持するtokenを表す。
 
 ## itemのlookahead
 
@@ -25,7 +25,7 @@ kernel itemのlookahead setは、文法全体の非終端記号Aに対するFOLL
 
 あるstateのkernel itemのlookaheadは、同じitemが現れる全てのpredecessor stateから生成される。ただし、predecessor側ではdotが一つ左にある位置から、そのitemへ遷移する場合を考える。
 
-つまり、先行stateのkernel item lookaheadを、遷移先stateの同じkernel itemへ伝える。この生成を経路ごとに分けて保持することで、Canonical LR(1)の文脈を区別できる。
+先行stateのkernel item lookaheadを、遷移先stateの同じkernel itemへ伝える。この生成を経路ごとに分けて保持し、Canonical LR(1)の文脈を区別する。
 
 LALRでは同じcoreのstateをmergeするため、この集合がunionされる。IELRでは、どのlaneから来たlookaheadかを[[lane-annotations|lane annotations]]で追跡し、必要ならisocoreをsplitして混合を防ぐ。
 
@@ -33,7 +33,7 @@ LALRでは同じcoreのstateをmergeするため、この集合がunionされる
 
 [[follow-kernel-items|follow_kernel_items]]は、GOTOのfollowが同じstateのどのkernel item lookaheadに依存するかを表す。[[always-follows|always_follows]]は、kernel item lookaheadに依存しない不変なfollow tokenを切り出す。
 
-Phase 3では、これらを使ってsplit後のstateのpartial kernel item lookahead setを作り、annotationに含まれるlookaheadをsuccessor stateへ伝播する。Phase 4では、最終的なreduction lookaheadを改めて計算する。
+Phase 3では、これらを使ってsplit後のstateのpartial kernel item lookahead setを作る。annotationに含まれるlookaheadをsuccessor stateへ伝播する。Phase 4では、最終的なreduction lookaheadを改めて計算する。
 
 ## isocoreとの関係
 

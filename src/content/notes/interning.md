@@ -21,7 +21,7 @@ Green Treeでは、nodeがimmutableであることがinterningを使いやすく
 
 rust-analyzerの資料では、1 + 1に含まれる2つの1 tokenが同じtokenを共有し、同じwhitespace tokenも共有できる例が示されている。より大きなsubtreeでも、同じ構造なら共有できる。
 
-interningは、単に変更されていないsubtreeを再利用するpersistent treeの構造共有とは少し違う。構造共有は既存のchildを新しい親から参照するだけでも実現できる。interningは、同じ内容の値を比較して既存の代表へ戻す処理まで行う。
+interningとpersistent treeの構造共有は異なる。構造共有は、既存のchildを新しい親から参照するだけでも実現できる。interningは同じ内容の値を比較し、既存の代表を再利用する。
 
 構文木のinterningには次の効果がある。
 
@@ -30,11 +30,11 @@ interningは、単に変更されていないsubtreeを再利用するpersistent
 - immutableな木の更新で、変更された経路だけを作り直しやすくする
 - 共有されたGreen nodeを[[red-tree|Red Tree]]やSyntaxNodeから異なる出現位置として扱える
 
-Green nodeが同じ内容を持つことと、構文木上の同じ出現位置であることは別。例えば、同じ式がファイル中に2回現れると、Green Treeでは同じ構造として共有できても、親やoffsetを持つRed nodeでは別のnode identityになる。
+Green nodeが同じ内容を持つことと、構文木上の同じ出現位置であることは異なる。同じ式がファイル中に2回現れる場合、Green Treeでは同じ構造として共有できる。一方、親やoffsetを持つRed nodeでは別のnode identityになる。
 
-interningの実装は、必ずグローバルなtableや整数IDを使うとは限らない。rust-analyzerのGreen Treeでは、interningの結果はArc<Node>であり、tableのindexを保持しなくてもtree単体で生きられる。internerの有効範囲も実装によって異なり、資料上は現在per-fileで作られる。
+interningの実装は、必ずしもグローバルなtableや整数IDを使わない。rust-analyzerのGreen Treeでは、interningの結果はArc<Node>である。tableのindexを保持しなくてもtree単体で生きられる。internerの有効範囲も実装によって異なり、資料上は現在per-fileで作られる。
 
-interningはGreen Treeの必須条件ではない。[[green-tree|Green Tree]]は、構造とテキストをimmutableに保持する設計そのものを指し、interningはその上に加えられるallocation・共有の最適化。
+interningはGreen Treeの必須条件ではない。[[green-tree|Green Tree]]は、構造とテキストをimmutableに保持する設計を指す。interningは、その上に加えるallocation・共有の最適化である。
 
 ## 出典
 

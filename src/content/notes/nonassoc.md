@@ -17,7 +17,7 @@ updated: 2026-08-18
 %nonassoc '<' '>'
 ~~~
 
-この宣言によって<と>は同じprecedenceになり、同じprecedenceのtokenが繰り返し現れるshift/reduce conflictはsyntax errorとして扱われる。
+この宣言により、`<`と`>`は同じprecedenceになる。同じprecedenceのtokenが繰り返し現れるshift/reduce conflictはsyntax errorとして扱われる。
 
 ~~~text
 a < b       # 許可
@@ -28,7 +28,7 @@ a < b < c   # syntax error
 
 ## precedence宣言との違い
 
-[[left-right|%left]]、[[left-right|%right]]、%nonassocは、tokenのprecedenceとassociativityを同時に宣言する。異なる宣言行に書いたtokenは、後の行ほど高いprecedenceになる。
+[[left-right|%left]]、[[left-right|%right]]、%nonassocは、tokenのprecedenceとassociativityを同時に宣言する。異なる宣言行に書いたtokenは、後の行ほどprecedenceが高い。
 
 %precedenceはprecedenceだけを宣言し、associativityは指定しない。そのため、associativityに関係するconflictをビルド時に残せる。%nonassocは、同じprecedenceの組み合わせをruntimeのsyntax errorにする。
 
@@ -36,7 +36,7 @@ a < b < c   # syntax error
 
 %nonassocによるerror actionは、入力tokenを見て初めて実行できる。さらにdefault reductionやparser stateのmergeがあると、tokenを確認する前にReduceが進むことがある。
 
-このため、%nonassocは[[default-reduction|default reduction]]と同じく、[[syntax-error|構文エラー]]の検出や[[error-recovery|error recovery]]の開始を遅らせる要因になる。[[lookahead-correction|Lookahead Correction（LAC）]]は、通常のstackを変更せずにtokenを受理できるかを先に調べる。
+このため、%nonassocは[[syntax-error|構文エラー]]の検出や[[error-recovery|error recovery]]の開始を遅らせる。[[default-reduction|default reduction]]も同じ要因になる。[[lookahead-correction|Lookahead Correction（LAC）]]は、通常のstackを変更せずにtokenを受理できるかを先に調べる。
 
 ## 出典
 

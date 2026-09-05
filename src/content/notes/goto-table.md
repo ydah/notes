@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-Reduceによって非終端記号ができたあと、どの状態へ進むかを決める表。状態と非終端記号の組を受け取り、次の状態を返す。
+GOTO表は、Reduceによって非終端記号ができた後に進む状態を決める。状態と非終端記号の組を受け取り、次の状態を返す。
 
 ```text
 GOTO[state, nonterminal] -> next state
@@ -28,11 +28,11 @@ push A
 push GOTO[p, A]
 ```
 
-[[parsing-table|構文解析表]]の`ACTION`表が終端記号とlookaheadに対する操作を決めるのに対し、GOTO表の列は[[nonterminal-symbol|非終端記号]]で、値は状態番号になる。
+[[parsing-table|構文解析表]]の`ACTION`表は、終端記号とlookaheadに対する操作を決める。GOTO表の列は[[nonterminal-symbol|非終端記号]]で、値は状態番号になる。
 
-GOTOという名前は、LR項集合上の[[transition-function|遷移関数]]と、そこから作られた表の両方を指すことがある。このページでは、生成された表の意味を扱う。
+GOTOという名前は、LR項集合上の[[transition-function|遷移関数]]と、そこから作る表の両方を指す。このノートでは、生成された表の意味を扱う。
 
-IELRの表構築では、単に次の状態番号を調べるだけでなく、GOTOごとにどのtokenが後続し得るかを計算する。この情報が[[goto-follow-closures|goto-follow closures]]の入力になる。
+IELRの表構築では、次の状態番号に加え、GOTOごとにどのtokenが後続し得るかを計算する。この情報が[[goto-follow-closures|goto-follow closures]]の入力になる。
 
 ## 出典
 

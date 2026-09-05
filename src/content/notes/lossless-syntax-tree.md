@@ -9,7 +9,7 @@ updated: 2026-08-17
 
 入力テキストを構文木に変換したあと、木から元のテキストを完全に再構成できる構文木。空白、改行、コメント、tokenの元の表記などを捨てずに保持する。
 
-例えば、次のコードでは、関数や式の親子関係だけでなく、コメント、改行、インデント、tokenの文字列も木のどこかに対応づけられる。
+次のコードでは、関数や式の親子関係に加え、コメント、改行、インデント、tokenの文字列も木のどこかに対応づけられる。
 
 ~~~rust
 fn add(a: i32, b: i32) -> i32 { // comment
@@ -25,7 +25,7 @@ Lossless Syntax Tree
 元の入力テキスト
 ~~~
 
-この性質により、木を経由しても入力テキストを変えずに戻せる。[[ast|AST]]のように空白・コメント・括弧などを省略する木とは異なり、formatterやrefactoringで変更していない部分を保持しやすい。
+木を経由しても、入力テキストを変えずに戻せる。[[ast|AST]]のように空白・コメント・括弧などを省略する木とは異なり、formatterやrefactoringで変更していない部分を保持しやすい。
 
 典型的には、次の要素を組み合わせる。
 
@@ -33,9 +33,9 @@ Lossless Syntax Tree
 - token — キーワード、識別子、演算子、括弧など
 - trivia — 空白、コメント、改行、プリプロセッサディレクティブなど
 
-losslessは特定のparser algorithmを指す言葉ではない。[[lr-parser|LRパーサー]]でも再帰下降パーサーでも実装できる。構文エラーがある入力をどこまで木に残せるかは実装ごとに違うが、rust-analyzerのようにerror nodeやparser errorを扱いながら木を作る設計もある。
+losslessは特定のparser algorithmを指さない。[[lr-parser|LRパーサー]]でも再帰下降パーサーでも実装できる。構文エラーがある入力をどこまで木に残すかは実装ごとに異なる。rust-analyzerのように、error nodeやparser errorを扱いながら木を作る設計もある。
 
-rust-analyzerでは、[[green-tree|Green Tree]]が構造とテキストを保持し、[[red-tree|Red Tree]]やSyntaxNodeが親・位置を持つviewになる。rowanはこのための[[rust-analyzer-rowan|lossless syntax treeライブラリ]]。
+rust-analyzerでは、[[green-tree|Green Tree]]が構造とテキストを保持する。[[red-tree|Red Tree]]やSyntaxNodeは、親・位置を持つviewになる。rowanはこのための[[rust-analyzer-rowan|lossless syntax treeライブラリ]]である。
 
 ## 出典
 

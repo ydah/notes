@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr #bison
 
-IELRはInadequacy Elimination LRの略。[[lalr-parser|LALR]]に近い状態数を保ちながら、[[canonical-lr-parser|Canonical LR(1)]]と同じ言語認識能力を持つ[[ielr-table|IELR table]]を構築する方式。
+IELRはInadequacy Elimination LRの略。[[ielr-table|IELR table]]を構築する方式である。[[canonical-lr-parser|Canonical LR(1)]]と同じ言語認識能力を、[[lalr-parser|LALR]]に近い状態数で実現する。
 
 Bisonでは次の指定でIELRを選べる。
 
@@ -29,15 +29,15 @@ Bisonの`lr.type`のデフォルトは`lalr`で、`ielr`と`canonical-lr`にも�
 
 IELRは決定的LRパーサーのtable構築方式。[[glr|GLR]]のように実行時に複数の解析候補を並行して追跡する方式ではない。
 
-[[mysterious-conflict|mysterious conflict]]のように、LALRの状態マージが原因で発生する[[conflict|conflict]]を避けるために使える。Bisonの公式マニュアルでは、IELRは必要な場合だけCanonical LRに相当する状態の区別を残し、それ以外ではLALRに近い表を作る方式として説明されている。
+IELRは、LALRの状態マージが原因で発生する[[mysterious-conflict|mysterious conflict]]などの[[conflict|conflict]]を避ける。Bisonの公式マニュアルでは、必要な場合だけCanonical LRに相当する状態の区別を残し、それ以外ではLALRに近い表を作る方式と説明されている。
 
 [[pslr|PSLR]]では、現在のparser stateで受理できるtokenを[[pseudo-scanner|pseudo-scanner]]が参照する。状態マージによってこの情報を失うとscannerの判断に影響するため、IELRはPSLRを実現するための基盤になる。
 
-IELRのlookahead計算では、[[goto-follow-closures|goto-follow closures]]でGOTOごとのfollow依存関係を求める。この依存関係には[[internal-dependency|internal dependency]]と[[predecessor-dependency|predecessor dependency]]があり、[[lane-annotations|lane annotations]]でconflictに寄与した経路を記録して、必要な状態だけを分割する。
+IELRのlookahead計算では、[[goto-follow-closures|goto-follow closures]]でGOTOごとのfollow依存関係を求める。依存関係には[[internal-dependency|internal dependency]]と[[predecessor-dependency|predecessor dependency]]がある。[[lane-annotations|lane annotations]]でconflictに寄与した経路を記録し、必要な状態だけを分割する。
 
 ## IELRの構築手順
 
-IELRはparser runtimeで動的にstateを分ける方式ではない。parser tableを生成するときに、まずLALR tableを作り、そのtableで失われたLR(1)の文脈を調べ、必要なstateだけを分割してからlookaheadとactionを計算し直す。
+IELRはparser tableの生成時にstateを分割する。まずLALR tableを作り、そこで失われたLR(1)の文脈を調べる。必要なstateだけを分割してから、lookaheadとactionを計算し直す。
 
 論文の構成は次の6段階。
 
@@ -59,7 +59,7 @@ Phase 5  残ったconflictを通常の方法で解決する
 
 最初にLR(0)のparser stateと遷移を作る。次に、DeRemerとPennelloの方法でGOTOのfollow setからreductionのlookahead setを計算する。この段階の出力は通常のLALR(1) table。
 
-ここでは同じLR(0) coreを持つstateをまとめるため、異なるlaneから来たlookaheadが同じstateやitemに集まる。Canonical LR(1)なら別stateに残るlookaheadがunionされ、LR(1)なら発生しないconflictや、正しい文脈に必要な区別を失う余地ができる。
+同じLR(0) coreを持つstateをまとめるため、異なるlaneから来たlookaheadが同じstateやitemに集まる。Canonical LR(1)なら別stateに残るlookaheadがunionされる。その結果、LR(1)なら発生しないconflictが生じたり、正しい文脈に必要な区別が失われたりする。
 
 ### Phase 1: 依存関係の補助表
 
@@ -69,7 +69,7 @@ Phase 2以降でlookaheadの経路を追跡できるように、LALR tableから
 - [[follow-kernel-items|follow_kernel_items]] — GOTOのfollow setが、同じstateのどのkernel itemのlookahead setに依存するかを記録する。[[internal-dependency|internal dependency]]だけをたどって計算できる部分。
 - [[always-follows|always_follows]] — kernel itemのlookahead setや先行stateに依存せず、state分割後も変わらないgoto-follow tokenを記録する部分。
 
-この分離があるため、Phase 3は全てのlookaheadを最初から計算し直すのではなく、state分割で変わり得る寄与だけを追跡できる。
+この分離により、Phase 3はstate分割で変わり得る寄与だけを追跡できる。全てのlookaheadを最初から計算し直す必要はない。
 
 ### Phase 2: conflictからlaneを逆向きに追跡
 
@@ -84,15 +84,15 @@ LALR tableのconflictを、Canonical LR(1)なら同じ形で発生しないLR(1)
 
 一方のlaneからはac、もう一方のlaneからはbcが同じreduce itemのlookaheadへ伝わる。LALRではそれらが同じstateに集まるため、state 18でconflictになる。IELRはconflict stateだけでなく、laneが合流するstate 16、17も分割候補としてannotationする。
 
-ここで重要なのは、state番号そのものを機械的に分けることではない。同じLR(0) coreを持つ[[isocore|isocore]]のそれぞれについて、どの[[inadequacy-contribution|inadequacy contribution]]を保つ必要があるかを記録すること。
+state番号そのものを機械的に分けるのではない。同じLR(0) coreを持つ[[isocore|isocore]]ごとに、保つべき[[inadequacy-contribution|inadequacy contribution]]を記録する。
 
 ### Phase 3: annotationを使ったstate再構築
 
-Phase 3はLR(0) stateを作る処理に似ている。ただし、同じLR(0) coreを持つ[[isocore|isocore]]を常に一つへmergeするのではなく、annotationが示す全てのinadequacyに対して同じ[[dominant-contribution|dominant contribution]]を持つ場合だけmergeする。
+Phase 3はLR(0) stateを作る処理に似ている。同じLR(0) coreを持つ[[isocore|isocore]]でも、常に一つへmergeするわけではない。annotationが示す全てのinadequacyに対し、[[dominant-contribution|dominant contribution]]が同じ場合だけmergeする。
 
-mergeできないisocoreは別々のstateとして残る。これがIELRでいうstate split。lookaheadがどのlaneから来たかを区別する必要がある箇所だけが分割されるので、Canonical LRのように全てのLR(1) contextを別stateにする必要はない。
+mergeできないisocoreは別々のstateとして残る。これがIELRのstate splitである。lookaheadがどのlaneから来たかを区別すべき箇所だけを分割するため、Canonical LRのように全てのLR(1) contextを別stateにする必要はない。
 
-Phase 3では、[[follow-kernel-items|follow_kernel_items]]と[[always-follows|always_follows]]から部分的な[[kernel-item-lookahead-set|kernel item lookahead set]]を作り、annotationに含まれるlookaheadだけをsuccessor stateへ伝播させる。これによって、別laneのlookaheadが分割後のstateへ誤って混ざることを防ぐ。
+Phase 3では、[[follow-kernel-items|follow_kernel_items]]と[[always-follows|always_follows]]から、部分的な[[kernel-item-lookahead-set|kernel item lookahead set]]を作る。annotationに含まれるlookaheadだけをsuccessor stateへ伝播させ、別laneのlookaheadが分割後のstateへ混ざるのを防ぐ。
 
 ### Phase 4・5: tableの完成
 
@@ -114,7 +114,7 @@ IELR:
   寄与が同じならmerge
 ~~~
 
-したがって、文法を変更せずにLALRの認識能力不足を除去しながら、LALRに近いstate数を保てる。LALRで十分な文法なら、Bisonの説明どおりIELRの出力はLALRと同じになる。
+IELRは文法を変更せずにLALRの認識能力不足を除去し、LALRに近いstate数を保つ。LALRで十分な文法なら、Bisonの説明どおりIELRの出力はLALRと同じになる。
 
 ## 他のツールとの関係
 

@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #diagnostic
 
-入力token列を、[[context-free-grammar|文脈自由文法]]に従う構造として続けられないときに発生するエラー。字句解析の失敗である[[lexical-analyzer|字句解析機]]のエラーや、型が合わないといった[[semantic-analysis|意味解析]]のエラーとは別。
+入力token列を、[[context-free-grammar|文脈自由文法]]に従う構造として続けられないときに発生するエラー。[[lexical-analyzer|字句解析機]]による字句解析のエラーや、型が合わないといった[[semantic-analysis|意味解析]]のエラーとは異なる。
 
 LRパーサーでは、現在の状態と[[lookahead|lookahead token]]から[[parsing-table|構文解析表]]を調べる。
 
@@ -15,7 +15,7 @@ LRパーサーでは、現在の状態と[[lookahead|lookahead token]]から[[pa
 ACTION[state, lookahead]
 ```
 
-その組み合わせにShift、Reduce、Acceptなどの操作がなければ、入力を続ける方法がないため構文エラーになる。入力の途中で必要なtokenが欠けている場合は、欠落箇所そのものではなく、次に読んだtokenやEOFでエラーを検出することもある。
+その組み合わせにShift、Reduce、Acceptなどの操作がなければ、入力を続けられず構文エラーになる。入力途中で必要なtokenが欠けた場合、欠落箇所そのものではなく、次に読んだtokenやEOFでエラーを検出することもある。
 
 ```text
 expr -> "(" expr ")"
@@ -24,9 +24,10 @@ expr -> "(" expr ")"
 
 この場合、parserは`)`を期待した状態でEOFを読む。報告されたtokenが、入力ミスの原因とは限らない。
 
-構文エラーと[[conflict|conflict]]は別物。conflictはparser tableを構築する時点で複数の操作候補があること、構文エラーはparserを実行した時点で入力に対する操作がないことを指す。conflictのないLRパーサーでも、文法に属さない入力を受け取れば構文エラーになる。
+構文エラーと[[conflict|conflict]]は別物。conflictはparser tableの構築時に複数の操作候補があることを指す。構文エラーはparserの実行時に、入力に対する操作がないことを指す。conflictのないLRパーサーでも、文法に属さない入力を受け取れば構文エラーになる。
 
-LALRやIELRでdefault reductionを先に実行すると、不正なlookaheadを確認する前にReduceが進み、構文エラーの検出が遅れることがある。[[lookahead-correction|Lookahead Correction（LAC）]]は一時的なstackで先にparser actionを試し、余分なReduceやsemantic actionを通常の解析に反映させずにエラーを検出する。
+LALRやIELRでdefault reductionを先に実行すると、不正なlookaheadを確認する前にReduceが進み、構文エラーの検出が遅れることがある。[[lookahead-correction|Lookahead Correction（LAC）]]は、一時的なstackで先にparser actionを試す。余分なReduceやsemantic actionを通常の解析に反映させず、エラーを検出する。
+
 構文エラーを検出した後も解析を続ける処理がerror recovery。Bisonでは、文法に特別な`error` tokenを含む規則を書ける。
 
 ```text
@@ -36,9 +37,9 @@ stmt:
 ;
 ```
 
-エラー時にstackをpopして`error` tokenをShiftし、次の`;`まで入力を読み飛ばす、といった回復を行う。error recoveryは入力を正しいものに変換したことではなく、後続の入力から追加のエラーや構文木をできるだけ得るための戦略。
+エラー時にstackをpopして`error` tokenをShiftし、次の`;`まで入力を読み飛ばす、といった回復を行う。error recoveryは入力を正しいものに変換する処理ではない。後続の入力から追加のエラーや構文木をできるだけ得るための戦略。
 
-IDE向けのparserでは、構文エラーがあっても[[syntax-tree|構文木]]を捨てず、missing tokenやerror nodeを残して解析を続ける設計がある。[[cst|CST]]や[[rust-analyzer-rowan|rust-analyzer/rowan]]が扱う[[lossless-syntax-tree|lossless]]な木と、parserが報告するerrorの一覧は別の情報として持てる。
+IDE向けのparserには、構文エラーがあっても[[syntax-tree|構文木]]を捨てず、missing tokenやerror nodeを残して解析を続ける設計がある。[[cst|CST]]や[[rust-analyzer-rowan|rust-analyzer/rowan]]が扱う[[lossless-syntax-tree|lossless]]な木と、parserが報告するerror一覧は別の情報として持てる。
 
 ## 出典
 

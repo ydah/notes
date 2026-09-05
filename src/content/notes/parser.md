@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #grammar
 
-[[lexical-analyzer|字句解析機]]から受け取ったtoken列が、文法に従っているかを認識するプログラムまたは関数。実装によって、[[syntax-tree|構文木]]・[[ast|AST]]・意味値なども生成する。
+[[lexical-analyzer|字句解析機]]から受け取ったtoken列が、文法に従っているかを認識するプログラムまたは関数。実装によっては、[[syntax-tree|構文木]]・[[ast|AST]]・意味値なども生成する。
 
 ```text
 expr -> expr "+" term | term
@@ -26,7 +26,7 @@ NUMBER "+" NUMBER
 
 Rubyの構文解析器には[[prism|Prism]]がある。Prismはparser generatorではなく、Rubyのソースコードを解析してASTとdiagnosticを返すparserの実装。
 
-[[ll-parser|LLパーサー]]や[[lr-parser|LRパーサー]]のように、文法をどの方向から処理するかによって構文解析の方式が分かれる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]を使う場合は、文法から構文解析器の実装や[[parsing-table|構文解析表]]を生成する。
+[[ll-parser|LLパーサー]]や[[lr-parser|LRパーサー]]のように、文法を処理する方向によって構文解析の方式が分かれる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]を使う場合は、文法から構文解析器の実装や[[parsing-table|構文解析表]]を生成する。
 
 ## 出典
 

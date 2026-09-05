@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #slr #lr
 
-Simple LR。LR(0)の状態機械を作り、reduceしてよいlookaheadを[[follow-set|FOLLOW集合]]から決めるLRパーサーの構築方式。[[lalr-parser|LALR]]や[[canonical-lr-parser|Canonical LR]]より単純だが、FOLLOW集合が文法全体の情報なので、現在の状態の文脈を細かく区別できない。
+Simple LR。LR(0)の状態機械を作り、reduceしてよいlookaheadを[[follow-set|FOLLOW集合]]から決めるLRパーサーの構築方式。[[lalr-parser|LALR]]や[[canonical-lr-parser|Canonical LR]]より単純。ただし、FOLLOW集合は文法全体の情報なので、現在の状態の文脈を細かく区別できない。
 
 ## reduceの条件
 
@@ -28,7 +28,7 @@ FOLLOW(A) = { "+", ")", "$" }
 
 ## 問題点
 
-FOLLOW(A)は、Aが文法のどの文脈に現れているかを区別しない。実際にはある状態で`)`のときだけreduceすべきでも、文法全体のFOLLOW(A)に`+`が含まれていれば、`+`でもreduceを試みる。その結果、shift/reduce conflictやreduce/reduce conflictが発生することがある。
+FOLLOW(A)は、Aが文法のどの文脈に現れているかを区別しない。ある状態では`)`のときだけreduceすべきでも、文法全体のFOLLOW(A)に`+`が含まれていれば、`+`でもreduceを試みる。その結果、shift/reduce conflictやreduce/reduce conflictが発生することがある。
 
 ## 位置づけ
 

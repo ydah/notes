@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #ocaml #parser #compiler #lr
 
-OCaml向けのLR(1)パーサージェネレータ。高水準の文法定義とOCamlの[[semantic-action|semantic action]]からパーサーを生成する。[[yacc|yacc]]・ML-Yacc・[[ocamlyacc|ocamlyacc]]に影響を受けつつ、より現代的な文法記法・エラー処理・解析用APIを提供している。
+OCaml向けのLR(1)パーサージェネレータ。高水準の文法定義とOCamlの[[semantic-action|semantic action]]からパーサーを生成する。[[yacc|yacc]]・ML-Yacc・[[ocamlyacc|ocamlyacc]]の影響を受け、文法記法・エラー処理・解析用APIを拡張している。
 
 ## 入力と出力
 
@@ -16,10 +16,10 @@ OCaml向けのLR(1)パーサージェネレータ。高水準の文法定義とO
 
 ## バックエンド
 
-- **code**: LRオートマトンを[[mutual-recursion|相互再帰]]するOCaml関数へコンパイルする。デフォルト。
-- **table**: コンパクトなテーブルを生成し、MenhirLibのインタプリタで実行する。incremental APIとinspection APIはこのバックエンドで使える。
-- **[[glr|GLR]]**: 未解決の[[conflict|conflict]]を複数の解析候補として扱う。
-- **[[rocq|Rocq]]**: 文法に対してparserがcorrect and completeであることの証明を含むRocqコードを生成する。
+- `code` — LRオートマトンを[[mutual-recursion|相互再帰]]するOCaml関数へコンパイルする。デフォルト。
+- `table` — コンパクトなテーブルを生成し、MenhirLibのインタプリタで実行する。incremental APIとinspection APIはこのバックエンドで使える。
+- [[glr|GLR]] — 未解決の[[conflict|conflict]]を複数の解析候補として扱う。
+- [[rocq|Rocq]] — 文法に対してparserがcorrect and completeであることの証明を含むRocqコードを生成する。
 
 ## ocamlyaccとの関係
 

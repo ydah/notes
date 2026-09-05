@@ -7,11 +7,11 @@ updated: 2026-08-19
 
 #parser #compiler #lr #pslr
 
-Minimal LR(1)は、Canonical LR(1)の言語認識能力を保ちながら、LALR(1)に近い大きさのparser tableを生成するという設計目標・アルゴリズムの名前。単にstate数が全体で最小になるという意味ではなく、LR(1)の文脈をどこまで区別するかを必要な箇所に絞るという意味でのminimal。
+Minimal LR(1)は、Canonical LR(1)の言語認識能力を保ちつつ、LALR(1)に近い大きさのparser tableを生成する設計目標・アルゴリズムの名前。state数全体を最小にするのではなく、LR(1)の文脈を区別する箇所を必要最小限に絞る。
 
 Canonical LR(1)はlookaheadの異なる文脈を別stateに保つので正確だが、stateとtableが大きくなりやすい。LALR(1)は同じLR(0) coreを持つstateをmergeするため小さいが、本来は別だった文脈を混ぜて人工的なconflictや認識能力の低下を起こすことがある。
 
-[[ielr|IELR]]は、LALRのstate mergeで生じるLR(1)-relative inadequacyを調べ、必要なstateだけをsplitする。これにより、LALRに近いtable sizeでCanonical LR(1)相当の認識能力を保つ。つまり、Canonical LRの全stateをそのまま残すのではなく、mergeしても意味が変わらないstateはmergeする。
+[[ielr|IELR]]は、LALRのstate mergeで生じるLR(1)-relative inadequacyを調べ、必要なstateだけをsplitする。Canonical LRの全stateを残さず、mergeしても意味が変わらないstateはmergeする。これにより、LALRに近いtable sizeでCanonical LR(1)相当の認識能力を保つ。
 
 PSLRでは、parser stateのtoken受理集合を[[pseudo-scanner|pseudo-scanner]]が使う。したがって、parserの認識能力だけでなく、state mergeによってscannerのtoken候補が変わらないことも必要になる。PSLRのMinimal LR(1)は、IELRをこのpseudo-scannerの文脈へ拡張したものとして説明される。
 

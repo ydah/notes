@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #grammar #cst #tree-sitter
 
-Tree-sitterの文法で、ruleが構文木に現れる名前を別の名前へ変える指定。文法上は既存のruleを使いながら、tree上では別のnode kindとして見せられる。
+Tree-sitterのaliasは、ruleが構文木に現れるときの名前を変える指定。文法では既存のruleを使い、treeでは別のnode kindとして見せられる。
 
 ~~~javascript
 property: $ => seq(
@@ -17,7 +17,7 @@ property: $ => seq(
 )
 ~~~
 
-この例では、identifierの構文を使っているが、propertyの子はproperty_nameというnamed nodeとして現れる。同じruleを複数の文脈で使い、treeやqueryの上では役割ごとに別の名前で扱いたいときに使える。
+この例ではidentifierの構文を使う一方、propertyの子はproperty_nameというnamed nodeとして現れる。同じruleを複数の文脈で使い、treeやqueryでは役割ごとに別名で扱いたいときに使う。
 
 aliasの第2引数が名前付きruleへの参照なら、結果は[[named-node|named node]]になる。文字列リテラルなら[[anonymous-node|anonymous node]]になる。
 
@@ -26,9 +26,9 @@ alias($.identifier, $.property_name) // named node
 alias($.identifier, "property")       // anonymous node
 ~~~
 
-aliasは入力にマッチする文字列を変えない。変わるのは構文木上のnode名で、grammar上の元のrule名や実際のテキストと区別して考える必要がある。生成されたnode-types.jsonやqueryでは、alias後のnode名が現れる。
+aliasは入力にマッチする文字列を変えない。変わるのは構文木上のnode名だけで、grammar上のrule名や実際のテキストとは区別する。生成されたnode-types.jsonやqueryにはalias後のnode名が現れる。
 
-supertype ruleにaliasを付ける場合は注意が必要。aliasされたnodeは名前の上ではsupertypeに見えても、supertypeのsubtypeを透過的にまとめて扱う性質までは引き継がない。
+supertype ruleにaliasを付ける場合、aliasされたnodeは名前の上ではsupertypeに見える。ただし、subtypeを透過的にまとめて扱う性質までは引き継がない。
 
 ## 出典
 

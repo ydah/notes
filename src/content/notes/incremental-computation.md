@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #compiler #incremental #salsa #rust-analyzer #semantic-analysis
 
-入力の一部が変わったとき、計算結果をすべて捨てて最初から計算し直すのではなく、依存関係をたどって必要な計算だけを再実行する仕組み。日本語では増分計算。
+入力の一部が変わったとき、計算結果をすべて捨てず、依存関係をたどって必要な計算だけを再実行する仕組み。日本語では増分計算。
 
 コンパイラやIDEでは、入力とそこから導出される値をqueryとして扱う。
 
@@ -23,7 +23,7 @@ def_map(crate)
 type_of(expression)
 ~~~
 
-各queryは、キーから値を返す関数として考えられる。例えばsyntax_tree(file)はファイルのsource textに依存し、def_map(crate)は複数ファイルのitem treeに依存する。実行時にどのqueryがどのqueryを呼び出したかを記録すると、依存グラフができる。
+各queryは、キーから値を返す関数として考えられる。例えばsyntax_tree(file)はファイルのsource textに依存する。def_map(crate)は複数ファイルのitem treeに依存する。実行時にquery間の呼び出しを記録すると、依存グラフができる。
 
 incremental computation engineは、queryの結果と依存関係をmemoizeする。入力が変わったときの流れは概ね次のようになる。
 
@@ -33,15 +33,15 @@ incremental computation engineは、queryの結果と依存関係をmemoizeす�
 - 依存先が変わっていればqueryを再実行する
 - 再実行後の結果が以前と同じなら、上位のqueryへの変更伝播を止める
 
-最後の動作は[[early-cutoff|early cutoff]]と呼ばれる。入力のsource textが変わっても、ASTの構造やitem treeの内容が変わらなければ、その結果に依存するqueryまで再計算しなくてよい。
+最後の動作は[[early-cutoff|early cutoff]]と呼ばれる。入力のsource textが変わっても、ASTの構造やitem treeの内容が同じなら、依存するqueryまで再計算しない。
 
-rust-analyzerでは、Salsaをincremental and on-demand computationのために使う。queryの結果は必要になった時点で計算されるので、入力変更のたびにすべての意味解析を先回りして実行するわけではない。Salsaは入力queryと、入力から値を導出するpureなquery functionを持ち、結果をmemoizeして再利用する。
+rust-analyzerは、incremental and on-demand computationにSalsaを使う。queryの結果は必要になった時点で計算されるため、入力変更のたびにすべての意味解析を先回りして実行しない。Salsaは入力queryと、入力から値を導出するpureなquery functionを持ち、結果をmemoizeして再利用する。
 
-例えば関数のbodyだけを編集した場合、関数のbodyや型推論に関係するqueryは再計算が必要になる。一方、関数名や公開itemの一覧のように変更されていない情報は、設計次第で以前の結果を再利用できる。rust-analyzerでは、ItemTreeがfunction bodyの変更に対して安定するようにし、crate全体の情報を不必要に無効化しない設計がある。
+例えば関数のbodyだけを編集した場合、bodyや型推論に関係するqueryは再計算する。一方、関数名や公開itemの一覧など、変わっていない情報は設計次第で再利用できる。rust-analyzerはItemTreeをfunction bodyの変更に対して安定させ、crate全体の情報が不必要に無効化されるのを防ぐ。
 
 [[incremental-reparse|incremental reparse]]は、古い構文木を使ってソースの変更範囲だけを再解析する仕組み。incremental computationは、構文木に限らず、[[name-resolution|名前解決]]・[[type-inference|型推論]]・意味モデルなどの計算にも適用できる。部分再解析は、より大きなincremental computationの一段階として使える。
 
-incremental computationは単に「変更された箇所だけを処理する」ことではない。何が何に依存するかを正しく記録し、変更後の結果が同じかを判定できるようにqueryの境界を設計する必要がある。依存関係が粗すぎると再計算が増え、細かすぎると依存グラフとmemoの管理コストが増える。
+incremental computationには、依存関係の記録と、変更後の結果が同じかを判定できるquery境界が必要である。依存関係が粗すぎると再計算が増える。細かすぎると依存グラフとmemoの管理コストが増える。
 
 ## 出典
 

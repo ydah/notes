@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #lr
 
-LRパーサーが、現在の状態と[[lookahead-token|lookahead token]]から次の操作を調べるための表。文法から状態機械を作り、その遷移とReduce条件を表にしたもの。
+LRパーサーが、現在の状態と[[lookahead-token|lookahead token]]から次の操作を調べる表。文法から作った状態機械の遷移とReduce条件を表す。
 
 通常は、終端記号に対する`ACTION`と、非終端記号に対する[[goto-table|GOTO表]]に分けて考える。
 
@@ -32,7 +32,7 @@ T -> NUMBER
 
 だとする。パーサーは状態`state`と入力の終端記号を使って、`ACTION[state, NUMBER]`や`ACTION[state, "+"]`を調べる。Reduceして右辺に対応する状態をpopしたら、残ったスタック頂上の状態を`p`として、`GOTO[p, E]`のように次の状態を調べる。
 
-SLR・LALR・Canonical LRの違いは、主にこの表をどの状態とlookahead情報から構築するかに現れる。[[slr-parser|SLR]]ではFOLLOW集合、[[lalr-parser|LALR]]と[[canonical-lr-parser|Canonical LR]]では状態に紐づくlookaheadを使う。
+SLR・LALR・Canonical LRの違いは、主に表の構築に使う状態とlookahead情報に現れる。[[slr-parser|SLR]]ではFOLLOW集合、[[lalr-parser|LALR]]と[[canonical-lr-parser|Canonical LR]]では状態に紐づくlookaheadを使う。
 
 ## 出典
 

@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #compiler #ast
 
-AST（Abstract Syntax Tree）は、ソースコードの具体的な書き方よりも、意味に関係する構造を表すための木。日本語では抽象構文木。
+AST（Abstract Syntax Tree、抽象構文木）は、ソースコードの具体的な表記を省き、意味に関係する構造を表す木。
 
 例えば、
 
@@ -23,15 +23,15 @@ BinaryOperation(+)
 └── Integer(2)
 ```
 
-括弧、カンマ、空白、コメントのように、意味の構造を読むために不要な情報は省略されやすい。`(1 + 2)`と`1 + 2`を同じASTへ写像する実装もある。ASTから元のソース表記へ完全に戻せるとは限らない。
+括弧、カンマ、空白、コメントなど、意味の構造を読むために不要な情報は省略されやすい。`(1 + 2)`と`1 + 2`を同じASTへ写像する実装もある。このため、ASTから元のソース表記へ完全に戻せるとは限らない。
 
-ASTに残る情報は実装次第で、演算子の種類、識別子の名前、リテラルの値、ソース位置などは持ちうる。一方、[[name-resolution|名前解決]]や型情報までASTに含むとは限らない。rust-analyzerでも、syntax treeは[[semantic-less|semantic-less]]で、意味情報は後段のモデルで扱う。
+ASTに残る情報は実装による。演算子の種類、識別子の名前、リテラルの値、ソース位置などを持ちうるが、[[name-resolution|名前解決]]や型情報まで含むとは限らない。rust-analyzerでもsyntax treeは[[semantic-less|semantic-less]]で、意味情報は後段のモデルで扱う。
 
-[[cst|CST]]が具体的なtoken列を保持するのに対し、ASTは構文の細部を抽象化する。ASTを独立した木として作る実装もあれば、[[lossless-syntax-tree|lossless]]な[[syntax-tree|構文木]]の上に型付きAST APIを重ねる実装もある。
+[[cst|CST]]が具体的なtoken列を保持するのに対し、ASTは構文の細部を抽象化する。独立したASTを作る実装もあれば、[[lossless-syntax-tree|lossless]]な[[syntax-tree|構文木]]に型付きAST APIを重ねる実装もある。
 
-[[semantic-action|semantic action]]でReduce時にASTノードを作ることもできる。ただし、ASTはパーサーのsemantic actionから作るものに限らず、CSTや構文木を後から変換して作ることもある。
+[[semantic-action|semantic action]]でReduce時にASTノードを作ることもできる。CSTや構文木を後から変換する方法もあり、パーサーのsemantic actionに限られない。
 
-ASTはコンパイラの型検査、静的解析、定数畳み込み、コード生成、refactoringの[[semantic-analysis|意味解析]]部分などで使う。IDE向けのパーサーでは、構文エラーを含む入力からまずエラー回復可能なCSTを作り、その上にAST相当のAPIを提供する設計もある。
+ASTはコンパイラの[[semantic-analysis|意味解析]]、型検査、静的解析、定数畳み込み、コード生成、refactoringなどで使う。IDE向けのパーサーには、構文エラーを含む入力からエラー回復可能なCSTを作り、その上にAST相当のAPIを提供する設計もある。
 
 ## 出典
 

@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #compiler #semantic-analysis
 
-構文としては正しいプログラムが、その言語の意味の規則にも従っているかを調べる処理。[[semantic-less|semantic-less]]な[[syntax-tree|構文木]]や[[ast|AST]]を入力にして、[[name-resolution|名前解決]]・型検査・[[type-inference|型推論]]などを行う。
+構文として正しいプログラムが、その言語の意味規則にも従っているかを調べる処理。[[semantic-less|semantic-less]]な[[syntax-tree|構文木]]や[[ast|AST]]を入力にして、[[name-resolution|名前解決]]・型検査・[[type-inference|型推論]]などを行う。
 
 ~~~text
 ソースコード
@@ -29,11 +29,11 @@ let x = 1;
 x + true;
 ~~~
 
-x + trueをどの演算として解釈できるか、xとtrueの型が適合するかを調べるのは意味解析の仕事。文法にないtoken列を拒否する[[syntax-error|構文エラー]]とは別の段階のエラーになる。
+`x + true`をどの演算として解釈できるか、`x`と`true`の型が適合するかを調べるのは意味解析の仕事。文法にないtoken列を拒否する[[syntax-error|構文エラー]]とは別の段階のエラーになる。
 
-意味解析の結果は、エラー一覧だけとは限らない。各識別子がどの定義を参照するか、各式の型は何か、といった情報を中間表現や意味モデルに付加し、後段の最適化・コード生成・IDE機能で使えるようにする。
+意味解析の結果は、エラー一覧だけとは限らない。各識別子が参照する定義や各式の型を、中間表現や意味モデルに付加する。これらの情報は後段の最適化・コード生成・IDE機能で使う。
 
-Rustコンパイラでは、parserがASTを返したあと、ASTをHIRへloweringする。HIRを使って[[type-inference|型推論]]、trait solving、型検査を行う。[[name-resolution|名前解決]]やmacro expansionは、型検査より前の段階にも関わる。
+Rustコンパイラでは、parserが返したASTをHIRへloweringする。HIRを使って[[type-inference|型推論]]、trait solving、型検査を行う。[[name-resolution|名前解決]]やmacro expansionは、型検査より前の段階にも関わる。
 
 ## 出典
 

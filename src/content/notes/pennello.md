@@ -13,7 +13,7 @@ Pennelloは、DeRemerとともにLALR(1)のlookaheadを効率よく計算する�
 
 LALR(1)では、LR(0) automatonを作ったあと、各reduce itemをどのtokenでreduceしてよいかを計算する必要がある。PennelloとDeRemerの方法は、これをCanonical LR(1) stateを全て作る処理としてではなく、GOTO間の関係の計算として行う。
 
-GOTOを頂点として、nullableな記号列を通じてfollowを伝える関係を作る。関係の閉包を求め、token集合を固定点まで伝播させることで、reduce actionのlookaheadを得る。
+GOTOを頂点として、nullableな記号列を通じてfollowを伝える関係を作る。関係の閉包を求め、token集合を固定点まで伝播させる。これにより、reduce actionのlookaheadを得る。
 
 この方法では、[[lalr-parser|LALR]]のstate数を小さく保ったまま、state merging後に必要なlookaheadを計算できる。実装上は、依存関係をSCCごとに処理して集合のunion回数を抑えることが重要になる。
 
@@ -21,7 +21,7 @@ GOTOを頂点として、nullableな記号列を通じてfollowを伝える関�
 
 IELRのPhase 0では、DeRemer/Pennelloの方法でLALR tableを作る。その後、state mergeによって失われたlookaheadの文脈を調べる。
 
-Phase 3でstateを分割すると、分割前に計算したlookaheadをそのまま使えない。そこで[[follow-kernel-items|follow_kernel_items]]と[[always-follows|always_follows]]を使い、分割後も変わらない部分と、kernel itemのlookaheadに依存する部分を分けて再構築する。
+Phase 3でstateを分割すると、分割前に計算したlookaheadをそのまま使えない。そこで[[follow-kernel-items|follow_kernel_items]]と[[always-follows|always_follows]]を使う。分割後も変わらない部分と、kernel itemのlookaheadに依存する部分を分けて再構築する。
 
 したがって、Pennelloの仕事はIELRそのものを定義するものではないが、IELRが出発点にするLALR lookahead計算の基礎になっている。
 

@@ -7,23 +7,23 @@ updated: 2026-08-18
 
 #parser #compiler #lr #ielr
 
-dominant contributionは、一つのinadequacyに複数のaction contributionがあるとき、conflict resolutionの結果として選ばれるaction側の寄与。
+dominant contributionは、一つのinadequacyに複数のaction contributionがあるとき、conflict resolutionで選ばれたaction側の寄与。
 
 ## 「dominant」の意味
 
-ここでのdominantは、頻度が高いとか、文法的に重要という意味ではない。parser tableのconflict resolution関数が、あるlookahead tokenに対して最終的に採用するactionを指す。
+ここでのdominantは、頻度の高さや文法上の重要性を意味しない。parser tableのconflict resolution関数が、あるlookahead tokenに対して最終的に採用するactionを指す。
 
-例えば、shift/reduce conflictに対してprecedenceとassociativityを適用し、reduceを選ぶなら、そのinadequacyについてはreduce側のcontributionがdominantになる。resolutionでactionを選べない場合は、dominant contributionも定まらない。
+例えば、shift/reduce conflictへprecedenceとassociativityを適用してreduceを選ぶとする。そのinadequacyではreduce側のcontributionがdominantになる。resolutionでactionを選べなければ、dominant contributionも定まらない。
 
 ## IELRでの用途
 
-同じLR(0) coreを持つ[[isocore|isocore]]をmergeしてよいかを判定するとき、IELRは各[[inadequacy|inadequacy]]についてdominant contributionが維持されるかを調べる。
+IELRは、同じLR(0) coreを持つ[[isocore|isocore]]をmergeしてよいか判定するとき、各[[inadequacy|inadequacy]]のdominant contributionが維持されるかを調べる。
 
-二つのisocoreをmergeすると、あるtokenでdominant contributionが変わる場合、そのmergeはCanonical LR(1)と同じ認識結果を保てない。その場合はstateをsplitする。
+二つのisocoreをmergeした結果、あるtokenのdominant contributionが変わるなら、Canonical LR(1)と同じ認識結果を保てない。その場合はstateをsplitする。
 
-逆に、異なるlaneが集まっても全てのinadequacyでdominant contributionが変わらないなら、同じstateへmergeできる。この判定によって、IELRは必要なstateだけを増やす。
+異なるlaneが集まっても、全てのinadequacyでdominant contributionが変わらなければ、同じstateへmergeできる。この判定により、IELRは必要なstateだけを増やす。
 
-precedence指定や[[nonassoc|%nonassoc]]は最終的なconflict resolutionに影響するが、dominant contributionの判定はgrammarの記述上の重要度ではなく、actionの選択結果に基づく。
+precedence指定や[[nonassoc|%nonassoc]]は、最終的なconflict resolutionに影響する。dominant contributionの判定は、grammarの記述上の重要度ではなくactionの選択結果に基づく。
 
 ## 出典
 

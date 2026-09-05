@@ -7,11 +7,11 @@ updated: 2026-08-18
 
 #parser #compiler #lr #lalr
 
-LALR tableは、LALR(1)のstate machineとlookaheadから作るparser table。runtimeでは、現在のstateと[[lookahead-token|lookahead token]]からACTIONを調べ、非終端記号の遷移はGOTOで調べる。
+LALR tableは、LALR(1)のstate machineとlookaheadから作るparser table。runtimeは現在のstateと[[lookahead-token|lookahead token]]からACTIONを調べる。非終端記号の遷移はGOTOで調べる。
 
 ## stateをまとめる
 
-Canonical LR(1)のstateに含まれるLR itemからlookaheadを除いたLR(0) coreが同じなら、LALRはそのstateを一つにまとめる。マージ後は、同じcoreに付いていたlookaheadをunionする。
+Canonical LR(1)のstateに含まれるLR itemからlookaheadを除いた部分がLR(0) coreである。coreが同じなら、LALRはそのstateを一つにまとめ、lookaheadをunionする。
 
 ~~~text
 Canonical LR(1):
@@ -22,11 +22,11 @@ LALR:
   [A -> α ., {x, y}]
 ~~~
 
-このマージでstate数とtableを小さくできる。LALR tableの論理的な構造は、terminalのACTION欄とnonterminalのGOTO欄からなる[[parsing-table|構文解析表]]。
+このマージでstate数とtableを小さくできる。LALR tableは、terminalのACTION欄とnonterminalのGOTO欄からなる[[parsing-table|構文解析表]]である。
 
 ## マージの副作用
 
-元は別の文脈にあったlookaheadがunionされると、Canonical LR(1)では存在しなかったReduce/Reduce conflictなどが発生することがある。LALR tableのstate mergeが原因で発生する分かりにくいconflictは[[mysterious-conflict|mysterious conflict]]と呼ばれる。
+元は別の文脈にあったlookaheadをunionすると、Canonical LR(1)にはなかったReduce/Reduce conflictなどが発生する場合がある。LALR tableのstate mergeが原因で発生する分かりにくいconflictは[[mysterious-conflict|mysterious conflict]]と呼ばれる。
 
 LALR tableは常にCanonical LR(1)と同じ言語を認識できるわけではない。文法によっては、LALRのマージで必要な文脈を区別できなくなり、Canonical LR(1)や[[ielr-table|IELR table]]なら受理できる入力を受理できない。
 
@@ -38,7 +38,7 @@ Bisonでは次の指定でLALR tableを生成する。lr.typeのデフォルト�
 %define lr.type lalr
 ~~~
 
-LALR parserは、tableを作った後のruntimeの方式を指すことが多い。LALR tableは、そのruntimeが参照する具体的なACTION/GOTOのデータを指す。
+LALR parserはtableを使うruntimeの方式を指すことが多い。LALR tableは、そのruntimeが参照する具体的なACTION/GOTOのデータを指す。
 
 ## 出典
 

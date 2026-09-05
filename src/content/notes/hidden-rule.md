@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #grammar #cst #tree-sitter
 
-Tree-sitterの構文木に、対応するnodeを作らないgrammar rule。rule名をアンダースコアで始めると、そのruleはhiddenになり、定義された構造が親ruleへ展開されたように木へ現れる。
+hidden ruleは、Tree-sitterの構文木に対応するnodeを作らないgrammar rule。rule名をアンダースコアで始めるとhiddenになり、定義した構造が親ruleへ展開されたように木へ現れる。
 
 ~~~javascript
 call_expression: $ => seq(
@@ -22,13 +22,13 @@ _expression: $ => choice(
 )
 ~~~
 
-_expressionのようなwrapper nodeをそのまま木へ残すと、単に別のnodeを包むだけの層が増える場合がある。hidden ruleはこの構文上の補助的な層を隠し、identifierやcall_expressionのような具体的なnodeを直接たどりやすくするために使う。
+_expressionのようなwrapper nodeを木へ残すと、別のnodeを包むだけの層が増える場合がある。hidden ruleはこの補助的な層を隠し、identifierやcall_expressionのような具体的なnodeを直接たどりやすくする。
 
-hidden ruleの定義や参照が消えるわけではない。隠されるのはrule自身のnodeであり、定義の中にあるvisibleなnodeやtokenは親の子として残る。[[named-node|named node]]や[[anonymous-node|anonymous node]]とは、nodeを作るかどうかを制御する別の仕組み。
+hidden ruleの定義や参照は消えない。隠されるのはrule自身のnodeであり、定義内のvisibleなnodeやtokenは親の子として残る。[[named-node|named node]]と[[anonymous-node|anonymous node]]の違いは、作られたnodeが名前を持つかどうかにある。hidden ruleは、rule自身のnodeを作るかどうかを制御する別の仕組み。
 
-Tree-sitterには、expressionやtypeのような抽象カテゴリをsupertypesとして指定する仕組みもある。supertype ruleは名前がアンダースコアで始まらなくても構文木から隠され、queryではsupertypeとして配下のsubtypeをまとめて扱える。
+Tree-sitterでは、expressionやtypeのような抽象カテゴリをsupertypesに指定できる。supertype ruleは名前がアンダースコアで始まらなくても構文木から隠される。queryでは、配下のsubtypeをsupertypeとしてまとめて扱える。
 
-hidden ruleは[[alias|alias]]で別名を付けられる。aliasで見えるnode名を与えると、hiddenなruleの構造を特定のnode kindとして利用できる。
+hidden ruleには[[alias|alias]]で別名を付けられる。見えるnode名を与えると、hiddenなruleの構造を特定のnode kindとして利用できる。
 
 ## 出典
 

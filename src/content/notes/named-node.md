@@ -25,11 +25,11 @@ Tree-sitterのqueryでは、named nodeを括弧で書く。
 (identifier) @name
 ~~~
 
-node-types.jsonのnamedフィールドでも、そのnode kindがnamedかどうかを確認できる。parser APIにはnamed childだけを辿る操作があり、句読点や演算子などのanonymous nodeを飛ばして構造を走査できる。
+node-types.jsonのnamedフィールドでも、そのnode kindがnamedかどうかを確認できる。parser APIでは、named childだけを辿る操作も使える。句読点や演算子などのanonymous nodeを飛ばして構造を走査できる。
 
-named nodeは「意味解析済みのnode」という意味ではない。identifierがnamed nodeであっても、それがどの変数や定義を参照するかは[[semantic-less|semantic-less]]な構文木には含まれず、[[name-resolution|名前解決]]などの後段で決まる。
+named nodeは「意味解析済みのnode」という意味ではない。identifierがnamed nodeでも、それが参照する変数や定義は[[semantic-less|semantic-less]]な構文木に含まれない。[[name-resolution|名前解決]]などの後段で決まる。
 
-[[hidden-rule|hidden rule]]の中で参照されたnamed ruleは、hiddenな親nodeが木から消えても、子のnamed nodeとして木に残る。[[alias|alias]]で別名を付けると、元のruleがnamed nodeでも、構文木上では別のnamed nodeとして見える。
+[[hidden-rule|hidden rule]]の中で参照されたnamed ruleは、hiddenな親nodeが木から消えても、子のnamed nodeとして残る。[[alias|alias]]で別名を付けると、元のruleがnamed nodeでも、構文木上では別のnamed nodeとして見える。
 
 ## 出典
 

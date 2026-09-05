@@ -6,7 +6,7 @@ updated: 2026-08-17
 
 #parser #compiler #ll #lr
 
-文法中の[[nonterminal-symbol|非終端記号]]の直後に現れうる[[terminal-symbol|終端記号]]を集めた集合。文法全体からパーサー生成時に計算するもので、実際の入力を読んだときの次のtokenそのものではない。[[lookahead|lookahead]]の候補を文法からまとめたもの、と考えると分かりやすい。
+FOLLOW集合は、文法中の[[nonterminal-symbol|非終端記号]]の直後に現れうる[[terminal-symbol|終端記号]]を集めたもの。パーサー生成時に文法全体から計算するため、実際の入力における次のtokenそのものではない。文法から得られる[[lookahead|lookahead]]の候補に当たる。
 
 ## 計算方法
 
@@ -18,7 +18,7 @@ updated: 2026-08-17
 X -> α A β
 ```
 
-の形なら、`β`の[[first-set|FIRST集合]]に含まれる終端記号をFOLLOW(A)へ追加する。`β`が空文字（[[epsilon|ε]]）になりうる場合は、FOLLOW(X)もFOLLOW(A)へ追加する。
+この形では、`β`の[[first-set|FIRST集合]]に含まれる終端記号をFOLLOW(A)へ追加する。`β`が空文字（[[epsilon|ε]]）になりうる場合は、FOLLOW(X)もFOLLOW(A)へ追加する。
 
 例えば、
 
@@ -46,7 +46,7 @@ SLRでは、[[production-rule|生成規則]]を読み終えた状態、
 A -> α .
 ```
 
-で、lookaheadがFOLLOW(A)に含まれていればreduceする。FOLLOW集合は文法全体に対して1つしかなく、現在のパーサー状態の文脈を細かく区別しない。そのため、Canonical LRなら起きないconflictがSLRでは起きることがある。
+この状態では、lookaheadがFOLLOW(A)に含まれていればreduceする。FOLLOW集合は文法全体に対して1つしかなく、現在のパーサー状態を細かく区別しない。このため、Canonical LRでは起きないconflictがSLRで起きることがある。
 
 LL(1)の予測パーサーでも、空文字を生成できる規則を選ぶときにFOLLOW集合を使う。
 

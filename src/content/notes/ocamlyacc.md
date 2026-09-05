@@ -13,7 +13,7 @@ OCamlに付属するYacc系のパーサージェネレータ。文脈自由文�
 ocamlyacc parser.mly
 ```
 
-`parser.ml`と`parser.mli`が生成される。生成されたparser関数は、[[lexical-analyzer|字句解析機]]と`Lexing.lexbuf`を受け取り、開始記号に対応するsemantic valueを返す。token型も`parser.mli`に生成される。
+`parser.ml`と`parser.mli`が生成される。生成されたparser関数は、[[lexical-analyzer|字句解析機]]と`Lexing.lexbuf`を受け取る。返す値は開始記号に対応するsemantic valueである。token型も`parser.mli`に生成される。
 
 ```ocaml
 %token <int> INT
@@ -36,7 +36,7 @@ expr:
 
 `{ $1 }`や`{ $1 + $3 }`の部分が[[semantic-action|semantic action]]。規則を認識したときに実行され、右辺のsemantic valueから左辺の値を作る。
 
-ocamlyaccは[[lalr-parser|LALR(1)]]のparserを生成する。状態マージによって状態数を小さくできる一方、[[canonical-lr-parser|Canonical LR(1)]]なら発生しない[[conflict|conflict]]が起きることがある。`ocamlyacc -v`を実行すると、構文解析表とconflictのレポートを`parser.output`に出力できる。
+ocamlyaccは[[lalr-parser|LALR(1)]]のparserを生成する。状態マージによって状態数を小さくできる一方、[[canonical-lr-parser|Canonical LR(1)]]なら発生しない[[conflict|conflict]]が起きることもある。`ocamlyacc -v`を実行すると、構文解析表とconflictのレポートを`parser.output`に出力できる。
 
 [[menhir|Menhir]]はOCaml向けの後発のパーサージェネレータ。ocamlyaccの文法を高い互換性で受け付けつつ、LR(1)文法、conflictの説明、エラー処理などを拡張している。
 

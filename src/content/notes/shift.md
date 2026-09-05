@@ -7,7 +7,7 @@ updated: 2026-08-17
 
 #parser #lr
 
-LRパーサーが、[[lookahead-token|lookahead token]]を入力から読み取り、パーサースタックへ積む操作。Shiftでは入力tokenを消費し、対応する状態へ遷移する。[[production-rule|生成規則]]の右辺を左辺へまとめる処理はまだ行わない。
+LRパーサーが[[lookahead-token|lookahead token]]を入力から読み取り、パーサースタックへ積む操作。Shiftでは入力tokenを消費し、対応する状態へ遷移する。[[production-rule|生成規則]]の右辺を左辺へまとめる処理はまだ行わない。
 
 現在の状態とlookahead tokenを[[parsing-table|構文解析表]]で調べると、Shiftと遷移先の状態が得られる。
 
@@ -19,7 +19,7 @@ LRパーサーが、[[lookahead-token|lookahead token]]を入力から読み取�
 
 Shiftの後は、tokenの意味値と遷移先の状態がスタックに追加される。次の操作は、新しい状態と次のlookaheadを使って決める。
 
-[[reduce|Reduce]]との違いは、Shiftが入力を消費するのに対して、Reduceはlookaheadを消費せず、スタック上の右辺を左辺へまとめる点。
+[[reduce|Reduce]]との違いは、Shiftが入力を消費するのに対し、Reduceはlookaheadを消費しない点。Reduceはスタック上の右辺を左辺へまとめる。
 
 ## 出典
 
