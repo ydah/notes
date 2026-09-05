@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-06
 ---
 
 # 順位構文解析
@@ -30,7 +30,7 @@ E -> E "+" E | E "*" E | NUMBER
 
 [[shift-reduce-parsing|shift-reduce構文解析]]の一種だが、一般のLRパーサーとは構文解析表の作り方が異なる。LRパーサーは文法全体から表を作るのに対し、順位構文解析は演算子間の関係を直接使って式を処理する。
 
-GNU Bisonの[[left-right|%left]]や[[left-right|%right]]は、一般のLR表で発生したshift/reduce conflictを演算子の優先順位・結合方向で解決する。同じ考え方を利用するが、順位構文解析そのものとは別の仕組みである。
+GNU Bisonの[[left|%left]]や[[right|%right]]は、一般のLR表で発生したshift/reduce conflictを演算子の優先順位・結合方向で解決する。共通の解決規則は[[precedence-declaration|precedence declaration]]にまとめる。同じ考え方を利用するが、順位構文解析そのものとは別の仕組みである。
 
 ## 出典
 
