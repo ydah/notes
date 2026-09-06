@@ -1,12 +1,17 @@
+---
+created: 2026-09-07
+updated: 2026-09-07
+---
+
 # PSLR実装の全体像
 
 #parser #compiler #lr #pslr #lexer #lrama
 
-[[pslr|PSLR(1)]]の実装には、[[pseudo-scanner]]に加えて複数の要素が必要になる。字句規則を記述する仕様言語、scanner tableを作る生成系、parser stateを受け取るruntimeがある。さらにstate mergingを制約する[[ielr|IELR]]拡張、エラー処理、検証が必要になる。
+[[pslr|PSLR(1)]]の実装には、[[pseudo-scanner]]に加えて複数の要素が必要になる。字句規則を記述する仕様言語、scanner tableを作る生成系、[[parser-state|parser state]]を受け取るruntimeがある。さらにstate mergingを制約する[[ielr|IELR]]拡張、エラー処理、検証が必要になる。
 
 実装の中心となる依存関係は次のとおり。
 
-> tiesとlayoutを反映した$acc(s_p)$をdefault reductionより前に作る。その情報をscanner conflictの解決とIELR state compatibilityの両方へ渡す。
+> tiesとlayoutを反映した[[accepted-token-set|accepted token set]] $acc(s_p)$をdefault reductionより前に作る。その情報をscanner conflictの解決とIELR state compatibilityの両方へ渡す。
 
 順序を崩すと、後段の`scanner_accepts`とstate splittingが不正確になる。
 
@@ -20,7 +25,7 @@
 | 4 | `YYLAYOUT` token | 仕様・実行 | 完全実装 | 空白やコメントを全productionへ書かずに認識・破棄する |
 | 5 | `%token-action` | 仕様・実行 | 完全実装 | semantic valueと直前のlayout textを構築する |
 | 6 | scanner FSA $\Sigma_s$ | 生成 | コア | 全tokenの正規表現を一つのDFAとして走査する |
-| 7 | $acc(s_p)$ | 生成 | コア | parser stateを字句的な左文脈として表す |
+| 7 | [[accepted-token-set|accepted token set]] $acc(s_p)$ | 生成 | コア | parser stateを字句的な左文脈として表す |
 | 8 | `scanner_accepts`と`state_to_accepting_state` | 生成 | コア | 受理可能性とidentity conflictの解決を表引きへ静的化する |
 | 9 | `length_precedences` | 生成 | コア | longest、shortest、token優先をruntimeの真偽表へ落とす |
 | 10 | scanner conflict resolverとレポート | 生成 | コア | conflictを有限に分類し、未解決・無効な宣言を黙って握りつぶさない |
@@ -67,7 +72,7 @@ flowchart TD
 
 `%lex-prec`は[[scanner-conflict|scanner conflict]]を宣言的に解決する。論文は7種類の演算子を定義している。identity precedence、longest・shortest match、長さに関係しないtoken precedenceの組み合わせである。同じtoken内のautolength conflictは、未指定ならlongest matchになる。
 
-これはLexの「規則順とlongest match」だけに依存せず、字句規則を表現するために必要になる。対象にはkeywordとidentifier、`0`とoctal literal、`>`と`>>`、複数行commentの終端などがある。
+これは[[lex|Lex]]の「規則順とlongest match」だけに依存せず、字句規則を表現するために必要になる。対象にはkeywordとidentifier、`0`とoctal literal、`>`と`>>`、複数行commentの終端などがある。
 
 ### lexical tie
 
@@ -93,11 +98,11 @@ scanner FSA $\Sigma_s$は全token regexを合併したDFAであり、parser stat
 
 identity conflictと受理可能性は `scanner_accepts`、match長の比較は `length_precedences` に分ける。これにより、複雑なprecedence関数をruntimeで再評価せず、表引きとして実行できる。
 
-### $acc(s_p)$
+### accepted token set $acc(s_p)$
 
-$acc(s_p)$の基礎は、そのparser stateでShiftできるtokenとReduce actionのlookahead集合である。そこへlexical tieとlayout tokenを反映する。
+$acc(s_p)$の基礎は、そのparser stateでShiftできるtokenとReduce actionのlookahead集合である。そこへlexical tieとlayout tokenを反映する。厳密な定義は[[accepted-token-set|accepted token set]]を参照。
 
-default reductionはlookahead集合をparser tableから削除する最適化である。そのため、$acc(s_p)$は適用前に計算する。適用後のtableだけでは、どのtokenでReduceすべきだったかを復元できない。結果としてpseudo-scannerの文脈制約が失われる。
+$acc(s_p)$は、明示的なShift・Reduce actionとReduce lookaheadが残る最適化前のLR item情報から計算する。default reductionの適用後は、既定のReduceがlookaheadを問わず選ばれるため、全tokenが受理可能であるように見える。適用後のtableだけでは元の集合を復元できず、pseudo-scannerの文脈制約が失われる。
 
 ### resolver
 
@@ -109,7 +114,7 @@ default reductionはlookahead集合をparser tableから削除する最適化で
 
 通常のIELR compatibilityは、stateをmergeしてもparser actionがCanonical LR相当になるかを調べる。PSLRではさらに、merge後もpseudo-scannerが同じmatchを選ぶかを調べなければならない。
 
-概念的にはstate $s_p$と$s'_p$について、任意の入力prefixで片方にmatchがないかを調べる。両方にmatchがあれば、lexical precedence適用後の選択結果が同じ場合だけmergeできる。実装では無限の文字列を比較せず、scanner FSAから要約したpairwise conflictを用いる。
+概念的にはstate $s_p$と$s'_p$について、任意の入力prefix $\xi$で$M(\xi, acc(s_p))$または$M(\xi, acc(s'_p))$が空かを調べる。両方にmatchがあれば、$\Delta(M(\xi, acc(s_p))) = \Delta(M(\xi, acc(s'_p)))$の場合だけmergeできる。実装では無限の文字列を比較せず、scanner FSAから要約したpairwise conflictを用いる。
 
 PSLRで中心となる新規部分である。通常のIELRだけではparser actionを守れても、$acc(s_p)$のunionによってpseudo-scannerのtoken選択が変わる可能性が残る。
 

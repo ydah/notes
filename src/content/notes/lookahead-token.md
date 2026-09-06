@@ -1,6 +1,6 @@
 ---
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-09-07
 ---
 
 # lookahead token
@@ -11,7 +11,7 @@ lookahead tokenは、字句解析機が返した、まだparser stackへShiftさ
 
 ## stackの外に置かれる
 
-LR parserはtokenを読み取ってすぐにstackへ積むとは限らない。まずlookaheadとしてstackの外に保持し、現在のstateと組み合わせて[[parsing-table|構文解析表]]のactionを決める。
+LR parserはtokenを読み取ってすぐにstackへ積むとは限らない。まずlookaheadとしてstackの外に保持し、現在のstateと組み合わせて[[action-table|ACTION表]]の操作を決める。
 
 ~~~text
 入力:       NUMBER "+" NUMBER

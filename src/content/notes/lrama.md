@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 
 # Lrama
@@ -26,7 +26,7 @@ error tolerant parserは、構文エラーのあとも解析を続け、後続�
 
 Lramaは[[yacc|Yacc]]や[[gnu-bison|GNU Bison]]と同じ文脈で扱えるparser generatorだが、BisonそのもののRuby実装ではない。Bison形式の文法との互換性を保ちつつ、CRuby向けのerror toleranceなどを追加している。
 
-文法から[[lalr-parser|LALR]]の状態機械と[[parsing-table|構文解析表]]を作り、生成したparserで[[semantic-action|semantic action]]を実行する。文法にconflictがある場合は、LALRの状態やlookaheadを調べる。
+文法から[[lalr-parser|LALR]]の状態機械と[[lr-table|LR table]]を作り、生成したparserで[[semantic-action|semantic action]]を実行する。文法にconflictがある場合は、LALRの状態やlookaheadを調べる。
 
 Lramaの将来のparser生成方式として[[pslr|PSLR]]がある。PSLRはparser stateを字句解析器のtoken認識にも使うため、LALRより細かい状態の区別を必要とする。IELRはその基盤になる。
 

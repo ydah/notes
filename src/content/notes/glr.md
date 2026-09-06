@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 
 # GLR
@@ -9,7 +9,7 @@ updated: 2026-08-17
 
 GLR（Generalized LR）は、LRパーサーで複数の操作候補が残ったときに、候補ごとに解析を分岐させる構文解析方式。
 
-通常のLRパーサーは、[[parsing-table|構文解析表]]の各セルに1つの操作を決める。未解決の[[conflict|conflict]]があれば、どちらか一方を選ぶ必要がある。GLRは未解決の[[conflict|shift/reduce conflict]]や[[conflict|reduce/reduce conflict]]に到達すると、パーサースタックを分岐させて複数の候補を追跡する。
+通常のLRパーサーは、[[action-table|ACTION表]]の各セルに1つの操作を決める。未解決の[[conflict|conflict]]があれば、どちらか一方を選ぶ必要がある。GLRは未解決の[[conflict|shift/reduce conflict]]や[[conflict|reduce/reduce conflict]]に到達すると、パーサースタックを分岐させて複数の候補を追跡する。
 
 入力を読み進めるうちに構文エラーになったスタックは捨て、同じ状態に到達したスタックはまとめる。曖昧な文法なら、複数の解析木や意味値を後段へ渡せる。
 

@@ -1,6 +1,6 @@
 ---
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # %left
@@ -21,7 +21,7 @@ x - y - z
 (x - y) - z
 ~~~
 
-LR parserのACTION表で、規則とlookahead tokenが同じprecedenceのshift/reduce conflictを起こした場合、`%left`はReduceを選ぶ。左側の式を完成させてから、次の演算子を処理するため。
+LR parserの[[action-table|ACTION表]]で、規則とlookahead tokenが同じprecedenceのshift/reduce conflictを起こした場合、`%left`はReduceを選ぶ。左側の式を完成させてから、次の演算子を処理するため。
 
 [[right|%right]]は同じ状況でShiftを選び、右結合にする。[[nonassoc|%nonassoc]]はどちらも選ばずsyntax errorにする。
 

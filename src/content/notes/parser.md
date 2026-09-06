@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 
 # 構文解析器
@@ -26,7 +26,7 @@ NUMBER "+" NUMBER
 
 Rubyの構文解析器には[[prism|Prism]]がある。Prismはparser generatorではなく、Rubyのソースコードを解析してASTとdiagnosticを返すparserの実装。
 
-[[ll-parser|LLパーサー]]や[[lr-parser|LRパーサー]]のように、文法を処理する方向によって構文解析の方式が分かれる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]を使う場合は、文法から構文解析器の実装や[[parsing-table|構文解析表]]を生成する。
+[[ll-parser|LLパーサー]]や[[lr-parser|LRパーサー]]のように、文法を処理する方向によって構文解析の方式が分かれる。[[syntax-analysis-and-parser-generators|パーサージェネレータ]]を使う場合は、文法から構文解析器の実装や[[lr-table|LR table]]を生成する。
 
 ## 出典
 

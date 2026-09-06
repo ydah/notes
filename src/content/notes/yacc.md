@@ -1,16 +1,16 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 # Yacc
 
 #unix #parser #compiler #lr
 
-「Yet Another Compiler-Compiler」。Bell LaboratoriesのStephen C. Johnsonが1970年代に開発したパーサージェネレータ。入力構造を文法規則として記述し、規則を認識したときに実行するactionを添える。そこから[[parser|構文解析器]]のサブルーチンを生成する。[[lr-parser|LRパーサー]]と[[lexical-analyzer|字句解析機]]の組み合わせは、UNIX上のコンパイラ実装で広く使われるようになった。
+「Yet Another Compiler-Compiler」。Bell LaboratoriesのStephen C. Johnsonが1970年代に開発したパーサージェネレータ。入力構造を文法規則として記述し、規則を認識したときに実行するactionを添える。そこから[[parser|構文解析器]]のサブルーチンを生成する。Yaccと[[lex|Lex]]の組み合わせは、UNIX上のコンパイラ実装で広く使われるようになった。
 
 ## 仕組み
 
-Yaccの文法ファイルには、tokenを返す[[lexical-analyzer|字句解析機]]、文法規則、規則に対応するactionを用意する。Yaccは文法からパーサーを生成する。そのパーサーは字句解析機からtokenを受け取り、規則を認識するとactionを実行する。
+Yaccの文法ファイルには、token宣言、文法規則、規則に対応するactionを書く。tokenを返す[[scanner]]も利用者が用意し、別ファイルまたはuser subroutines sectionに置く。Yaccが生成したパーサーはscannerからtokenを受け取り、規則を認識するとactionを実行する。
 
 初期のYaccはLALR(1)文法と、曖昧さを解消するための規則を扱った。演算子の優先順位や結合方向を宣言でき、[[shift-reduce-parsing|shift/reduce構文解析]]で起きるshift/reduce conflictやreduce/reduce conflictを報告する。
 

@@ -1,3 +1,8 @@
+---
+created: 2026-09-07
+updated: 2026-09-07
+---
+
 # LACとPSLRの関係
 
 #parser #compiler #lr #pslr #lac #syntax-error #lrama
@@ -8,7 +13,7 @@ PSLRの原論文も、LACが扱う問題と修正はtraditional scanner-based LR
 
 ## LACがもたらさないもの
 
-PSLRのtoken選択は、parser stateごとに生成される静的な受理可能token集合 $acc(s_p)$、lexical precedence、lexical tieによって決まる。実行時のLACを使って $acc(s_p)$ を求めるわけではない。
+PSLRのtoken候補は、[[parser-state|parser state]]ごとに生成される静的な[[accepted-token-set|accepted token set]] $acc(s_p)$をlexical tieとlayout tokenで拡張して決まる。候補が複数ならlexical precedenceで一つを選ぶ。実行時のLACを使って$acc(s_p)$を求めるわけではない。
 
 構文的に正しい入力で[[canonical-lr-parser|Canonical LR(1)]]と同じparser actionを実行する保証は、[[ielr|IELR(1)]]とPSLR向けIELR拡張が担う。LACを加えても、PSLRが認識できる正しい入力やpseudo-scannerが選ぶtokenは増えない。
 
@@ -76,7 +81,7 @@ LACは2010年のPSLR研究で生まれ、2011年にGNU Bisonの独立機能に�
 
 第一段階のPSLR実装はLACなしでも成立する。pseudo-scanner、scanner accepts table、PSLR向けIELR拡張を実装すれば、構文文脈による字句解析を切り替えられる。
 
-生成側では、$acc(s_p)$ をdefault reduction最適化でlookahead情報を削除する前のaction情報から構成する必要がある。runtime側のLACを省くことと、scanner accepts tableを不正確にしてよいことは別問題である。
+生成側では、明示的なShift・Reduce actionとReduce lookaheadが残る、default reduction最適化前のLR item情報から$acc(s_p)$を構成する。最適化後は既定のReduceがlookaheadを問わず選ばれ、全tokenが受理可能であるように見える。runtime側のLACを省くことと、scanner accepts tableを不正確にしてよいことは別問題である。
 
 LACを省く判断は「不要」ではなく、「不正入力時の品質を後回しにする」ことを意味する。CRubyの `parse.y` は複数の `%nonassoc` を使い、Lrama自身もerror toleranceを主要目標に掲げている。LACはBisonの `%define parse.lac full` と同じく、後付け可能な独立runtime optionとして位置づけるのがよい。
 

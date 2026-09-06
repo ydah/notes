@@ -1,6 +1,6 @@
 ---
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-09-07
 ---
 
 # IELR table
@@ -25,7 +25,7 @@ IELR tableはLALR tableより大きくなる場合があるが、Canonical LR ta
 
 ## tableの役割
 
-生成されたIELR tableのruntime上の構造は、他のLR tableと同じくACTIONとGOTO。現在のstateと[[lookahead-token|lookahead token]]を使ってShift・Reduce・[[accept|Accept]]・Errorを決める。
+生成されたIELR tableのruntime上の構造は、他のLR tableと同じく[[action-table|ACTION]]と[[goto-table|GOTO]]。現在のstateと[[lookahead-token|lookahead token]]を使ってShift・Reduce・[[accept|Accept]]・Errorを決める。
 
 IELR tableが取り除くのは、主にLALRのstate mergeによって人工的に生じた不足である。曖昧な文法やLR(1)でない文法のconflictは残る。
 

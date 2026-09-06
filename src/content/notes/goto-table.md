@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 
 # GOTO表
@@ -28,7 +28,7 @@ push A
 push GOTO[p, A]
 ```
 
-[[parsing-table|構文解析表]]の`ACTION`表は、終端記号とlookaheadに対する操作を決める。GOTO表の列は[[nonterminal-symbol|非終端記号]]で、値は状態番号になる。
+[[action-table|ACTION表]]は、現在のstateと、lookahead tokenである終端記号から操作を決める。GOTO表の列は[[nonterminal-symbol|非終端記号]]で、値は状態番号になる。両方を合わせたものが[[lr-table|LR table]]である。
 
 GOTOという名前は、LR項集合上の[[transition-function|遷移関数]]と、そこから作る表の両方を指す。このノートでは、生成された表の意味を扱う。
 

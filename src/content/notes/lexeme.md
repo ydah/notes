@@ -1,6 +1,6 @@
 ---
 created: 2026-08-19
-updated: 2026-08-19
+updated: 2026-09-07
 ---
 
 # lexeme
@@ -23,7 +23,7 @@ lexemeは、入力文字列中のtokenに対応する連続した文字列。tok
 
 同じ文字列が複数のtoken kindに一致することもある。intがkeywordとidentifierの両方の規則に一致する場合はidentity [[scanner-conflict|scanner conflict]]になる。>と>>のように長さの異なるlexemeが同じ位置から始まる場合はlength conflictになる。
 
-通常のscannerは最長のlexemeを選ぶ。[[pseudo-scanner|pseudo-scanner]]は、その前にparser stateでtoken候補を制限する。そのため、現在の構文上の文脈もtokenizationに影響する。
+通常の[[scanner]]は最長のlexemeを選ぶ。[[pseudo-scanner|pseudo-scanner]]は、その前にparser stateでtoken候補を制限する。そのため、現在の構文上の文脈もtokenizationに影響する。
 
 ## 出典
 

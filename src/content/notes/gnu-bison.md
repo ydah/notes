@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 # GNU Bison
 
@@ -10,7 +10,7 @@ GNU Bisonは、GNUプロジェクトのパーサージェネレータ。注釈�
 
 ## 生成するパーサー
 
-通常のLRパーサーは、文法から[[parsing-table|構文解析表]]を作り、入力tokenを[[shift|Shift]]・[[reduce|Reduce]]して解析する。Bisonは[[lalr-parser|LALR(1)]]・[[ielr|IELR(1)]]・[[canonical-lr-parser|Canonical LR(1)]]のテーブル構築方式を切り替えられる。
+通常のLRパーサーは、文法から[[lr-table|LR table]]を作り、入力tokenを[[shift|Shift]]・[[reduce|Reduce]]して解析する。Bisonは[[lalr-parser|LALR(1)]]・[[ielr|IELR(1)]]・[[canonical-lr-parser|Canonical LR(1)]]のテーブル構築方式を切り替えられる。
 
 構文エラーの検出には[[lookahead-correction|Lookahead Correction（LAC）]]も使える。%define parse.lac fullを指定すると、lookaheadを使ったexploratory parseでエラーを先に検証する。
 
@@ -18,7 +18,7 @@ GNU Bisonは、GNUプロジェクトのパーサージェネレータ。注釈�
 
 ## 文法と出力
 
-文法ファイルにはtoken、[[production-rule|生成規則]]、[[semantic-action|semantic action]]を書く。[[lexical-analyzer|字句解析機]]は別に用意する。生成された[[parser|構文解析器]]が、tokenを取得するための関数を呼ぶ構成が基本。
+文法ファイルにはtoken、[[production-rule|生成規則]]、[[semantic-action|semantic action]]を書く。[[scanner|scanner]]は別に用意する。生成された[[parser|構文解析器]]が、tokenを取得するために`yylex`を呼ぶ構成が基本。scannerは手書きでき、[[lex|Lex]]や[[flex]]から生成することもできる。
 
 演算子の優先順位・結合方向を宣言できる。[[conflict|conflict]]の検出結果はverbose reportで状態ごとに確認でき、パーサーの状態・lookahead・reduce条件を調べながら文法を調整できる。
 

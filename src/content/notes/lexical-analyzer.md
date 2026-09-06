@@ -1,6 +1,7 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+aliases: [scanner]
+updated: 2026-09-07
 ---
 
 # 字句解析機
@@ -26,13 +27,13 @@ tokenは通常、token kind、意味値、ソース位置などを持つ。`NUMB
 
 空白やコメントは構文上不要なら読み飛ばすことが多い。一方、`<`と`<=`の区別のように、tokenを決めるために数文字先を読むこともある。
 
-字句解析機はtoken列を最初に全部作る必要はない。[[parser|構文解析器]]から要求されたときに、次のtokenを1つずつ返す構成も一般的である。GNU Bisonでは生成されたparserが`yylex`を呼び、`yylex`がtoken kindを戻り値として返す。
+字句解析機はtoken列を最初に全部作る必要はない。[[parser|構文解析器]]から要求されたときに、次のtokenを1つずつ返す構成も一般的である。[[gnu-bison|GNU Bison]]では生成されたparserが`yylex`を呼び、`yylex`がtoken kindを戻り値として返す。[[lex|Lex]]や[[flex]]は、この`yylex`を字句規則から生成する。
 
 字句解析機は文字パターンを認識し、構文解析器はtokenの並びが文法に合うかを判定する。エラーにする段階は実装によって異なるが、不正な文字や閉じられていない文字列は字句解析のエラーになる。
 
 入力の終端は[[eof|EOF]]としてparserへ伝える。
 
-言語によっては、tokenの種類を決めるためにparserの状態が必要になる。[[pslr|PSLR]]は、現在のparser stateで受理できるtokenの集合を字句解析器の認識に使う。lexerとparserの境界を残しつつ、parserの文脈をtokenizeに反映する方式である。
+言語によっては、tokenの種類を決めるためにparserの状態が必要になる。[[pslr|PSLR]]は、現在の[[parser-state|parser state]]で受理できるtokenの集合を字句解析器の認識に使う。lexerとparserの境界を残しつつ、parserの文脈をtokenizeに反映する方式である。
 
 ## 出典
 

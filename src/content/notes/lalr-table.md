@@ -1,13 +1,13 @@
 ---
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-09-07
 ---
 
 # LALR table
 
 #parser #compiler #lr #lalr
 
-LALR tableは、LALR(1)のstate machineとlookaheadから作るparser table。runtimeは現在のstateと[[lookahead-token|lookahead token]]からACTIONを調べる。非終端記号の遷移はGOTOで調べる。
+LALR tableは、LALR(1)のstate machineとlookaheadから作るparser table。runtimeは現在のstateと[[lookahead-token|lookahead token]]から[[action-table|ACTION]]を調べる。非終端記号の遷移は[[goto-table|GOTO]]で調べる。
 
 ## stateをまとめる
 
@@ -22,7 +22,7 @@ LALR:
   [A -> α ., {x, y}]
 ~~~
 
-このマージでstate数とtableを小さくできる。LALR tableは、terminalのACTION欄とnonterminalのGOTO欄からなる[[parsing-table|構文解析表]]である。
+このマージでstate数とtableを小さくできる。LALR tableは、terminalの[[action-table|ACTION欄]]とnonterminalの[[goto-table|GOTO欄]]からなる[[lr-table|LR table]]である。
 
 ## マージの副作用
 

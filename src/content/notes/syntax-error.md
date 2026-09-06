@@ -1,6 +1,6 @@
 ---
 created: 2026-08-17
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 
 # 構文エラー
@@ -9,7 +9,7 @@ updated: 2026-08-17
 
 入力token列を、[[context-free-grammar|文脈自由文法]]に従う構造として続けられないときに発生するエラー。[[lexical-analyzer|字句解析機]]による字句解析のエラーや、型が合わないといった[[semantic-analysis|意味解析]]のエラーとは異なる。
 
-LRパーサーでは、現在の状態と[[lookahead|lookahead token]]から[[parsing-table|構文解析表]]を調べる。
+LRパーサーでは、現在の状態と[[lookahead|lookahead token]]から[[action-table|ACTION表]]を調べる。
 
 ```text
 ACTION[state, lookahead]

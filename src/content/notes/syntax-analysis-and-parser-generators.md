@@ -1,12 +1,12 @@
 ---
 created: 2026-08-17 21:20
-updated: 2026-08-17
+updated: 2026-09-07
 ---
 # パーサージェネレータ
 
 #parser #compiler #lr #ll
 
-文法ファイルから[[parser|構文解析器]]を生成するツール。生成されたプログラムは、[[lexical-analyzer|字句解析機]]が作ったトークン列を文法に従って解析し、[[ast|AST]]や意味値を返す。文法から[[parsing-table|構文解析表]]やランタイムを組み立てる方式が多い。yacc系の[[lr-parser|LRパーサー]]や[[ll-parser|LLパーサー]]のほか、PEGや[[glr|GLR]]などがある。
+文法ファイルから[[parser|構文解析器]]を生成するツール。生成されたプログラムは、[[lexical-analyzer|字句解析機]]が作ったトークン列を文法に従って解析し、[[ast|AST]]や意味値を返す。文法から[[lr-table|LR table]]やランタイムを組み立てる方式が多い。yacc系の[[lr-parser|LRパーサー]]や[[ll-parser|LLパーサー]]のほか、PEGや[[glr|GLR]]などがある。
 
 ## 主な機能
 

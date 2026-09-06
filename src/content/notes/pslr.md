@@ -1,23 +1,23 @@
 ---
 created: 2026-08-18
-updated: 2026-08-18
+updated: 2026-09-07
 ---
 
 # PSLR
 
 #parser #compiler #lr #lexer #ruby
 
-PSLR(1)はPseudo-Scannerless Minimal LR(1)の略。scannerとparserの仕様を一つにまとめ、決定的なLR(1) parserと[[pseudo-scanner]]を生成する方式である。
+PSLR(1)はPseudo-Scannerless Minimal LR(1)の略。[[scanner]]とparserの仕様を一つにまとめ、決定的なLR(1) parserと[[pseudo-scanner]]を生成する方式である。
 
 方式全体を貫く考え方は二つある。
 
-> parser stateを字句解釈の文脈として使う。
+> [[parser-state|parser state]]を字句解釈の文脈として使う。
 
 > scanner conflictを暗黙に解決せず、検出・報告し、宣言によって解決する。
 
 ## 何を解決するのか
 
-通常のLexとYaccの構成では、scannerが文字列をtoken列へ変換し、その後にparserがtoken列を処理する。
+通常の[[lex|Lex]]と[[yacc|Yacc]]の構成では、parserがtokenを必要とするたびにscannerを呼ぶ。scannerは入力から次のtokenを一つ返し、parserはそのtokenを処理する。
 
 ~~~text
 ソースコード
@@ -27,7 +27,7 @@ scanner
 LR parser
 ~~~
 
-この分離は単純だが、同じ文字列が構文上の位置によって別tokenになる言語では、scannerだけでtokenを決められない。この問題は、複数のsub-languageを含む[[composite-language|composite language]]や埋め込みDSL、C++のように複雑な字句規則を持つ言語で起こる。このような言語では、scannerのstart conditionやad-hocなコードへparser contextを複製することになる。CRubyの`lex_state`も、この種の情報をlexerへ伝える仕組みである。
+この分離は単純だが、同じ文字列が構文上の位置によって別tokenになる言語では、scannerだけでtokenを決められない。この問題は、複数のsub-languageを含む[[composite-language|composite language]]や埋め込みDSL、C++のように複雑な字句規則を持つ言語で起こる。このような言語では、scannerの[[start-condition|start condition]]やad-hocなコードへparser contextを複製することになる。CRubyの`lex_state`も、この種の情報をlexerへ伝える仕組みである。
 
 scannerless GLRはscannerをなくし、文字レベルの文法をGLRで処理する。PSLRはscannerを残し、token候補の選択を現在のparser stateへ従属させる。これにより、決定的LR parsingを保ったまま、手動で管理する字句状態を減らす。
 
@@ -35,20 +35,15 @@ scannerless GLRはscannerをなくし、文字レベルの文法をGLRで処理�
 
 PSLRの中心は[[pseudo-scanner]]である。parserはtokenを要求するとき、現在のparser state $s_p$ をpseudo-scannerへ渡す。
 
-入力の残りを $\xi$、token集合 $T$ に対するmatch候補を $M(\xi,T)$ とする。また、state $s_p$ で受理できるtoken集合を $acc(s_p)$ とする。pseudo-scannerが調べる候補は次になる。
+入力の残りを $\xi$、token集合 $T$ に対するmatch候補を $M(\xi, T)$ とする。また、state $s_p$ の[[accepted-token-set|accepted token set]]を $acc(s_p)$ とする。pseudo-scannerが調べる候補は次になる。
 
-$$M(\xi, acc(s_p))$$
+$$
+M(\xi, acc(s_p))
+$$
 
 正規表現に一致しても、現在の構文文脈でparserが受け取れないtokenは候補から外れる。候補が複数なら、後述するlexical precedenceで一つを選ぶ。
 
-$acc(s_p)$ はruntimeで探索して求めるものではない。parser生成時に、次の和集合としてstateごとに静的計算する。
-
-- そのstateからShiftできるtoken
-- そのstateのReduce actionのlookaheadに現れるtoken
-
-LR stateはstack上の構文的左文脈を要約している。そのため、$acc(s_p)$によるfilterは、この文脈で現れ得るtokenだけをscannerへ見せる。別々のsub-languageに属するtokenが同じ文字列へ一致しても、同じstateで受理されなければscanner conflictは自動的に消える。
-
-$acc(s_p)$は[[default-reduction|default reduction]]を適用する前のlookahead情報から計算する。適用後のtableでは、どのlookaheadに対するReduceだったかが消えるため、正確な受理可能token集合を作れない。
+$acc(s_p)$はparser生成時にstateごとに静的計算する。LR stateはstack上の構文的左文脈を要約している。そのため、このfilterは現在の文脈で現れ得るtokenだけをscannerへ見せる。別々のsub-languageに属するtokenが同じ文字列へ一致しても、同じstateで受理されなければscanner conflictは自動的に消える。
 
 ## pseudo-scanner conflictとlexical precedence
 
@@ -134,8 +129,8 @@ PSLRはIELRを土台にし、必要な文脈だけをstate splitする。さら�
 
 二つのstate $s_p$と$s'_p$は、任意の入力prefix $\xi$について次のどちらかを満たす場合だけcompatibleとする。
 
-1. どちらかのstateで$M(\xi,acc(s_p))$が空である。
-2. 両stateでlexical precedence関数$\Delta$が選ぶmatchが同じである。
+1. $M(\xi, acc(s_p))$または$M(\xi, acc(s'_p))$が空である。
+2. 両方が空でない場合、$\Delta(M(\xi, acc(s_p))) = \Delta(M(\xi, acc(s'_p)))$である。
 
 両stateの選択結果が同じなら、unionしたstateでも同じmatchが選ばれることがmerge-stabilityとして示されている。そのためmerge後の候補を毎回再評価する必要はない。
 
